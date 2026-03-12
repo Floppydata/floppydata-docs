@@ -1,216 +1,917 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "FloppyData Client API",
+    "description": "API documentation for FloppyData Client API. You can manage your API keys in [account settings](https://app.floppydata.com/settings/account)",
     "version": "1.0.0"
   },
-  "servers": [
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Key"
+      }
+    }
+  },
+  "tags": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "name": "Rotating proxy",
+      "description": "Endpoints to gather data about rotating proxies"
+    },
+    {
+      "name": "Static IPs",
+      "description": "Endpoints to manage static IPs"
+    },
+    {
+      "name": "Web Unlocker",
+      "description": "Remove the need to develop and maintain the infrastructure.  \n            Simply extract high volume web data, and ensure scalability and reliability using web scraper API"
+    },
+    {
+      "name": "Tools",
+      "description": "Utility endpoints for proxy-related tasks"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "apiKeyHeader": []
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
+    "/v1/webUnlocker": {
+      "post": {
+        "operationId": "postV1WebUnlocker",
+        "summary": "Scrape page",
+        "tags": [
+          "Web Unlocker"
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "html": {
+                      "type": "string",
+                      "description": "HTML content of the target page"
+                    }
+                  },
+                  "required": [
+                    "html"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "Target page URL",
+                    "example": "https://ip-api.com"
+                  },
+                  "country": {
+                    "description": "2-letter country code from where request would be made",
+                    "example": "US",
+                    "type": "string"
+                  },
+                  "city": {
+                    "description": "City from where request would be made. Must be a valid city name from https://www.geonames.org/",
+                    "example": "New York",
+                    "type": "string"
+                  },
+                  "difficulty": {
+                    "description": "Access difficulty pool, values low or medium. Default is low",
+                    "example": "low",
+                    "type": "string",
+                    "enum": [
+                      "low",
+                      "medium"
+                    ]
+                  },
+                  "expiration": {
+                    "description": "Maximum age of cached content in days, 0 will invalidate cache on every request",
+                    "example": 0,
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/webUnlocker/balance": {
+      "get": {
+        "operationId": "getV1WebUnlockerBalance",
+        "summary": "Balance",
+        "description": "Remaining web unlocker requests",
+        "tags": [
+          "Web Unlocker"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "usesLeft": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991,
+                      "description": "Remaining web unlocker requests"
+                    }
+                  },
+                  "required": [
+                    "usesLeft"
+                  ],
+                  "description": "Available web unlocker requests"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rotating/smartParamsCredentials": {
+      "get": {
+        "operationId": "getV1RotatingSmartParamsCredentials",
+        "summary": "Smart parameters credentials",
+        "description": "Returns the username and password for the rotating proxy.",
+        "tags": [
+          "Rotating proxy"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Proxy username",
+                      "example": "user123"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Proxy password",
+                      "example": "pass456"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "password"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rotating/smartParamsBuilder": {
+      "get": {
+        "operationId": "getV1RotatingSmartParamsBuilder",
+        "summary": "Smart parameters builder",
+        "description": "Builds a proxy username and connection string using provided parameters.  \n      This endpoint is just a helper, you can modify the connection string in your code without calling it.\n      UI available at [configurator](https://app.floppydata.com/proxies/credentials).",
+        "tags": [
+          "Rotating proxy"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "Proxy username with parameters",
+                      "example": "user-USERNAME-type-residential-session-my_session_1-country-US-city-New_York-rotation-15"
+                    },
+                    "password": {
+                      "type": "string",
+                      "description": "Proxy password placeholder",
+                      "example": "PASSWORD"
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "Proxy hostname",
+                      "example": "geo.g-w.info"
+                    },
+                    "port": {
+                      "type": "number",
+                      "description": "Proxy port",
+                      "example": 10080
+                    },
+                    "connectionString": {
+                      "type": "string",
+                      "description": "Full proxy connection string",
+                      "example": "http://user-USERNAME-type-residential-session-my_session_1-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "password",
+                    "host",
+                    "port",
+                    "connectionString"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "residential",
+                "mobile",
+                "datacenter"
+              ],
+              "example": "residential"
+            },
+            "required": true,
+            "description": "Proxy type"
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "example": "US"
+            },
+            "required": true,
+            "description": "2-letter country code (CCA2)"
+          },
+          {
+            "in": "query",
+            "name": "city",
+            "schema": {
+              "example": "New_York",
+              "type": "string"
+            },
+            "description": "City name, use underscores for spaces"
+          },
+          {
+            "in": "query",
+            "name": "rotation",
+            "schema": {
+              "default": 0,
+              "example": 15,
+              "type": "integer",
+              "minimum": -1,
+              "maximum": 60
+            },
+            "description": "Rotation interval in minutes, -1 for per-request rotation, 0 for sticky session"
+          },
+          {
+            "in": "query",
+            "name": "session",
+            "schema": {
+              "example": "my_session_1",
+              "type": "string",
+              "maxLength": 128
+            },
+            "description": "A unique identifier used to create and maintain a session, enabling consistent control over IP address usage."
+          },
+          {
+            "in": "query",
+            "name": "protocol",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "http",
+                "https",
+                "socks5",
+                ""
+              ],
+              "example": "http"
+            },
+            "required": true,
+            "description": "Proxy protocol"
+          }
+        ]
+      }
+    },
+    "/v1/rotating/balance": {
+      "get": {
+        "operationId": "getV1RotatingBalance",
+        "summary": "Traffic balance",
+        "description": "Available traffic by type",
+        "tags": [
+          "Rotating proxy"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "residential": {
+                      "type": "object",
+                      "properties": {
+                        "subscription": {
+                          "type": "object",
+                          "properties": {
+                            "expiresOn": {
+                              "type": "string",
+                              "description": "Expiration date",
+                              "example": "2026-01-25T08:33:30Z"
+                            },
+                            "bytes": {
+                              "type": "number",
+                              "example": 10737418240
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 10
+                            }
+                          },
+                          "required": [
+                            "expiresOn",
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available subscription traffic"
+                        },
+                        "nonExpiring": {
+                          "type": "object",
+                          "properties": {
+                            "bytes": {
+                              "type": "number",
+                              "example": 5368709120
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 5
+                            }
+                          },
+                          "required": [
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available non-expiring traffic"
+                        }
+                      },
+                      "required": [
+                        "subscription",
+                        "nonExpiring"
+                      ]
+                    },
+                    "mobile": {
+                      "type": "object",
+                      "properties": {
+                        "subscription": {
+                          "type": "object",
+                          "properties": {
+                            "expiresOn": {
+                              "type": "string",
+                              "description": "Expiration date",
+                              "example": "2026-01-25T08:33:30Z"
+                            },
+                            "bytes": {
+                              "type": "number",
+                              "example": 10737418240
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 10
+                            }
+                          },
+                          "required": [
+                            "expiresOn",
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available subscription traffic"
+                        },
+                        "nonExpiring": {
+                          "type": "object",
+                          "properties": {
+                            "bytes": {
+                              "type": "number",
+                              "example": 5368709120
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 5
+                            }
+                          },
+                          "required": [
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available non-expiring traffic"
+                        }
+                      },
+                      "required": [
+                        "subscription",
+                        "nonExpiring"
+                      ]
+                    },
+                    "datacenter": {
+                      "type": "object",
+                      "properties": {
+                        "subscription": {
+                          "type": "object",
+                          "properties": {
+                            "expiresOn": {
+                              "type": "string",
+                              "description": "Expiration date",
+                              "example": "2026-01-25T08:33:30Z"
+                            },
+                            "bytes": {
+                              "type": "number",
+                              "example": 10737418240
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 10
+                            }
+                          },
+                          "required": [
+                            "expiresOn",
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available subscription traffic"
+                        },
+                        "nonExpiring": {
+                          "type": "object",
+                          "properties": {
+                            "bytes": {
+                              "type": "number",
+                              "example": 5368709120
+                            },
+                            "gb": {
+                              "type": "number",
+                              "example": 5
+                            }
+                          },
+                          "required": [
+                            "bytes",
+                            "gb"
+                          ],
+                          "description": "Available non-expiring traffic"
+                        }
+                      },
+                      "required": [
+                        "subscription",
+                        "nonExpiring"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "residential",
+                    "mobile",
+                    "datacenter"
+                  ],
+                  "description": "Available traffic by type"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rotating/statistics": {
+      "get": {
+        "operationId": "getV1RotatingStatistics",
+        "summary": "Traffic usage statistics",
+        "description": "Traffic usage statistics updated hourly",
+        "tags": [
+          "Rotating proxy"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total_bytes": {
+                      "type": "number",
+                      "description": "Total traffic used",
+                      "example": 10737418240
+                    },
+                    "total_gb": {
+                      "type": "number",
+                      "description": "Total traffic used in gigabytes",
+                      "example": 10
+                    },
+                    "tx_bytes": {
+                      "type": "number",
+                      "description": "Outcoming traffic",
+                      "example": 5368709120
+                    },
+                    "rx_bytes": {
+                      "type": "number",
+                      "description": "Incoming traffic",
+                      "example": 5368709120
+                    }
+                  },
+                  "required": [
+                    "total_bytes",
+                    "total_gb",
+                    "tx_bytes",
+                    "rx_bytes"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "example": "2025-01-27T00:00:00Z",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                }
+              ]
+            },
+            "description": "Start date or datetime in RFC 3339 format"
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "example": "2025-12-28",
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+                },
+                {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                }
+              ]
+            },
+            "description": "End date or datetime in RFC 3339 format"
+          },
+          {
+            "in": "query",
+            "name": "poolId",
+            "schema": {
+              "type": "number"
+            },
+            "description": "ID of the proxy pool."
+          },
+          {
+            "in": "query",
+            "name": "proxyType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "residential",
+                "mobile",
+                "datacenter"
+              ],
+              "example": "residential"
+            },
+            "description": "If omitted all proxy types will be included"
+          },
+          {
+            "in": "query",
+            "name": "countryCode",
+            "schema": {
+              "example": "US",
+              "type": "string"
+            },
+            "description": "2-letter country code (CCA2). If ommited all countries will be included"
+          }
+        ]
+      }
+    },
+    "/v1/static/list": {
+      "get": {
+        "operationId": "getV1StaticList",
+        "summary": "Static IP list",
+        "description": "Returns the list of static IPs for the authenticated user",
+        "tags": [
+          "Static IPs"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ip_list": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "number"
+                          },
+                          "host": {
+                            "type": "string",
+                            "description": "Proxy hostname",
+                            "example": "geo.g-w.info"
+                          },
+                          "port": {
+                            "type": "number",
+                            "description": "Proxy port. You can use 10080 for HTTP and 10443 for HTTPS and 10800 for SOCKS5",
+                            "example": 10080
+                          },
+                          "username": {
+                            "type": "string",
+                            "description": "Proxy username",
+                            "example": "username"
+                          },
+                          "password": {
+                            "type": "string",
+                            "description": "Proxy Password",
+                            "example": "password"
+                          },
+                          "ip": {
+                            "type": "string",
+                            "description": "Address of the static IP",
+                            "example": "123.45.67.89"
+                          },
+                          "country_code": {
+                            "type": "string",
+                            "description": "Country code of the static IP",
+                            "example": "US"
+                          },
+                          "country_name": {
+                            "type": "string",
+                            "description": "Country name of the static IP",
+                            "example": "United States"
+                          },
+                          "proxy_type": {
+                            "type": "string",
+                            "enum": [
+                              "isp",
+                              "datacenter"
+                            ],
+                            "description": "Type of the static IP",
+                            "example": "isp"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "host",
+                          "port",
+                          "username",
+                          "password",
+                          "ip",
+                          "country_code",
+                          "country_name",
+                          "proxy_type"
+                        ]
+                      },
+                      "description": "List of static IPs",
+                      "example": [
+                        {
+                          "id": 1,
+                          "host": "geo.g-w.info",
+                          "port": 10080,
+                          "username": "username",
+                          "password": "password",
+                          "ip": "123.45.67.89",
+                          "country_code": "US",
+                          "country_name": "United States",
+                          "proxy_type": "isp"
+                        }
+                      ]
+                    },
+                    "pending_ip_amount": {
+                      "type": "number",
+                      "description": "Amount of pending IPs",
+                      "example": 1
+                    }
+                  },
+                  "required": [
+                    "ip_list",
+                    "pending_ip_amount"
+                  ],
+                  "description": "Static IP List Response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/tools/checkProxy": {
+      "post": {
+        "operationId": "postV1ToolsCheckProxy",
+        "summary": "Check proxy",
+        "description": "Validates a proxy and returns its location details",
+        "tags": [
+          "Tools"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ip": {
+                      "type": "string",
+                      "description": "Proxy IP address",
+                      "example": "123.45.67.89"
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "Proxy country",
+                      "example": "United States"
+                    },
+                    "stateProv": {
+                      "type": "string",
+                      "description": "Proxy state/province",
+                      "example": "California"
+                    },
+                    "city": {
+                      "type": "string",
+                      "description": "Proxy city",
+                      "example": "San Francisco"
+                    }
+                  },
+                  "required": [
+                    "ip",
+                    "country",
+                    "stateProv",
+                    "city"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed to check proxy"
+          },
+          "402": {
+            "description": "No traffic"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "host": {
+                        "type": "string",
+                        "description": "Proxy hostname",
+                        "example": "geo.g-w.info"
+                      },
+                      "port": {
+                        "type": "number",
+                        "description": "Proxy port",
+                        "example": 10080
+                      },
+                      "username": {
+                        "type": "string",
+                        "description": "Proxy username",
+                        "example": "username"
+                      },
+                      "password": {
+                        "type": "string",
+                        "description": "Proxy password",
+                        "example": "password"
+                      },
+                      "protocol": {
+                        "description": "Proxy protocol",
+                        "example": "http",
+                        "default": "http",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "host",
+                      "port",
+                      "username",
+                      "password"
+                    ],
+                    "description": "Proxy configuration",
+                    "title": "Proxy configuration"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "connectionString": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Proxy connection string",
+                        "example": "http://username:password@geo.g-w.info:10080"
+                      }
+                    },
+                    "required": [
+                      "connectionString"
+                    ],
+                    "description": "Proxy connection string",
+                    "title": "Connection String"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/rotating/locations": {
+      "get": {
+        "operationId": "getV1RotatingLocations",
+        "summary": "Available locations",
+        "description": "Get a list of all available proxy locations with countries and cities",
+        "tags": [
+          "Rotating proxy"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Full name of the country",
+                        "example": "United States"
+                      },
+                      "countryCode": {
+                        "type": "string",
+                        "minLength": 2,
+                        "maxLength": 2,
+                        "description": "2-letter country code (ISO 3166-1 alpha-2)",
+                        "example": "US"
+                      },
+                      "cities": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Array of available cities in this country",
+                        "example": [
+                          "New York",
+                          "Los Angeles",
+                          "Chicago"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "countryCode",
+                      "cities"
+                    ]
+                  },
+                  "description": "List of available locations with countries and cities"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
       }
     }
   }

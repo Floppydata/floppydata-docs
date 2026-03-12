@@ -1,97 +1,40 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "FloppyData Client API"
+description: "API reference for rotating proxies, static IPs, and Web Unlocker."
 ---
 
-## Setting up
+Base URL: `https://client-api.floppy.host`
 
-Get your documentation site up and running in minutes.
+Use `X-Api-Key` on all requests.
+
+```bash
+curl --request GET \
+  --url 'https://client-api.floppy.host/v1/rotating/balance' \
+  --header 'X-Api-Key: YOUR_API_KEY'
+```
 
 <Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
+  title="OpenAPI JSON"
+  icon="file-code"
+  href="https://client-api.floppy.host/v1/openapi.json"
   horizontal
 >
-  Follow our three step quickstart guide.
+  View the source API schema
 </Card>
 
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
+## Endpoint Groups
 
 <Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+  <Card title="Rotating proxy" icon="arrows-rotate" href="/api-reference/endpoint/rotating-balance">
+    Balance, locations, smart parameters, and usage statistics.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Static IPs" icon="server" href="/api-reference/endpoint/static-list">
+    List assigned static proxies and pending IP count.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Web Unlocker" icon="globe" href="/api-reference/endpoint/web-unlocker">
+    Scrape target pages and check remaining unlocker balance.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Tools" icon="wrench" href="/api-reference/endpoint/check-proxy">
+    Validate proxy connectivity and geolocation details.
   </Card>
 </Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>

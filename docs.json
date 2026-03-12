@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "FloppyData Client API",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -57,12 +57,32 @@
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Rotating proxy",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/endpoint/rotating-balance",
+              "api-reference/endpoint/rotating-locations",
+              "api-reference/endpoint/rotating-smart-params-builder",
+              "api-reference/endpoint/rotating-smart-params-credentials",
+              "api-reference/endpoint/rotating-statistics"
+            ]
+          },
+          {
+            "group": "Static IPs",
+            "pages": [
+              "api-reference/endpoint/static-list"
+            ]
+          },
+          {
+            "group": "Web Unlocker",
+            "pages": [
+              "api-reference/endpoint/web-unlocker",
+              "api-reference/endpoint/web-unlocker-balance"
+            ]
+          },
+          {
+            "group": "Tools",
+            "pages": [
+              "api-reference/endpoint/check-proxy"
             ]
           }
         ]
