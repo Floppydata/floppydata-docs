@@ -1,0 +1,35 @@
+---
+title: "Static IP Guide"
+description: "Retrieve static IP inventory and pending IP count."
+---
+
+## Endpoint
+
+- `GET /v1/static/list`
+
+## List Static IPs
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/static/list" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+## Response Shape
+
+- `ip_list`: array of static proxy records
+- `pending_ip_amount`: number of static IPs still pending allocation
+
+Each `ip_list` item contains fields like:
+
+- `host`, `port`, `username`, `password`
+- `ip`, `country_code`, `country_name`
+- `proxy_type` (`isp` or `datacenter`)
+
+## Extract First Connection Values
+
+```bash
+curl --silent \
+  --url "$FLOPPY_BASE_URL/v1/static/list" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" | jq '.ip_list[0] | {host, port, username, password}'
+```

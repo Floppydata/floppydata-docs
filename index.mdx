@@ -1,11 +1,20 @@
 ---
 title: "FloppyData Client API"
-description: "API reference for rotating proxies, static IPs, and Web Unlocker."
+description: "Official documentation for FloppyData Client API v1."
 ---
+
+## Overview
+
+The FloppyData Client API lets you work with:
+
+- Rotating proxy traffic and locations
+- Static IP inventory
+- Web Unlocker requests
+- Proxy validation tools
 
 Base URL: `https://client-api.floppy.host`
 
-Use `X-Api-Key` on all requests.
+## Quick Request
 
 ```bash
 curl --request GET \
@@ -13,28 +22,23 @@ curl --request GET \
   --header 'X-Api-Key: YOUR_API_KEY'
 ```
 
-<Card
-  title="OpenAPI JSON"
-  icon="file-code"
-  href="https://client-api.floppy.host/v1/openapi.json"
-  horizontal
->
-  View the source API schema
-</Card>
+<Note>
+  Use the `X-Api-Key` header for all requests.
+</Note>
 
-## Endpoint Groups
+## Start Here
 
 <Columns cols={2}>
-  <Card title="Rotating proxy" icon="arrows-rotate" href="/api-reference/endpoint/rotating-balance">
-    Balance, locations, smart parameters, and usage statistics.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get your first successful request in minutes.
   </Card>
-  <Card title="Static IPs" icon="server" href="/api-reference/endpoint/static-list">
-    List assigned static proxies and pending IP count.
+  <Card title="Authentication" icon="key" href="/guides/authentication">
+    Configure API key auth and request defaults.
   </Card>
-  <Card title="Web Unlocker" icon="globe" href="/api-reference/endpoint/web-unlocker">
-    Scrape target pages and check remaining unlocker balance.
+  <Card title="Rotating Proxy Guide" icon="arrows-rotate" href="/guides/rotating-proxy">
+    Credentials, locations, smart params, and statistics.
   </Card>
-  <Card title="Tools" icon="wrench" href="/api-reference/endpoint/check-proxy">
-    Validate proxy connectivity and geolocation details.
+  <Card title="API Reference" icon="terminal" href="/api-reference/introduction">
+    Complete endpoint-by-endpoint reference from OpenAPI.
   </Card>
 </Columns>

@@ -1,0 +1,42 @@
+---
+title: "Web Unlocker Guide"
+description: "Scrape pages and track remaining Web Unlocker requests."
+---
+
+## Endpoints
+
+- `POST /v1/webUnlocker`
+- `GET /v1/webUnlocker/balance`
+
+## Scrape a Page
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v1/webUnlocker" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "url": "https://ip-api.com",
+    "country": "US",
+    "city": "New York",
+    "difficulty": "low",
+    "expiration": 0
+  }'
+```
+
+Request body supports:
+
+- `url` (required)
+- `country`, `city`
+- `difficulty` (`low` or `medium`)
+- `expiration` (cache age in days)
+
+## Check Remaining Balance
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/webUnlocker/balance" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Response includes `usesLeft`.

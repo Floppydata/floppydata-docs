@@ -1,0 +1,33 @@
+---
+title: "Authentication"
+description: "Authenticate every request using X-Api-Key."
+---
+
+## Header
+
+All requests use API key authentication in the header:
+
+```http
+X-Api-Key: YOUR_API_KEY
+```
+
+## Shell Setup
+
+```bash
+export FLOPPY_API_KEY='YOUR_API_KEY'
+export FLOPPY_BASE_URL='https://client-api.floppy.host'
+```
+
+## Health Check Style Call
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/webUnlocker/balance" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+## Common Mistakes
+
+- Missing `X-Api-Key` header
+- Typos in base URL (`client-api.floppy.host`)
+- Sending request body without `Content-Type: application/json` on POST requests

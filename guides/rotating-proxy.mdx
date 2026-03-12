@@ -1,0 +1,58 @@
+---
+title: "Rotating Proxy Guide"
+description: "Use rotating proxy credentials, location data, and traffic endpoints."
+---
+
+## Endpoints
+
+- `GET /v1/rotating/smartParamsCredentials`
+- `GET /v1/rotating/smartParamsBuilder`
+- `GET /v1/rotating/locations`
+- `GET /v1/rotating/balance`
+- `GET /v1/rotating/statistics`
+
+## 1. Fetch Base Credentials
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/rotating/smartParamsCredentials" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+## 2. Build Smart Parameters Username
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/rotating/smartParamsBuilder?type=residential&country=US&city=New_York&rotation=15&protocol=http" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Supported query parameters include `type`, `country`, `city`, `rotation`, `session`, and `protocol`.
+
+## 3. List Available Locations
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/rotating/locations" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+## 4. Check Traffic Balance
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/rotating/balance" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Response includes `residential`, `mobile`, and `datacenter` balances, each with `subscription` and `nonExpiring` data.
+
+## 5. Query Usage Statistics
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v1/rotating/statistics?from=2026-03-01&to=2026-03-12&proxyType=residential&countryCode=US" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+You can filter by `from`, `to`, `poolId`, `proxyType`, and `countryCode`.

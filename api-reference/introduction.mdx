@@ -1,11 +1,11 @@
 ---
 title: 'Introduction'
-description: 'Overview of the FloppyData Client API'
+description: 'Overview of the FloppyData Client API reference'
 ---
 
 ## FloppyData Client API
 
-Use these endpoints to manage rotating proxies, static IPs, web unlocker usage, and proxy tooling.
+This reference is generated from the official OpenAPI schema and documents all currently available `/v1` endpoints.
 
 <Card
   title="OpenAPI Specification"
@@ -21,16 +21,19 @@ Use these endpoints to manage rotating proxies, static IPs, web unlocker usage, 
 https://client-api.floppy.host
 ```
 
-All endpoints in this reference are under the `/v1` prefix.
-
 ## Authentication
 
-Authenticate requests with your API key in the `X-Api-Key` header.
+All requests require:
 
-```bash
-curl --request GET \
-  --url 'https://client-api.floppy.host/v1/rotating/balance' \
-  --header 'X-Api-Key: YOUR_API_KEY'
+```http
+X-Api-Key: YOUR_API_KEY
 ```
 
 You can manage API keys in [account settings](https://app.floppydata.com/settings/account).
+
+## Endpoint Coverage
+
+- Rotating proxy endpoints
+- Static IP endpoints
+- Web Unlocker endpoints
+- Proxy tools endpoints

@@ -1,0 +1,47 @@
+---
+title: "Check Proxy Guide"
+description: "Validate proxy connectivity and location details."
+---
+
+## Endpoint
+
+- `POST /v1/tools/checkProxy`
+
+## Option A: Send Connection String
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "connectionString": "http://username:password@geo.g-w.info:10080"
+  }'
+```
+
+## Option B: Send Structured Fields
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "host": "geo.g-w.info",
+    "port": 10080,
+    "username": "username",
+    "password": "password",
+    "protocol": "http"
+  }'
+```
+
+## Success Response
+
+Returns:
+
+- `ip`
+- `country`
+- `stateProv`
+- `city`
+
+Possible non-200 statuses in spec: `400`, `402`.
