@@ -32,6 +32,7 @@
         "groups": [
           {
             "group": "Getting started",
+            "root": "index",
             "pages": [
               "index",
               "quickstart",
@@ -41,6 +42,7 @@
           },
           {
             "group": "By product",
+            "root": "guides/rotating-proxy",
             "pages": [
               "guides/rotating-proxy",
               "guides/static-ips",
@@ -55,12 +57,14 @@
         "groups": [
           {
             "group": "Overview",
+            "root": "api-reference/introduction",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
             "group": "Rotating proxy",
+            "root": "api-reference/endpoint/rotating-balance",
             "pages": [
               "api-reference/endpoint/rotating-balance",
               "api-reference/endpoint/rotating-locations",
@@ -71,12 +75,14 @@
           },
           {
             "group": "Static IPs",
+            "root": "api-reference/endpoint/static-list",
             "pages": [
               "api-reference/endpoint/static-list"
             ]
           },
           {
             "group": "Web Unlocker",
+            "root": "api-reference/endpoint/web-unlocker",
             "pages": [
               "api-reference/endpoint/web-unlocker",
               "api-reference/endpoint/web-unlocker-balance"
@@ -84,6 +90,7 @@
           },
           {
             "group": "Tools",
+            "root": "api-reference/endpoint/check-proxy",
             "pages": [
               "api-reference/endpoint/check-proxy"
             ]
