@@ -41,7 +41,8 @@ user123-res-country-US-session-checkout01
 
 > - All requests with the same session ID use the same IP
 > - Changing the session ID assigns a new IP
-  - Removing the session returns to rotation
+
+- Removing the session returns to rotation
 
 ## Session lifetime
 
@@ -76,5 +77,63 @@ user123-res-country-US-rotation-1
 
 **Behavior:**
 
- - always assigns a new IP
- - ignores session persistence
+> - always assigns a new IP
+> - ignores session persistence
+
+## Rotation vs session behavior
+
+| Situation | Configuration | Result |
+| --- | --- | --- |
+| new IP every request (default) | `user123-res` | rotation is used |
+| new IP every request (forced) | `user123-res-rotation-1` | rotation is forced |
+| same IP across requests | `user123-res-session-abc123` | session keeps the same IP |
+| get a new IP manually | change session ID | a new IP is assigned |
+
+## Changing IP manually
+
+To get a new IP before a session expires, change the session value.
+
+```bash
+# original session
+user123-res-country-US-session-s01
+
+# new session → new IP
+user123-res-country-US-session-s02
+```
+
+**There is no reset endpoint – changing the session string is how you rotate.**
+
+## Multiple sessions
+
+You can run multiple sessions at the same time:
+
+```bash
+user123-res-country-US-session-user1  → IP A
+user123-res-country-US-session-user2  → IP B
+user123-res-country-US-session-user3  → IP C
+```
+
+Each session gets its own IP, allowing you to run parallel workflows independently.
+
+<Note>
+   There is no hard limit on the number of sessions – it depends on your traffic usage. 
+</Note>
+
+## When to use rotation vs sessions
+
+<CardGroup cols={2}>
+  <Card title="Use rotation when">
+    - scraping many pages  
+    - collecting large datasets  
+    - avoiding rate limits  
+    - distributing requests  
+  </Card>
+
+  <Card title="Use sessions when">
+    - logging into accounts  
+    - maintaining sessions (cookies)  
+    - checkout flows  
+    - multi-step interactions  
+    - account-based automation  
+  </Card>
+</CardGroup>
