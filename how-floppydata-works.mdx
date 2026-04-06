@@ -2,30 +2,48 @@
 title: "How Floppydata Works"
 ---
 
-Most proxy services work like a catalogue: you choose an IP, connect to it, and use it. Floppydata works differently.
+<Note>
+  **TL;DR**
 
-You don’t select individual proxies. Instead, you describe how your request should behave – and Floppydata handles the routing automatically.
+  You don’t choose proxies manually. You describe how your request should behave – Floppydata handles the routing automatically.
+</Note>
 
-### **The core idea**
+## **The core idea**
 
 When you connect through Floppydata, you pass instructions along with your credentials.
 
 These instructions – called **Smart Parameters** – define:
 
-- where the request should originate from (country, city)
-- which IP type should be used (residential, mobile, datacenter)
-- whether the IP should rotate or stay the same (session)
-- how requests should be distributed
+<CardGroup cols={2}>
+  <Card title="Location">
+    Choose where the request originates from (country, city)
+  </Card>
+
+  <Card title="IP type">
+    Residential, mobile, or datacenter IPs
+  </Card>
+
+  <Card title="Session">
+    Control whether the IP rotates or stays the same
+  </Card>
+
+  <Card title="Distribution">
+    Define how requests are balanced and routed
+  </Card>
+</CardGroup>
 
 Floppydata reads these parameters and routes your request through the appropriate network.
 
-**You never:**
+<Warning>
+  **You never have to**
 
-- manage proxy lists
-- check if an IP is alive
-- rotate IPs manually
+  - manage proxy lists
+  - check if an IP is alive
+  - rotate IPs manually
+</Warning>
 
-### How a request flows
+## How a request flows
+
 ```mermaid
 flowchart TD
     A[Your app] --> B[Request + Smart Parameters]
@@ -35,6 +53,125 @@ flowchart TD
     E --> F[Proxy IP visible]
     F --> G[Response returned]
 
-    style A fill:#3b82f6,color:#fff
-    style C fill:#22c55e,color:#fff
-    style E fill:#f59e0b,color:#fff
+    style A fill:#A1ACFF,color:#fff
+    style C fill:#45C4B2,color:#fff
+    style E fill:#A1ACFF,color:#fff
+```
+
+## What the target website sees
+
+When you send requests directly, the target sees your real IP.\
+When you send requests through Floppydata, the target sees the proxy exit IP instead.
+
+<CardGroup cols={2}>
+  <Card title="Without a proxy">
+    Your app connects directly to the target, so your real IP is visible.
+  </Card>
+
+  <Card title="With Floppydata">
+    Requests go through Floppydata first, so the target sees the exit IP instead of your real one.
+  </Card>
+</CardGroup>
+
+```mermaid
+flowchart LR
+    A[Your app<br/>1.2.3.4] --> B[Floppydata<br/>exit IP: 104.28.x.x]
+    B --> C[target.com<br/>sees 104.28.x.x]
+
+    style A fill:#A1ACFF,color:#fff
+    style B fill:#45C4B2,color:#fff
+    style C fill:#E8ECFF,color:#222 
+```
+
+<Note>
+  This allows you to control how your traffic appears to the target.
+</Note>
+
+## One gateway for everything
+
+Your application always connects to a single proxy endpoint:
+
+```bash
+geo.g-w.info
+```
+
+You do not switch hosts for different countries or proxy types. Instead, all routing is controlled by Smart Parameters passed in your credentials.
+
+### Two ways to connect Via proxy
+
+#### Via proxy
+
+You route traffic through the proxy gateway:
+
+```bash
+http://USERNAME:PASSWORD@geo.g-w.info:10080
+```
+
+This method is typically used by:
+
+- browsers
+- scraping tools
+- antidetect browsers
+- automation frameworks
+
+#### Via API
+
+You send requests directly to the API:
+
+```bash
+https://client-api.floppy.host
+```
+
+Parameters are passed in the request body instead of the username.
+
+This method is typically used for:
+
+- Web Unlocker
+- programmatic workflows
+- backend integrations
+
+#### What this means in practice
+
+Instead of managing infrastructure, you define behavior.
+
+For example:
+
+user123-res-country-US-session-test01
+
+This tells Floppydata:
+
+- use residential IPs
+- route through the United States
+- keep the same IP for this session
+
+Every request with this configuration will follow the same routing logic.
+
+Why this model is different
+
+Traditional proxies:
+
+- you select IPs manually
+- you manage rotation
+- you maintain proxy lists
+
+Floppydata:
+
+- you describe the request
+- routing is automatic
+- infrastructure is abstracted
+
+This makes integrations simpler and reduces operational overhead.
+
+\
+Summary
+
+When using Floppydata:
+
+- your app connects to a single proxy gateway
+- the target website sees the proxy IP, not your real IP
+- Smart Parameters define how requests are routed
+- Floppydata handles IP selection, rotation, and scaling
+
+In short:
+
+You don’t pick a proxy. You describe the request.
