@@ -116,24 +116,70 @@ user123-res-country-US-session-user3  → IP C
 Each session gets its own IP, allowing you to run parallel workflows independently.
 
 <Note>
-   There is no hard limit on the number of sessions – it depends on your traffic usage. 
+  There is no hard limit on the number of sessions – it depends on your traffic usage.
 </Note>
 
 ## When to use rotation vs sessions
 
 <CardGroup cols={2}>
   <Card title="Use rotation when">
-    - scraping many pages  
-    - collecting large datasets  
-    - avoiding rate limits  
-    - distributing requests  
+    - scraping many pages
+    - collecting large datasets
+    - avoiding rate limits
+    - distributing requests
   </Card>
 
   <Card title="Use sessions when">
-    - logging into accounts  
-    - maintaining sessions (cookies)  
-    - checkout flows  
-    - multi-step interactions  
-    - account-based automation  
+    - logging into accounts
+    - maintaining sessions (cookies)
+    - checkout flows
+    - multi-step interactions
+    - account-based automation
   </Card>
 </CardGroup>
+
+## Common questions
+
+<CardGroup cols={1}>
+  <Card title="Why is my IP changing every request?">
+    Rotation is enabled by default.
+
+    To keep the same IP, add:
+
+    ```bash
+    -session-YOUR_ID
+    ```
+  </Card>
+
+  <Card title="Why is my IP not changing?">
+    You are using a session.
+
+    To rotate the IP:
+
+    - remove the session
+    - change the session value
+    - or use `rotation-1`
+  </Card>
+
+  <Card title="How do I keep the same IP longer?">
+    Sessions last up to **10 minutes of inactivity**.
+
+    To keep a session alive:
+
+    - send periodic requests
+    - use a lightweight keepalive (for example, a `HEAD` request)
+  </Card>
+</CardGroup>
+
+## Summary
+
+<Note>
+  - rotation is the default behavior
+  - sessions allow you to reuse the same IP
+  - changing the session value assigns a new IP
+  - `rotation-1` forces a new IP on every request
+</Note>
+
+## In short
+
+> You control how IPs behave – Floppydata handles the assignment.
