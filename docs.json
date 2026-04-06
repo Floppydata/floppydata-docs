@@ -29,7 +29,6 @@
     "tabs": [
       {
         "tab": "Introduction",
-        "hidden": true,
         "pages": [
           "Overview",
           {
