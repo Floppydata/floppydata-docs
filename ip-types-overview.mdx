@@ -69,34 +69,49 @@ Static proxies provide a fixed IP.
 
 ## Comparison
 
-| Proxy type |  | IP behavior | Trust level | Speed | Billing model | Geo targeting | Best for |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Residential (Rotating) | changes per request or session | High | Medium | Per GB | Country, city | Scraping, SEO, ad verification |  |
-| Mobile (Rotating) | changes per request or session | Very high | Medium | Per GB | Country, city | Social media, mobile apps |  |
-| Datacenter (Rotating) | changes per request or session | Low | Fast | Per GB | Limited | Bulk scraping, fast tasks |  |
-| Static ISP | fixed IP | High | Fast | Per IP / month | Fixed location | Accounts, long sessions |  |
-| Static Datacenter | fixed IP | Medium | Fast | Per IP / month | Fixed location | Automation, dev tools |  |
+<CardGroup cols={3}>
+  <Card title="Residential">
+    🔹 Rotating IPs\
+    🔹 High trust\
+    🔹 Medium speed\
+    🔹 Per GB
 
-## How to choose
-
-<CardGroup cols={2}>
-  <Card title="Start with Residential">
-    Best default choice for most use cases
+    **Best for:** scraping, SEO, geo-targeting
   </Card>
 
-  <Card title="Use Mobile">
-    Best when trust matters most
+  <Card title="Mobile">
+    🔹 Rotating IPs\
+    🔹 Very high trust\
+    🔹 Medium speed\
+    🔹 Per GB
+
+    **Best for:** social media, high-risk targets
   </Card>
 
-  <Card title="Use Datacenter">
-    Best for speed and volume
+  <Card title="Datacenter">
+    🔹 Rotating IPs\
+    🔹 Low trust\
+    🔹 Fast\
+    🔹 Per GB
+
+    **Best for:** bulk scraping, fast tasks
   </Card>
 
-  <Card title="Use Static ISP">
-    Best for stable identity and long sessions
+  <Card title="Static ISP">
+    🔹 Fixed IP\
+    🔹 High trust\
+    🔹 Fast\
+    🔹 Per IP
+
+    **Best for:** accounts, long sessions
   </Card>
 
-  <Card title="Use Static Datacenter">
-    Best for fixed-IP setups and infrastructure tasks
+  <Card title="Static Datacenter">
+    🔹 Fixed IP\
+    🔹 Medium trust\
+    🔹 Fast\
+    🔹 Per IP
+
+    **Best for:** automation, infrastructure
   </Card>
 </CardGroup>
