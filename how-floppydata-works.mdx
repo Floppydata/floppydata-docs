@@ -95,7 +95,9 @@ Your application always connects to a single proxy endpoint:
 geo.g-w.info
 ```
 
-You do not switch hosts for different countries or proxy types. Instead, all routing is controlled by Smart Parameters passed in your credentials.
+<Note>
+   You don’t switch hosts for different countries or proxy types. All routing is controlled by **Smart Parameters**. 
+</Note>
 
 ### Two ways to connect Via proxy
 
@@ -136,42 +138,24 @@ Instead of managing infrastructure, you define behavior.
 
 For example:
 
+```bash
 user123-res-country-US-session-test01
+```
 
-This tells Floppydata:
+## Summary
 
-- use residential IPs
-- route through the United States
-- keep the same IP for this session
 
-Every request with this configuration will follow the same routing logic.
+<Note>
+**When using Floppydata:**
 
-Why this model is different
+- your app connects to a **single proxy gateway**  
+- the target website sees the **proxy IP**, not your real IP  
+- **Smart Parameters** define how requests are routed  
+- Floppydata handles IP selection, rotation, and scaling  
+</Note>
 
-Traditional proxies:
+---
 
-- you select IPs manually
-- you manage rotation
-- you maintain proxy lists
+## In short
 
-Floppydata:
-
-- you describe the request
-- routing is automatic
-- infrastructure is abstracted
-
-This makes integrations simpler and reduces operational overhead.
-
-\
-Summary
-
-When using Floppydata:
-
-- your app connects to a single proxy gateway
-- the target website sees the proxy IP, not your real IP
-- Smart Parameters define how requests are routed
-- Floppydata handles IP selection, rotation, and scaling
-
-In short:
-
-You don’t pick a proxy. You describe the request.
+> You don’t pick a proxy. You describe the request.
