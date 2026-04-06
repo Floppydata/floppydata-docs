@@ -60,8 +60,11 @@ flowchart TD
 
 ## What the target website sees
 
-When you send requests directly, the target sees your real IP.\
-When you send requests through Floppydata, the target sees the proxy exit IP instead.
+When you send requests directly, the target website sees your real IP address.
+
+When you send requests through Floppydata, the target sees the **proxy exit IP** instead. Your real IP stays hidden behind the proxy layer.
+
+This is what makes geo-targeting, rotation, and session control possible. Instead of exposing your own network identity, you control how requests appear from the outside.
 
 <CardGroup cols={2}>
   <Card title="Without a proxy">
@@ -73,6 +76,8 @@ When you send requests through Floppydata, the target sees the proxy exit IP ins
   </Card>
 </CardGroup>
 
+Here is the same flow visually:
+
 ```mermaid
 flowchart LR
     A[Your app<br/>1.2.3.4] --> B[Floppydata<br/>exit IP: 104.28.x.x]
@@ -80,7 +85,7 @@ flowchart LR
 
     style A fill:#A1ACFF,color:#fff
     style B fill:#45C4B2,color:#fff
-    style C fill:#E8ECFF,color:#222 
+    style C fill:#E8ECFF,color:#222
 ```
 
 <Note>
