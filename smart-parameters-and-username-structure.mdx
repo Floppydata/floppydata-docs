@@ -170,3 +170,108 @@ Usually set via port, not via username.
 | --- | --- | --- | --- |
 | `protocol` | `HTTP` | Use HTTP proxy connection | `geo.g-w.info:10080` |
 | `protocol` | `SOCKS5` | Use SOCKS5 proxy connection | `geo.g-w.info:10800` |
+
+## How parameters work together
+
+Each parameter narrows down routing.
+
+**Example**
+
+```bash
+user123-res-country-US-city-Chicago-session-order01
+```
+
+| Aspect | Result |
+| --- | --- |
+| IP type | Residential |
+| Country | United States |
+| City | Chicago |
+| Session | Same IP for this session |
+
+<Note>
+  The more parameters you add, the more specific the routing becomes.
+</Note>
+
+## Using Smart Parameters in requests
+
+Smart Parameters are passed as part of the proxy connection.
+
+**Format**
+
+```bash
+http://USERNAME:PASSWORD@geo.g-w.info:10080
+```
+
+**Example**
+
+```bash
+http://user123-res-country-US-session-s01:PASSWORD@geo.g-w.info:10080
+```
+
+<Note>
+  Every request using this connection follows the same routing rules.
+</Note>
+
+### Build username via API
+
+If you prefer not to build the string manually, you can generate it through the API.
+
+```bash
+curl "https://client-api.floppy.host/v1/rotating/smartParamsBuilder?type=res&country=US&city=New_York&session=abc123" \
+  -H "X-Api-Key: YOUR_API_KEY"
+```
+
+<Note>
+  Returns a ready-to-use username.
+</Note>
+
+### Real examples
+
+| Use case | Example | Result |
+| --- | --- | --- |
+| Basic rotating traffic | `user123-res-country-US` | residential, US, rotating |
+| Sticky session | `user123-res-country-US-session-login01` | same IP, session-based |
+| Mobile proxy | `user123-mobile-country-US` | mobile network, high trust |
+| City targeting | `user123-res-country-US-city-Chicago` | precise geo targeting |
+| Static ISP | `user123-isp-country-US` | fixed residential IP |
+| Datacenter rotation | `user123-dc-rotation-1` | fast, always new IP |
+
+## Common mistakes
+
+### Incorrect format
+
+| Wrong | Correct |
+| --- | --- |
+| `user123-countryUS` | `user123-country-US` |
+
+### Expecting rotation with a session
+
+If you set:
+
+```bash
+-session-s01
+```
+
+The IP will stay the same.
+
+### Wrong proxy type for the task
+
+| Expectation | Actual configuration | Result |
+| --- | --- | --- |
+| high trust traffic | datacenter IPs | lower trust, higher risk of blocks |
+
+<Warning>
+  Always match the proxy type to your use case.
+</Warning>
+
+## Summary
+
+<Note>
+  **Smart Parameters define how your requests behave.**
+
+  - they are passed inside the username
+  - the username controls routing
+  - Floppydata handles proxy selection automatically
+
+  **You describe the request **–** Floppydata handles the infrastructure.**
+</Note>
