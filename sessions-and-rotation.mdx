@@ -1,4 +1,80 @@
 ---
-title: 'Sessions and Rotation'
+title: "Sessions and Rotation"
 ---
 
+<Note>
+  Floppydata controls how IPs are assigned using two mechanisms:
+
+  - **Rotation** – new IPs are assigned automatically
+  - **Sessions** – the same IP is reused across requests
+
+  Understanding how these work is critical for using proxies correctly.
+</Note>
+
+## Default behavior: rotation
+
+By default, Floppydata assigns a new IP across requests.
+
+| Situation | Configuration | Result |
+| --- | --- | --- |
+| first request | default behavior | `104.28.11.x` |
+| second request | default behavior | `91.108.56.x` |
+| third request | default behavior | `185.220.x.x` |
+
+<Note>
+  You don’t need to configure anything – rotation is automatic.
+</Note>
+
+## Sticky sessions
+
+If you want to keep the same IP across multiple requests, use a session.
+
+### How to create a session
+
+Add `session-YOUR_ID` to your username:
+
+```bash
+user123-res-country-US-session-checkout01
+```
+
+**What happens**
+
+> - All requests with the same session ID use the same IP
+> - Changing the session ID assigns a new IP
+  - Removing the session returns to rotation
+
+## Session lifetime
+
+A session stays active for up to **10 minutes of inactivity**. Each request resets the timer.
+
+| Situation | Configuration | Result |
+| --- | --- | --- |
+| request at 12:00 | active session | IP A |
+| request at 12:05 | same session | IP A |
+| request at 12:14 | same session | IP A |
+| request at 12:25 | session expired after inactivity | IP B |
+
+<Note>
+  If no request is made within 10 minutes, the session expires and the next request is assigned a new IP.
+</Note>
+
+## Forcing rotation
+
+You can explicitly force a new IP for every request.
+
+**Add:**
+
+```bash
+rotation-1
+```
+
+**Example**
+
+```bash
+user123-res-country-US-rotation-1
+```
+
+**Behavior:**
+
+ - always assigns a new IP
+ - ignores session persistence
