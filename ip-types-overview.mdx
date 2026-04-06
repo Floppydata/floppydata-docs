@@ -1,4 +1,102 @@
 ---
-title: 'IP Types Overview'
+title: "IP Types"
 ---
 
+<Note>
+  Floppydata offers **five proxy types** grouped into **two categories**:
+
+  - **Rotating proxies** – IP changes across requests or sessions
+  - **Static proxies** – IP remains fixed
+
+  Each type differs in trust level, speed, cost, and ideal use cases.
+</Note>
+
+## Rotating proxies
+
+Rotating proxies automatically assign IPs from a shared pool.
+
+<Note>
+  Rotating proxies are billed based on **traffic (GB)**, not individual IPs.
+</Note>
+
+### Residential
+
+- real user IPs from ISPs
+- high trust level
+- large global pool
+
+> **Best for:** scraping, SEO, geo-targeting, protected websites
+
+### Mobile
+
+- IPs from mobile carrier networks
+- highest trust level
+- shared across real mobile users
+
+> **Best for:** social media, multi-accounting, high-risk targets
+
+### Datacenter
+
+- server-based IPs
+- fast and cost-efficient
+- easier to detect
+
+> **Best for:** bulk scraping, non-protected targets
+
+## Static proxies
+
+Static proxies provide a fixed IP.
+
+<Note>
+  Static proxies are billed **per IP per month**.
+</Note>
+
+### Static ISP
+
+- real ISP IPs (residential-like)
+- stable identity
+- high trust
+
+> **Best for:** accounts, long sessions, SEO tools
+
+### Static Datacenter
+
+- fixed server IP
+- fast and stable
+- lower trust
+
+> **Best for:** automation, infrastructure, whitelisting
+
+## Comparison
+
+| Proxy type |  | IP behavior | Trust level | Speed | Billing model | Geo targeting | Best for |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Residential (Rotating) | changes per request or session | High | Medium | Per GB | Country, city | Scraping, SEO, ad verification |  |
+| Mobile (Rotating) | changes per request or session | Very high | Medium | Per GB | Country, city | Social media, mobile apps |  |
+| Datacenter (Rotating) | changes per request or session | Low | Fast | Per GB | Limited | Bulk scraping, fast tasks |  |
+| Static ISP | fixed IP | High | Fast | Per IP / month | Fixed location | Accounts, long sessions |  |
+| Static Datacenter | fixed IP | Medium | Fast | Per IP / month | Fixed location | Automation, dev tools |  |
+
+## How to choose
+
+<CardGroup cols={2}>
+  <Card title="Start with Residential">
+    Best default choice for most use cases.
+  </Card>
+
+  <Card title="Use Mobile">
+    Best when trust matters most.
+  </Card>
+
+  <Card title="Use Datacenter">
+    Best for speed and volume.
+  </Card>
+
+  <Card title="Use Static ISP">
+    Best for stable identity and long sessions.
+  </Card>
+
+  <Card title="Use Static Datacenter">
+    Best for fixed-IP setups and infrastructure tasks.
+  </Card>
+</CardGroup>
