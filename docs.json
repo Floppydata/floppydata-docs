@@ -36,8 +36,8 @@
             "group": "Core Concepts",
             "pages": [
               "how-floppydata-works",
-              "sessions-and-rotation",
               "smart-parameters-and-username-structure",
+              "sessions-and-rotation",
               "geo-targeting",
               "ip-types-overview"
             ]

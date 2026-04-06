@@ -1,4 +1,165 @@
 ---
-title: 'Smart Parameters and Username Structure'
+title: "Smart Parameters and Username Structure"
 ---
 
+<Note>
+  **In Floppydata, the username is not just for authentication – it defines how your request is routed.**
+
+  Instead of selecting proxies manually, you pass routing instructions inside the username. These instructions are called **Smart Parameters**.
+</Note>
+
+Every request includes these parameters, and Floppydata uses them to determine:
+
+- which IP type to use
+- where the request should originate from
+- whether the IP should rotate or stay the same
+- how traffic should be routed
+
+## The core idea
+
+<CardGroup cols={2}>
+  <Card title="Traditional proxies">
+    - you choose an IP
+    - you connect to it
+  </Card>
+
+  <Card title="Floppydata">
+    - you describe the request
+    - the system selects the IP automatically
+  </Card>
+</CardGroup>
+
+<Note>
+  The username is your routing configuration.
+</Note>
+
+## How parameters are passed
+
+Smart Parameters are embedded directly in the username.
+
+**Format**
+
+```bash
+USERNAME-PARAM1-VALUE1-PARAM2-VALUE2
+```
+
+**Example**
+
+```bash
+user123-res-country-US-city-New_York-session-abc123
+```
+
+**This means:**
+
+> _use residential proxies route through the US narrow to New York keep the same IP for this session_
+
+## Username structure
+
+A username consists of two parts:
+
+- a **base credential**
+- a **chain of Smart Parameters**
+
+```bash
+user123-res-country-US-city-Chicago-session-s01
+```
+
+| Parameter | Example | Description |
+| --- | --- | --- |
+| Base username | `user123` | Your main account identifier |
+| Proxy type | `res` | Defines the proxy network |
+| Country | `country-US` | Sets the exit country |
+| City | `city-Chicago` | Narrows routing to a city |
+| Session | `session-s01` | Keeps the same IP |
+
+<Note>
+  Each parameter adds one layer of routing logic.
+</Note>
+
+## Smart Parameters reference
+
+Below is a reference for the most common Smart Parameters and how they affect routing.
+
+### `type` –  IP type
+
+Defines which proxy network is used.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `type` | `res` | Residential | `user123-res` |
+| `type` | `mobile` | Mobile (4G/5G) | `user123-mobile` |
+| `type` | `dc` | Datacenter | `user123-dc` |
+| `type` | `isp` | Static ISP | `user123-isp` |
+
+<Note>
+  If omitted, the default is `res`.
+</Note>
+
+### `country` –  exit country
+
+Defines where the request should originate from.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `country` | `US` | United States | `user123-res-country-US` |
+| `country` | `DE` | Germany | `user123-res-country-DE` |
+| `country` | `GB` | United Kingdom | `user123-res-country-GB` |
+
+<Note>
+  Uses ISO country codes. If omitted, global routing is used.
+</Note>
+
+### `city`  –  exit city
+
+Provides more precise geo-targeting.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `city` | `New_York` | New York | `user123-res-country-US-city-New_York` |
+| `city` | `Berlin` | Berlin | `user123-res-country-DE-city-Berlin` |
+
+<Note>
+  - use underscores instead of spaces
+  - not available in all locations
+  - falls back to country-level routing if unavailable
+</Note>
+
+### `state`  –  US state
+
+Used for US-only targeting.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `state` | `CA` | California (abbreviation) | `user123-res-country-US-state-CA` |
+| `state` | `California` | California (full name) | `user123-res-country-US-state-California` |
+
+### `session` –  sticky IP
+
+Keeps the same IP across requests.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `session` | `user01` | Keeps the same IP for this session | `user123-res-country-US-session-user01` |
+
+### **Behavior**
+
+| Session state | Result |
+| --- | --- |
+| same session | same IP |
+| different session | different IP |
+| no session | rotation |
+
+<Note>
+  Session lifetime: up to 10 minutes of inactivity.
+</Note>
+
+---
+
+### `rotation` –  force IP change
+
+Overrides session behavior.
+
+| Parameter | Value | Description | Example |
+| --- | --- | --- | --- |
+| `rotation` | `1` | new IP every request | `user123-res-country-US-rotation-1` |
+| `rotation` | `0` | keep IP within session | `user123-res-country-US-rotation-0` |
