@@ -1,0 +1,40 @@
+---
+title: "How Floppydata Works"
+---
+
+Most proxy services work like a catalogue: you choose an IP, connect to it, and use it. Floppydata works differently.
+
+You don’t select individual proxies. Instead, you describe how your request should behave – and Floppydata handles the routing automatically.
+
+### **The core idea**
+
+When you connect through Floppydata, you pass instructions along with your credentials.
+
+These instructions – called **Smart Parameters** – define:
+
+- where the request should originate from (country, city)
+- which IP type should be used (residential, mobile, datacenter)
+- whether the IP should rotate or stay the same (session)
+- how requests should be distributed
+
+Floppydata reads these parameters and routes your request through the appropriate network.
+
+**You never:**
+
+- manage proxy lists
+- check if an IP is alive
+- rotate IPs manually
+
+### How a request flows
+```mermaid
+flowchart TD
+    A[Your app] --> B[Request + Smart Parameters]
+    B --> C[Floppydata Gateway]
+    C --> D[IP selection logic]
+    D --> E[Target website]
+    E --> F[Proxy IP visible]
+    F --> G[Response returned]
+
+    style A fill:#3b82f6,color:#fff
+    style C fill:#22c55e,color:#fff
+    style E fill:#f59e0b,color:#fff

@@ -28,13 +28,29 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Introduction",
+        "hidden": true,
+        "pages": [
+          "Overview",
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "how-floppydata-works",
+              "sessions-and-rotation",
+              "smart-parameters-and-username-structure",
+              "geo-targeting",
+              "ip-types-overview"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Guides",
         "groups": [
           {
             "group": "Getting started",
             "root": "index",
             "pages": [
-              "index",
               "quickstart",
               "guides/authentication",
               "development"
@@ -44,7 +60,6 @@
             "group": "By product",
             "root": "guides/rotating-proxy",
             "pages": [
-              "guides/rotating-proxy",
               "guides/static-ips",
               "guides/web-unlocker",
               "guides/check-proxy"
@@ -58,15 +73,12 @@
           {
             "group": "Overview",
             "root": "api-reference/introduction",
-            "pages": [
-              "api-reference/introduction"
-            ]
+            "pages": []
           },
           {
             "group": "Rotating proxy",
             "root": "api-reference/endpoint/rotating-balance",
             "pages": [
-              "api-reference/endpoint/rotating-balance",
               "api-reference/endpoint/rotating-locations",
               "api-reference/endpoint/rotating-smart-params-builder",
               "api-reference/endpoint/rotating-smart-params-credentials",
@@ -76,24 +88,19 @@
           {
             "group": "Static IPs",
             "root": "api-reference/endpoint/static-list",
-            "pages": [
-              "api-reference/endpoint/static-list"
-            ]
+            "pages": []
           },
           {
             "group": "Web Unlocker",
             "root": "api-reference/endpoint/web-unlocker",
             "pages": [
-              "api-reference/endpoint/web-unlocker",
               "api-reference/endpoint/web-unlocker-balance"
             ]
           },
           {
             "group": "Tools",
             "root": "api-reference/endpoint/check-proxy",
-            "pages": [
-              "api-reference/endpoint/check-proxy"
-            ]
+            "pages": []
           }
         ]
       }
