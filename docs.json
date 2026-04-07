@@ -38,13 +38,15 @@
               "ip-types-overview",
               "smart-parameters-and-username-structure",
               "untitled-page",
-              "sessions-and-rotation"
+              "sessions-and-rotation",
+              "quick-start"
             ]
           }
         ]
       },
       {
         "tab": "Integrations",
+        "hidden": true,
         "pages": [
           {
             "group": "Browsers",
@@ -52,7 +54,9 @@
           },
           {
             "group": "Antidetect Browsers",
-            "pages": []
+            "pages": [
+              "gologin"
+            ]
           },
           {
             "group": "Python / Node / Playwright System Setup",
