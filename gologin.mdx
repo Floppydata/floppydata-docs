@@ -26,6 +26,99 @@ Gologin manages your browser fingerprint, while Floppydata controls the IP, loca
   <Step title="Create a new profile">
     Click **Add profile** in the top-right corner of the app to create a new browser profile.
   </Step>
-  <Step>
+  <Step title="Add your proxy">
+    Open the **Proxy** tab, choose **Your proxy**, and fill in your Floppydata proxy details.
+  </Step>
+
+  <Step title="Enter connection details">
+    Use the following values:
+
+    ```bash
+    Host: geo.g-w.info
+    Port: 10080
+    Username: user123-res-country-US-session-gologin01
+    Password: YOUR_PASSWORD
+    ```
+
+    This example uses:
+    - a **Residential** proxy
+    - **US** geo-targeting
+    - a **sticky session**
+  </Step>
+
+  <Step title="Adjust location and session settings">
+    You can control proxy behavior directly in the username using Smart Parameters.
+
+    Examples:
+
+    ```bash
+    # Country targeting
+    user123-res-country-US
+
+    # City targeting
+    user123-res-country-US-city-New_York
+
+    # State targeting
+    user123-res-country-US-state-CA
+
+    # Mobile proxy
+    user123-mobile-country-US
+
+    # Sticky session
+    user123-res-country-US-session-profile01
+    ```
+
+    <Note>
+      More specific targeting reduces the available IP pool and may affect speed or availability.
+    </Note>
+  </Step>
+
+  <Step title="Enter your credentials">
+    Use your Floppydata proxy username and password exactly as provided in your account.
+
+    <Note>
+      The username is not just for authentication — it also defines routing behavior through Smart Parameters.
+    </Note>
+  </Step>
+
+  <Step title="Test the connection">
+    Click **Check Proxy** in GoLogin to verify that the proxy is working correctly.
+  </Step>
+
+  <Step title="Choose the protocol">
+    After a successful test, select the protocol you want to use.
+
+    GoLogin supports:
+    - **HTTP**
+    - **HTTPS**
+    - **SOCKS5**
+
+    <Note>
+      If you're unsure, start with **HTTP**.
+    </Note>
+  </Step>
+
+  <Step title="Finish the profile setup">
+    Once the proxy test succeeds and the protocol is selected, click **Create Profile** to save your new browser profile.
+  </Step>
+
+  <Step title="Configure fingerprint settings (optional)">
+    If needed, open the profile settings and adjust browser fingerprint options such as user agent, cookies, timezone, or device settings.
+  </Step>
+
+  <Step title="Run the profile">
+    Return to the main screen and click **Run** to launch the new profile.
+  </Step>
+
+  <Step title="Verify that everything works">
+    Open an IP checker inside the launched profile to confirm that the proxy is active and the location matches your settings.
+
+    Example:
+
+    ```bash
+    https://ip-api.com/json
+    ```
+
+    If everything is configured correctly, the profile will run with its own browser fingerprint and proxy-based network identity.
   </Step>
 </Steps>
