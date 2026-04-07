@@ -35,9 +35,10 @@
             "group": "Core Concepts",
             "pages": [
               "how-floppydata-works",
+              "ip-types-overview",
               "smart-parameters-and-username-structure",
-              "sessions-and-rotation",
-              "ip-types-overview"
+              "untitled-page",
+              "sessions-and-rotation"
             ]
           }
         ]
