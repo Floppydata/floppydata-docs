@@ -171,6 +171,25 @@ Usually set via port, not via username.
 | `protocol` | `HTTP` | Use HTTP proxy connection | `geo.g-w.info:10080` |
 | `protocol` | `SOCKS5` | Use SOCKS5 proxy connection | `geo.g-w.info:10800` |
 
+Floppydata supports standard proxy protocols:
+
+- **HTTP** — default choice for browsers and most tools
+- **HTTPS** — secure version of HTTP
+- **SOCKS5** — flexible protocol for automation and scripts
+
+## Ports
+
+Use the same gateway with different ports:
+
+- **HTTP** — `10080`
+- **HTTPS** — `10443`
+- **SOCKS5** — `10800`
+
+<Note>
+  If you're unsure, start with **HTTP**.\
+  Use **SOCKS5** if your tool requires it or you work with automation.
+</Note>
+
 ## How parameters work together
 
 Each parameter narrows down routing.

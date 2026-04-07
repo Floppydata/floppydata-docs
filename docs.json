@@ -43,6 +43,23 @@
         ]
       },
       {
+        "tab": "Integrations",
+        "pages": [
+          {
+            "group": "Browsers",
+            "pages": []
+          },
+          {
+            "group": "Antidetect Browsers",
+            "pages": []
+          },
+          {
+            "group": "Python / Node / Playwright System Setup",
+            "pages": []
+          }
+        ]
+      },
+      {
         "tab": "Guides",
         "groups": [
           {
