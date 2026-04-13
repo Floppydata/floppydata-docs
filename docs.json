@@ -65,29 +65,6 @@
         ]
       },
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "root": "index",
-            "pages": [
-              "quickstart",
-              "guides/authentication",
-              "development"
-            ]
-          },
-          {
-            "group": "By product",
-            "root": "guides/rotating-proxy",
-            "pages": [
-              "guides/static-ips",
-              "guides/web-unlocker",
-              "guides/check-proxy"
-            ]
-          }
-        ]
-      },
-      {
         "tab": "API reference",
         "groups": [
           {
@@ -121,6 +98,29 @@
             "group": "Tools",
             "root": "api-reference/endpoint/check-proxy",
             "pages": []
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Getting started",
+            "root": "index",
+            "pages": [
+              "quickstart",
+              "guides/authentication",
+              "development"
+            ]
+          },
+          {
+            "group": "By product",
+            "root": "guides/rotating-proxy",
+            "pages": [
+              "guides/static-ips",
+              "guides/web-unlocker",
+              "guides/check-proxy"
+            ]
           }
         ]
       },
