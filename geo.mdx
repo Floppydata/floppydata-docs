@@ -131,12 +131,13 @@ user123-res-country-US-city-Chicago-session-s01
 
 ## How it works
 
-```mermaid placement="top-right" actions={false}
+
+```mermaid  theme={null}
 flowchart LR
     A[Your app] --> B[Request with Smart Parameters<br/>country / city / ISP]
     B --> C[Floppydata Gateway]
-    C --> D[Select matching IP from pool]
-    D --> E[Target website sees selected location]
+    C --> D[Select matching IP<br/>from pool]
+    D --> E[Target website sees<br/>selected location]
 
     style A fill:#A1ACFF,color:#fff
     style C fill:#45C4B2,color:#fff
