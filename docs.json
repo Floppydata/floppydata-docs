@@ -127,7 +127,11 @@
       {
         "tab": "Web Unlocker",
         "pages": [
-          "overview"
+          "overview",
+          "getting-started",
+          "request-options",
+          "usage-and-history",
+          "troubleshooting"
         ]
       }
     ]
