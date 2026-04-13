@@ -37,8 +37,8 @@
               "how-floppydata-works",
               "ip-types-overview",
               "smart-parameters-and-username-structure",
-              "untitled-page",
               "sessions-and-rotation",
+              "geo",
               "quick-start"
             ]
           }
@@ -122,6 +122,12 @@
             "root": "api-reference/endpoint/check-proxy",
             "pages": []
           }
+        ]
+      },
+      {
+        "tab": "Web Unlocker",
+        "pages": [
+          "overview"
         ]
       }
     ]
