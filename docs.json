@@ -126,6 +126,7 @@
       },
       {
         "tab": "Web Unlocker",
+        "hidden": true,
         "pages": [
           "overview",
           "getting-started",
