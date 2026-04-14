@@ -1,4 +1,252 @@
 ---
-title: 'Request options'
+title: "Request options"
 ---
 
+> Customize how **Web Unlocker** handles location, difficulty, and session behavior.
+
+Request options let you control how a request is processed and what kind of result you get back.
+
+You can keep the request minimal and only send a URL, or add more parameters when you need a specific location, stronger unblocking, or a stable session.
+
+<Note>
+  Start with the simplest request possible and add more options only when needed.
+</Note>
+
+## Available parameters
+
+| Parameter | Required | Description | Example |
+| --- | --- | --- | --- |
+| `url` | Yes | Target webpage URL | `https://example.com` |
+| `country` | No | Target country for the request | `US` |
+| `city` | No | More precise location targeting | `New York` |
+| `difficulty` | No | Controls how aggressively the request is handled | `low` |
+| `expiration` | No | Controls session persistence | `0` |
+
+## Example request
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://floppydata.com/",
+    "country": "US",
+    "city": "New York",
+    "difficulty": "low",
+    "expiration": 0
+  }'
+```
+
+## How to think about request options
+
+<CardGroup cols={2}>
+  <Card title="Location">
+    Use `country `or `city `when you need content from a specific region.
+  </Card>
+
+  <Card title="Difficulty">
+    Use `difficulty `when the target website is harder to access or more protected.
+  </Card>
+
+  <Card title="Session">
+    Use `expiration `when you want to keep the same session for a period of time.
+  </Card>
+
+  <Card title="Minimal requests">
+    If you just want to test a request, sending only `url` is usually enough.
+  </Card>
+</CardGroup>
+
+## Parameter details
+
+### `url`
+
+The webpage you want **Web Unlocker** to fetch.
+
+```json
+{
+  "url": "https://example.com"
+}
+```
+
+<Note>
+  The URL must be public and start with http:// or https://
+</Note>
+
+### `country`
+
+Selects the country for the request.
+
+```json
+{
+  "url": "https://example.com",
+  "country": "US"
+}
+```
+
+### `city`
+
+Adds more precise location targeting within the selected country.
+
+```json
+{
+  "url": "https://example.com",
+  "country": "US",
+  "city": "New York"
+}
+```
+
+**Use** `city `**when:**
+
+- you need city-specific search results
+- pricing or availability depends on city
+- you want more precise geo-targeting
+
+<Warning>
+  More specific targeting reduces the available IP pool and may affect speed or availability.
+</Warning>
+
+### `difficulty`
+
+Controls how aggressively **Web Unlocker** handles the request.
+
+```json
+{
+  "url": "https://example.com",
+  "difficulty": "low"
+}
+```
+
+| Value | Best for |
+| :-- | :-- |
+| `low` | Simple or lightly protected websites |
+| `medium` | Balanced setup for general use |
+| `high` | More difficult or heavily protected websites |
+
+**Use** `difficulty `**when:**
+
+- a simple request does not return the expected result
+- the target site is protected
+- you need a stronger unblocking setup
+
+<Tip>
+  Start with low and increase it only if needed.
+</Tip>
+
+### `expiration`
+
+Controls how long the same session can be reused.
+
+```json
+{
+   "url": "https://example.com",
+  "expiration": 0
+}
+```
+
+| Value | Behavior |
+| :-- | :-- |
+| `0` | No session persistence |
+| `> 0` | Keep the same session for the specified time |
+
+**Use** `expiration `**when:**
+
+- you need a more stable session
+- the request flow benefits from persistence
+- the target website behaves better with session continuity
+
+<Note>
+  If you do not need session persistence, keep expiration set to 0.
+</Note>
+
+## Common setups
+
+### Minimal request
+
+Use this for a quick first test.
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://example.com"
+  }'
+```
+
+### Country-targeted request
+
+Use this when you need region-specific content.
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://example.com",
+    "country": "US"
+  }'
+```
+
+### City-targeted request
+
+Use this when you need more precise location targeting.
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://example.com",
+    "country": "US",
+    "city": "New York"
+  }'
+```
+
+### Higher-difficulty request
+
+Use this for more protected websites.
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://example.com",
+    "difficulty": "high"
+  }'
+```
+
+### Session-based request
+
+Use this when you need session persistence.
+
+```bash
+curl https://client-api.floppy.host/v1/webUnlocker \
+  --request POST \
+  --header 'Content-Type: application/json' \
+  --header 'X-Api-Key: YOUR_API_KEY' \
+  --data '{
+    "url": "https://example.com",
+    "expiration": 300
+  }'
+```
+
+## Quick recommendations
+
+| Goal | Recommended options |
+| :-- | :-- |
+| Fast first test | `url` only |
+| Region-specific content | `country` |
+| More precise targeting | `country` \+ `city` |
+| Harder websites | `difficulty` |
+| More stable session | `expiration` |
+
+<Tip>
+   The best setup is usually the simplest one that gets the result you need. 
+</Tip>
