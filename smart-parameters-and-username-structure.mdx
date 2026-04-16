@@ -1,11 +1,11 @@
 ---
-title: "Smart Parameters / Username Structure"
+title: "Proxy Generator / Username Structure"
 ---
 
 <Note>
   **In Floppydata, the username is not just for authentication – it defines how your request is routed.**
 
-  Instead of selecting proxies manually, you pass routing instructions inside the username. These instructions are called **Smart Parameters**.
+  Instead of selecting proxies manually, you pass routing instructions inside the username. These instructions are called **Proxy Generator.**
 </Note>
 
 Every request includes these parameters, and Floppydata uses them to determine:
@@ -33,9 +33,9 @@ Every request includes these parameters, and Floppydata uses them to determine:
   The username is your routing configuration.
 </Note>
 
-## How parameters are passed
+## How Proxy Generator are passed
 
-Smart Parameters are embedded directly in the username.
+Generator is embedded directly in the username.
 
 **Format**
 
@@ -76,9 +76,7 @@ user123-res-country-US-city-Chicago-session-s01
   Each parameter adds one layer of routing logic.
 </Note>
 
-## Smart Parameters reference
-
-Below is a reference for the most common Smart Parameters and how they affect routing.
+## Generator reference
 
 ### `type` –  IP type
 
@@ -211,9 +209,7 @@ user123-res-country-US-city-Chicago-session-order01
   The more parameters you add, the more specific the routing becomes.
 </Note>
 
-## Using Smart Parameters in requests
-
-Smart Parameters are passed as part of the proxy connection.
+## Using Proxy Generator in requests
 
 **Format**
 
@@ -286,7 +282,7 @@ The IP will stay the same.
 ## Summary
 
 <Note>
-  **Smart Parameters define how your requests behave.**
+  **Proxy Generator define how your requests behave.**
 
   - they are passed inside the username
   - the username controls routing
