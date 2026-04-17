@@ -12,7 +12,7 @@ title: "How Floppydata Works"
 
 When you connect through Floppydata, you pass instructions along with your credentials.
 
-These instructions – called **Smart Parameters** – define:
+These instructions – called **Proxy Generator** – define:
 
 <CardGroup cols={2}>
   <Card title="Location">
@@ -46,7 +46,7 @@ Floppydata reads these parameters and routes your request through the appropriat
 
 ```mermaid
 flowchart TD
-    A[Your app] --> B[Request + Smart Parameters]
+    A[Your app] --> B[Request + Proxy Generator]
     B --> C[Floppydata Gateway]
     C --> D[IP selection logic]
     D --> E[Target website]
@@ -154,7 +154,7 @@ user123-res-country-US-session-test01
 
   - your app connects to a **single proxy gateway**
   - the target website sees the **proxy IP**, not your real IP
-  - **Smart Parameters** define how requests are routed
+  - **Proxy Generator** define how requests are routed
   - Floppydata handles IP selection, rotation, and scaling
 </Note>
 
