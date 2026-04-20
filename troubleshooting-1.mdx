@@ -1,0 +1,777 @@
+---
+title: "Troubleshooting"
+---
+
+Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
+
+## Quick error lookup
+
+<CardGroup cols={3}>
+  <Card title="407 Auth Failed" icon="key" href="#407-proxy-authentication-required">
+    Wrong credentials
+  </Card>
+
+  <Card title="403 Forbidden" icon="ban" href="#403-forbidden">
+    IP whitelist or access issue
+  </Card>
+
+  <Card title="429 Rate Limit" icon="gauge-high" href="#429-too-many-requests">
+    Too many requests
+  </Card>
+
+  <Card title="502 Bad Gateway" icon="server" href="#502-bad-gateway">
+    Target site issue
+  </Card>
+
+  <Card title="504 Timeout" icon="clock" href="#504-gateway-timeout">
+    Request took too long
+  </Card>
+
+  <Card title="Connection Error" icon="link-slash" href="#connection-errors">
+    Can't connect to proxy
+  </Card>
+</CardGroup>
+
+## HTTP error codes
+
+### 407 Proxy Authentication Required
+
+**What it means:** Your credentials are incorrect or missing
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - Wrong username or password
+    - Credentials not properly formatted
+    - Extra spaces in credentials
+    - Password changed in dashboard but not updated in code
+    - Special characters not URL-encoded
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Verify credentials in dashboard**
+
+    Go to [Dashboard → Settings](https://app.floppydata.com/settings) and copy fresh credentials
+
+    **2. Check for extra spaces**
+
+    ```python
+    # Wrong - extra space
+    proxy = "http://user 123:pass@geo.g-w.info:10080"
+    
+    # Correct
+    proxy = "http://user123:pass@geo.g-w.info:10080"
+    ```
+
+    **3. URL-encode special characters**
+
+    ```python
+    from urllib.parse import quote
+    
+    password = "my@pass#word"
+    encoded_pass = quote(password)  # "my%40pass%23word"
+    proxy = f"http://user:{encoded_pass}@geo.g-w.info:10080"
+    ```
+
+    **4. Test with curl**
+
+    ```bash
+    curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 http://ip-api.com/json
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### 403 Forbidden
+
+**What it means:** Access denied to the resource
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - IP whitelist enabled but your IP not added
+    - Insufficient balance
+    - Target website blocking proxy IP
+    - Country/city not available in your plan
+    - Proxy type not allowed for your account
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Check IP whitelist**
+
+    If IP whitelisting is enabled:
+
+    - Get your current IP: `curl https://api.ipify.org`
+    - Add it in Dashboard → Settings → IP Whitelist
+
+    **2. Check balance**
+
+    ```bash
+    curl -H "X-Api-Key: YOUR_KEY" \
+      https://client-api.floppy.host/v1/rotating/balance
+    ```
+
+    **3. Try different proxy parameters**
+
+    ```python
+    # If city fails, try country only
+    proxy_username = "user123-res-country-US"  # Instead of city
+    
+    # Try different proxy type
+    proxy_username = "user123-mobile-country-US"  # Mobile instead of residential
+    ```
+
+    **4. Check target website**
+
+    Some sites block all proxies. Try:
+
+    - Different session ID (new IP)
+    - Different proxy type
+    - Web Unlocker instead
+  </Accordion>
+</AccordionGroup>
+
+### 429 Too Many Requests
+
+**What it means:** Rate limit exceeded
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - Too many concurrent requests
+    - Requests sent too quickly
+    - Target website rate limiting
+    - Exceeding plan limits
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Add delays between requests**
+
+    ```python
+    import time
+    
+    for url in urls:
+        response = requests.get(url, proxies=proxies)
+        time.sleep(1)  # Add 1 second delay
+    ```
+
+    **2. Implement exponential backoff**
+
+    ```python
+    import time
+    
+    def make_request_with_backoff(url, proxies, max_retries=3):
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(url, proxies=proxies)
+                if response.status_code == 429:
+                    wait_time = 2 ** attempt  # 1, 2, 4 seconds
+                    time.sleep(wait_time)
+                    continue
+                return response
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    raise
+                time.sleep(2 ** attempt)
+    ```
+
+    **3. Use rotating sessions**
+
+    ```python
+    # Distribute load across multiple sessions
+    session_ids = ['s01', 's02', 's03', 's04', 's05']
+    
+    for i, url in enumerate(urls):
+        session = session_ids[i % len(session_ids)]
+        proxy_username = f"user123-res-country-US-session-{session}"
+        # ... make request
+    ```
+
+    **4. Check concurrent requests**
+
+    Reduce number of parallel requests if using async/threading
+  </Accordion>
+</AccordionGroup>
+
+### 502 Bad Gateway
+
+**What it means:** Target server returned invalid response
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - Target website is down
+    - Target blocking proxy IPs
+    - Network issue between proxy and target
+    - Target website maintenance
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Verify target site is up**
+
+    Check if the website works in your browser without proxy
+
+    **2. Try different proxy type**
+
+    ```python
+    # If residential fails, try mobile
+    proxy_username = "user123-mobile-country-US"
+    
+    # Or datacenter
+    proxy_username = "user123-dc-country-US"
+    ```
+
+    **3. Use session parameter**
+
+    ```python
+    # Try sticky session
+    proxy_username = "user123-res-country-US-session-retry01"
+    ```
+
+    **4. Consider Web Unlocker**
+
+    For protected sites, use Web Unlocker API instead:
+
+    ```python
+    response = requests.post(
+        'https://client-api.floppy.host/v1/unlocker',
+        headers={'X-Api-Key': 'YOUR_KEY'},
+        json={'url': 'https://protected-site.com'}
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### 504 Gateway Timeout
+
+**What it means:** Request took too long to complete
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - Target website slow to respond
+    - Network congestion
+    - Complex page rendering
+    - Timeout set too low
+    - Slow proxy location
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Increase timeout**
+
+    ```python
+    response = requests.get(
+        url,
+        proxies=proxies,
+        timeout=60  # Increase from default 30
+    )
+    ```
+
+    **2. Try different proxy location**
+
+    ```python
+    # If targeting US site, use US proxy
+    proxy_username = "user123-res-country-US"
+    
+    # Choose location closer to target
+    ```
+
+    **3. Use datacenter for speed**
+
+    ```python
+    # Datacenter proxies are faster
+    proxy_username = "user123-dc-country-US"
+    ```
+
+    **4. Set separate connect and read timeouts**
+
+    ```python
+    response = requests.get(
+        url,
+        proxies=proxies,
+        timeout=(10, 60)  # (connect_timeout, read_timeout)
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Connection errors
+
+### Connection Refused
+
+**What it means:** Can't connect to proxy server
+
+<AccordionGroup>
+  <Accordion title="Common causes" icon="magnifying-glass">
+    - Wrong host or port
+    - Firewall blocking connection
+    - Network issue
+    - Typo in proxy URL
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Verify host and port**
+
+    ```python
+    # Correct
+    proxy = "http://user:pass@geo.g-w.info:10080"
+    
+    # Wrong - don't use these
+    # geo.g-w.com (wrong domain)
+    # floppydata.com (wrong domain)
+    # port 8080 (wrong port)
+    ```
+
+    **2. Check available ports**
+
+    - HTTP: `10080`
+    - HTTPS: `10443`
+    - SOCKS5: `10800`
+
+    **3. Test connectivity**
+
+    ```bash
+    # Test if port is reachable
+    telnet geo.g-w.info 10080
+    
+    # Or use curl
+    curl -v http://geo.g-w.info:10080
+    ```
+
+    **4. Check firewall**
+
+    Ensure your firewall allows outbound connections on port 10080
+  </Accordion>
+</AccordionGroup>
+
+### SSL Certificate Error
+
+**What it means:** SSL verification failed
+
+<AccordionGroup>
+  <Accordion title="Solutions" icon="wrench">
+    **Temporary fix (not recommended for production):**
+
+    ```python
+    response = requests.get(
+        url,
+        proxies=proxies,
+        verify=False  # Disable SSL verification
+    )
+    ```
+
+    **Better solution:**
+
+    ```python
+    # Update certificates
+    pip install --upgrade certifi
+    
+    # Or specify certificate bundle
+    response = requests.get(
+        url,
+        proxies=proxies,
+        verify='/path/to/cacert.pem'
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Target website errors
+
+### Captcha / Challenge
+
+**What it means:** Target detected automation
+
+<AccordionGroup>
+  <Accordion title="Solutions" icon="wrench">
+    **1. Use residential or mobile proxies**
+
+    ```python
+    # Higher trust level
+    proxy_username = "user123-mobile-country-US"
+    ```
+
+    **2. Add realistic headers**
+
+    ```python
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1'
+    }
+    
+    response = requests.get(url, proxies=proxies, headers=headers)
+    ```
+
+    **3. Add delays**
+
+    ```python
+    import time
+    import random
+    
+    time.sleep(random.uniform(1, 3))  # Random delay
+    ```
+
+    **4. Use Web Unlocker**
+
+    Web Unlocker automatically handles captchas:
+
+    ```python
+    response = requests.post(
+        'https://client-api.floppy.host/v1/unlocker',
+        headers={'X-Api-Key': 'YOUR_KEY'},
+        json={
+            'url': 'https://protected-site.com',
+            'render_js': True
+        }
+    )
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### IP Blocked
+
+**Signs:** 403 errors, blank pages, infinite redirects
+
+<AccordionGroup>
+  <Accordion title="Solutions" icon="wrench">
+    **1. Force IP rotation**
+
+    ```python
+    # Remove session or use rotation-1
+    proxy_username = "user123-res-country-US-rotation-1"
+    ```
+
+    **2. Try different proxy type**
+
+    ```python
+    # Mobile has higher trust
+    proxy_username = "user123-mobile-country-US"
+    ```
+
+    **3. Add delays between requests**
+
+    ```python
+    import time
+    
+    for url in urls:
+        response = requests.get(url, proxies=proxies)
+        time.sleep(random.uniform(2, 5))
+    ```
+
+    **4. Use different sessions**
+
+    ```python
+    # Rotate through multiple sessions
+    for i, url in enumerate(urls):
+        session_id = f"session{i % 10}"
+        proxy_username = f"user123-res-country-US-session-{session_id}"
+        # ... make request
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Session issues
+
+### Session Keeps Expiring
+
+<AccordionGroup>
+  <Accordion title="Why this happens" icon="info">
+    Sessions expire after **10 minutes of inactivity**
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Send keepalive requests**
+
+    ```python
+    import time
+    import threading
+    
+    def keepalive(session_url, proxies):
+        while True:
+            try:
+                requests.head('https://httpbin.org/status/200', proxies=proxies, timeout=5)
+            except:
+                pass
+            time.sleep(300)  # Every 5 minutes
+    
+    # Start keepalive thread
+    proxies = {'http': session_url, 'https': session_url}
+    thread = threading.Thread(target=keepalive, args=(session_url, proxies))
+    thread.daemon = True
+    thread.start()
+    ```
+
+    **2. Use static proxy instead**
+
+    For long-running sessions, consider Static ISP:
+
+    ```python
+    proxy_username = "user123-isp-country-US"  # Fixed IP, no expiration
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### IP Not Changing
+
+<AccordionGroup>
+  <Accordion title="Why this happens" icon="info">
+    You're using a session parameter
+  </Accordion>
+
+  <Accordion title="Solutions" icon="wrench">
+    **1. Remove session parameter**
+
+    ```python
+    # From this
+    proxy_username = "user123-res-country-US-session-s01"
+    
+    # To this
+    proxy_username = "user123-res-country-US"
+    ```
+
+    **2. Change session value**
+
+    ```python
+    # Change session ID to get new IP
+    proxy_username = "user123-res-country-US-session-s02"  # New IP
+    ```
+
+    **3. Force rotation**
+
+    ```python
+    proxy_username = "user123-res-country-US-rotation-1"
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Performance issues
+
+### Slow Requests
+
+<AccordionGroup>
+  <Accordion title="Solutions" icon="wrench">
+    **1. Use datacenter proxies**
+
+    ```python
+    # Faster but lower trust
+    proxy_username = "user123-dc-country-US"
+    ```
+
+    **2. Use closer proxy location**
+
+    ```python
+    # If scraping US site, use US proxy
+    proxy_username = "user123-res-country-US"
+    ```
+
+    **3. Implement connection pooling**
+
+    ```python
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3.util.retry import Retry
+    
+    session = requests.Session()
+    
+    # Connection pooling
+    adapter = HTTPAdapter(
+        pool_connections=10,
+        pool_maxsize=20,
+        max_retries=Retry(total=3, backoff_factor=1)
+    )
+    
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    session.proxies = proxies
+    
+    # Reuse connection
+    for url in urls:
+        response = session.get(url)
+    ```
+
+    **4. Use async requests**
+
+    ```python
+    import asyncio
+    import aiohttp
+    
+    async def fetch(session, url, proxy):
+        async with session.get(url, proxy=proxy) as response:
+            return await response.text()
+    
+    async def main(urls, proxy):
+        async with aiohttp.ClientSession() as session:
+            tasks = [fetch(session, url, proxy) for url in urls]
+            return await asyncio.gather(*tasks)
+    
+    asyncio.run(main(urls, proxy_url))
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Debugging tools
+
+### Test proxy connection
+
+```bash
+# Simple test
+curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 http://ip-api.com/json
+ 
+# With verbose output
+curl -v -x http://USERNAME:PASSWORD@geo.g-w.info:10080 http://ip-api.com/json
+ 
+# Test specific site
+curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 https://example.com
+```
+
+### Check proxy IP
+
+```python
+import requests
+ 
+proxies = {'http': proxy_url, 'https': proxy_url}
+ 
+# Check what IP you're using
+response = requests.get('http://ip-api.com/json', proxies=proxies)
+data = response.json()
+ 
+print(f"IP: {data['query']}")
+print(f"Country: {data['country']}")
+print(f"City: {data['city']}")
+print(f"ISP: {data['isp']}")
+```
+
+### Enable logging
+
+```python
+import logging
+import http.client as http_client
+ 
+# Enable debug logging
+http_client.HTTPConnection.debuglevel = 1
+ 
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.setLevel(logging.DEBUG)
+requests_log.propagate = True
+ 
+# Now make requests - you'll see all details
+response = requests.get(url, proxies=proxies)
+```
+
+### Validate via API
+
+```bash
+curl -X POST \
+  -H "X-Api-Key: YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "connectionString": "http://user-res-country-US:pass@geo.g-w.info:10080"
+  }' \
+  https://client-api.floppy.host/v1/tools/checkProxy
+```
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="How do I check my balance?" icon="circle-question">
+    **Via API:**
+
+    ```bash
+    curl -H "X-Api-Key: YOUR_KEY" \
+      https://client-api.floppy.host/v1/rotating/balance
+    ```
+
+    **Via Dashboard:** [app.floppydata.com](https://app.floppydata.com)
+  </Accordion>
+
+  <Accordion title="What ports should I use?" icon="circle-question">
+    - **HTTP**: `10080` (default, recommended)
+    - **HTTPS**: `10443`
+    - **SOCKS5**: `10800`
+
+    Most tools work with port 10080.
+  </Accordion>
+
+  <Accordion title="Can I use the same session across different devices?" icon="circle-question">
+    Yes! The session is tied to the session ID in the username, not to your device.
+
+    ```python
+    # Same session = same IP across devices
+    proxy_username = "user123-res-country-US-session-shared01"
+    ```
+  </Accordion>
+
+  <Accordion title="Why am I getting different speeds?" icon="circle-question">
+    Speed depends on:
+
+    - **Proxy type**: Datacenter \> ISP \> Residential \> Mobile
+    - **Location**: Closer proxy = faster
+    - **Network congestion**: Varies by time
+    - **Target website**: Some sites are just slow
+
+    For best speed, use datacenter proxies in the same region as target.
+  </Accordion>
+
+  <Accordion title="How many concurrent connections can I use?" icon="circle-question">
+    Depends on your plan. Check limits:
+
+    ```bash
+    curl -H "X-Api-Key: YOUR_KEY" \
+      https://client-api.floppy.host/v1/rotating/statistics
+    ```
+
+    Or contact support for custom limits.
+  </Accordion>
+
+  <Accordion title="Can I whitelist IPs?" icon="circle-question">
+    Yes, in Dashboard → Settings → IP Whitelist
+
+    When enabled, only whitelisted IPs can use your proxies.
+  </Accordion>
+
+  <Accordion title="What's the difference between rotation-1 and no session?" icon="circle-question">
+    **No session** (default):
+
+    - New IP every request
+    - Natural rotation
+
+    **rotation-1**:
+
+    - Explicitly forces new IP
+    - Overrides any session parameter
+
+    In practice, both rotate IPs. Use `rotation-1` when you want to be explicit or override session behavior.
+  </Accordion>
+</AccordionGroup>
+
+## Getting help
+
+<CardGroup cols={2}>
+  <Card title="Check API status" icon="signal" href="https://status.floppydata.com">
+    See if there are any ongoing issues
+  </Card>
+
+  <Card title="Contact support" icon="envelope">
+    Email: [support@floppydata.com](mailto:support@floppydata.com)
+
+    Response time: \< 24 hours
+  </Card>
+
+  <Card title="Dashboard" icon="gauge" href="https://app.floppydata.com">
+    Check balance, usage, and settings
+  </Card>
+
+  <Card title="API Reference" icon="book" href="/api-reference/introduction">
+    Complete API documentation
+  </Card>
+</CardGroup>
+
+<Info>
+  **When contacting support, include:**
+
+  - Error message or code
+  - Your code snippet (remove credentials!)
+  - Timestamp when error occurred
+  - Expected vs actual behavior
+</Info>

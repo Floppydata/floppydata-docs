@@ -41,7 +41,8 @@
         "hidden": true,
         "pages": [
           "r",
-          "using-proxies"
+          "using-proxies",
+          "troubleshooting-1"
         ]
       },
       {
