@@ -133,6 +133,13 @@
           "usage-and-history",
           "troubleshooting"
         ]
+      },
+      {
+        "tab": "Getting Started",
+        "hidden": true,
+        "pages": [
+          "owerwiew"
+        ]
       }
     ]
   },

@@ -1,0 +1,118 @@
+---
+title: "Overview"
+---
+
+**Floppydata is a proxy infrastructure platform for controlled, scalable access to web resources.**
+
+Instead of managing proxies manually, you describe how a request should behave – and Floppydata handles routing automatically.
+
+## What Floppydata provides
+
+<CardGroup cols={2}>
+  <Card title="Global proxy network" icon="globe">
+    Residential, mobile, and datacenter IPs across 195\+ countries
+  </Card>
+
+  <Card title="Smart routing" icon="route">
+    Control location, IP type, session, and rotation via Smart Parameters
+  </Card>
+
+  <Card title="Static & rotating IPs" icon="arrows-rotate">
+    Use rotating pools or dedicated static IPs depending on your needs
+  </Card>
+
+  <Card title="Scalable infrastructure" icon="chart-line">
+    Built for automation, scraping, and high-load workflows
+  </Card>
+</CardGroup>
+
+## Two core products
+
+### Proxies
+
+Control how your requests appear to target websites. Route traffic through residential, mobile, ISP, or datacenter IPs with precise geo-targeting and session control.
+
+**Best for**: Web scraping, SEO monitoring, account management, automation, when you need control over request parameters.
+
+### Web Unlocker
+
+Automatic anti-bot bypass API. Send a URL, get clean HTML back. No proxy configuration, no header tuning, no retry logic needed.
+
+**Best for**: Protected websites (Cloudflare, PerimeterX), large-scale scraping, when you just need data without managing infrastructure.
+
+\
+**Proxy vs Web Unlocker: Which to use?**
+
+| Your need | Use Proxy | Use Web Unlocker |
+| --- | --- | --- |
+| Simple websites, no anti-bot | ✔ | Optional |
+| Protected sites (Cloudflare, etc) | ✗ | ✔ |
+| Full control over requests | ✔ | ✗ |
+| Browser automation (Selenium, Puppeteer) | ✔ | ✗ |
+| Just need clean data, no complexity | ✗ | ✔ |
+| Custom headers, cookies, logic | ✔ | Limited |
+| Geo-targeting required | ✔ | ✔ |
+| Session persistence needed | ✔ | ✗ |
+| High-volume, protected targets | ✗ | ✔ |
+
+<Tip>
+  **Still not sure?** Try both:
+
+  - Start with **Proxy** if you're integrating with existing code or tools
+  - Start with **Web Unlocker** if you're scraping protected sites
+</Tip>
+
+## Who is it for
+
+<CardGroup cols={2}>
+  <Card title="Developers" icon="code">
+    Building scraping tools and automation systems
+  </Card>
+
+  <Card title="Data teams" icon="database">
+    Collecting and processing large-scale web data
+  </Card>
+
+  <Card title="SEO & marketing" icon="chart-mixed">
+    Working with geo-specific search results
+  </Card>
+
+  <Card title="Businesses" icon="building">
+    Accessing websites from different regions
+  </Card>
+</CardGroup>
+
+## Common use cases
+
+**E-commerce scraping** Amazon, eBay, Shopify → Product data, prices, reviews
+
+**SEO & SERP** Google, Bing → Rankings, keywords, local results
+
+**Social media** Instagram, TikTok, LinkedIn → Automation, data collection
+
+**Ad verification** Geo-targeted ads → Placement verification, competitor monitoring
+
+**Market research** Price intelligence, product availability, trend analysis
+
+**Account management** Multi-accounting, session persistence, same-IP requirement
+
+## Getting started checklist
+
+<Steps>
+  <Step title="Create account">
+    [Sign up](https://app.floppydata.com/register) for a Floppydata account
+  </Step>
+  <Step title="Get credentials">
+    Dashboard → Settings → Copy your username, password, and API keys
+  </Step>
+  <Step title="Choose your product">
+    - **Proxy**: Follow [Proxy Quick Start](/getting-started/quick-start#proxy)
+    - **Web Unlocker**: Follow [Web Unlocker Quick Start](/getting-started/quick-start#web-unlocker)
+  </Step>
+  <Step title="Make first request">
+    See it work in under 5 minutes
+  </Step>
+  <Step title="Explore docs">
+    Learn more: [Proxies](/proxies/basics) or [Web Unlocker](/web-unlocker/basics)
+  </Step>
+</Steps>
