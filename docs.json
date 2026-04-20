@@ -37,6 +37,13 @@
         ]
       },
       {
+        "tab": "Proxies",
+        "hidden": true,
+        "pages": [
+          "r"
+        ]
+      },
+      {
         "tab": "Introduction",
         "pages": [
           "Overview",
@@ -143,10 +150,6 @@
           "usage-and-history",
           "troubleshooting"
         ]
-      },
-      {
-        "tab": "Proxies",
-        "hidden": true
       }
     ]
   },
