@@ -40,7 +40,8 @@
         "tab": "Proxies",
         "hidden": true,
         "pages": [
-          "r"
+          "r",
+          "using-proxies"
         ]
       },
       {

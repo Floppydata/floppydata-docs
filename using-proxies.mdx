@@ -1,0 +1,842 @@
+---
+title: "Using Proxies"
+---
+
+Learn how to integrate Floppydata proxies with your preferred programming languages and tools.
+
+## Quick setup
+
+<CardGroup cols={3}>
+  <Card title="Python" icon="python" href="#python-setup">
+    requests, httpx, aiohttp
+  </Card>
+
+  <Card title="Node.js" icon="node-js" href="#nodejs-setup">
+    axios, got, node-fetch
+  </Card>
+
+  <Card title="Other languages" icon="code" href="#other-languages">
+    PHP, Ruby, Go, Java, C#
+  </Card>
+</CardGroup>
+
+## Python setup
+
+### Using requests
+
+**Install:**
+
+```bash
+pip install requests
+```
+
+**Basic setup:**
+
+```python
+import requests
+ 
+# Your credentials
+PROXY_USER = "user123"
+PROXY_PASS = "your_password"
+ 
+# Build proxy URL with Smart Parameters
+proxy_username = f"{PROXY_USER}-res-country-US-session-session01"
+proxy_url = f"http://{proxy_username}:{PROXY_PASS}@geo.g-w.info:10080"
+ 
+proxies = {
+    'http': proxy_url,
+    'https': proxy_url
+}
+ 
+# Make request
+response = requests.get('https://httpbin.org/ip', proxies=proxies)
+print(response.json())
+```
+
+**With environment variables:**
+
+```python
+import os
+import requests
+from dotenv import load_dotenv
+ 
+load_dotenv()
+ 
+PROXY_USER = os.getenv('FLOPPY_USER')
+PROXY_PASS = os.getenv('FLOPPY_PASS')
+ 
+proxy_username = f"{PROXY_USER}-res-country-US"
+proxy_url = f"http://{proxy_username}:{PROXY_PASS}@geo.g-w.info:10080"
+ 
+proxies = {'http': proxy_url, 'https': proxy_url}
+ 
+response = requests.get('https://example.com', proxies=proxies)
+```
+
+**Using Session:**
+
+```python
+import requests
+ 
+session = requests.Session()
+ 
+# Set proxy for all requests in this session
+proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+session.proxies = {'http': proxy_url, 'https': proxy_url}
+ 
+# All requests use the proxy
+response1 = session.get('https://example.com')
+response2 = session.get('https://example.org')
+```
+
+### Using httpx
+
+**Install:**
+
+```bash
+pip install httpx
+```
+
+**Synchronous:**
+
+```python
+import httpx
+ 
+proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+ 
+with httpx.Client(proxies=proxy_url) as client:
+    response = client.get('https://example.com')
+    print(response.text)
+```
+
+**Asynchronous:**
+
+```python
+import httpx
+import asyncio
+ 
+async def fetch():
+    proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+    
+    async with httpx.AsyncClient(proxies=proxy_url) as client:
+        response = await client.get('https://example.com')
+        return response.text
+ 
+asyncio.run(fetch())
+```
+
+### Using aiohttp
+
+**Install:**
+
+```bash
+pip install aiohttp
+```
+
+**Example:**
+
+```python
+import aiohttp
+import asyncio
+ 
+async def fetch():
+    proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+    
+    async with aiohttp.ClientSession() as session:
+        async with session.get(
+            'https://example.com',
+            proxy=proxy_url
+        ) as response:
+            return await response.text()
+ 
+asyncio.run(fetch())
+```
+
+## Node.js setup
+
+### Using axios
+
+**Install:**
+
+```bash
+npm install axios
+```
+
+**Basic setup:**
+
+```javascript
+const axios = require('axios');
+ 
+const PROXY_USER = 'user123';
+const PROXY_PASS = 'your_password';
+ 
+// Configure proxy with Smart Parameters
+const proxyUsername = `${PROXY_USER}-res-country-US-session-session01`;
+ 
+const proxy = {
+    host: 'geo.g-w.info',
+    port: 10080,
+    auth: {
+        username: proxyUsername,
+        password: PROXY_PASS
+    }
+};
+ 
+// Make request
+axios.get('https://httpbin.org/ip', { proxy })
+    .then(response => console.log(response.data))
+    .catch(error => console.error(error));
+```
+
+**With environment variables:**
+
+```javascript
+require('dotenv').config();
+const axios = require('axios');
+ 
+const PROXY_USER = process.env.FLOPPY_USER;
+const PROXY_PASS = process.env.FLOPPY_PASS;
+ 
+const proxyUsername = `${PROXY_USER}-res-country-US`;
+ 
+const proxy = {
+    host: 'geo.g-w.info',
+    port: 10080,
+    auth: {
+        username: proxyUsername,
+        password: PROXY_PASS
+    }
+};
+ 
+axios.get('https://example.com', { proxy })
+    .then(res => console.log(res.data));
+```
+
+**Create reusable instance:**
+
+```javascript
+const axios = require('axios');
+ 
+const api = axios.create({
+    proxy: {
+        host: 'geo.g-w.info',
+        port: 10080,
+        auth: {
+            username: 'user-res-country-US',
+            password: 'your_password'
+        }
+    }
+});
+ 
+// All requests use proxy
+api.get('https://example.com').then(res => console.log(res.data));
+api.get('https://example.org').then(res => console.log(res.data));
+```
+
+### Using got
+
+**Install:**
+
+```bash
+npm install got
+```
+
+**Example:**
+
+```javascript
+const got = require('got');
+const { HttpsProxyAgent } = require('https-proxy-agent');
+ 
+const proxyUrl = 'http://user-res-country-US:pass@geo.g-w.info:10080';
+const agent = new HttpsProxyAgent(proxyUrl);
+ 
+got('https://example.com', {
+    agent: { https: agent }
+}).then(response => {
+    console.log(response.body);
+});
+```
+
+### Using node-fetch
+
+**Install:**
+
+```bash
+npm install node-fetch https-proxy-agent
+```
+
+**Example:**
+
+```javascript
+const fetch = require('node-fetch');
+const { HttpsProxyAgent } = require('https-proxy-agent');
+ 
+const proxyUrl = 'http://user-res-country-US:pass@geo.g-w.info:10080';
+const agent = new HttpsProxyAgent(proxyUrl);
+ 
+fetch('https://example.com', { agent })
+    .then(res => res.text())
+    .then(body => console.log(body));
+```
+
+## Other languages
+
+<Tabs>
+  <Tab title="PHP">
+    **Using cURL:**
+
+    ```php
+    <?php
+    $proxyUser = 'user123-res-country-US';
+    $proxyPass = 'your_password';
+    $proxyUrl = "geo.g-w.info:10080";
+    $ch = curl_init('https://httpbin.org/ip');
+    curl_setopt($ch, CURLOPT_PROXY, $proxyUrl);
+    curl_setopt($ch, CURLOPT_PROXYUSERPWD, "$proxyUser:$proxyPass");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    echo $response;
+    ?>
+    ```
+
+    **Using Guzzle:**
+
+    ```php
+    <?php
+    require 'vendor/autoload.php';
+    
+    use GuzzleHttp\Client;
+    
+    $client = new Client([
+        'proxy' => 'http://user-res-country-US:pass@geo.g-w.info:10080'
+    ]);
+    
+    $response = $client->get('https://example.com');
+    echo $response->getBody();
+    ?>
+    ```
+  </Tab>
+  <Tab title="Ruby">
+    **Using Net::HTTP:**
+
+    ```ruby
+    require 'net/http'
+    require 'uri'
+    proxy_uri = URI.parse('http://user-res-country-US:pass@geo.g-w.info:10080')
+    
+    Net::HTTP.start(
+      'example.com',
+      80,
+      proxy_uri.host,
+      proxy_uri.port,
+      proxy_uri.user,
+      proxy_uri.password
+    ) do |http|
+      response = http.get('/')
+      puts response.body
+    end
+    ```
+
+    **Using HTTParty:**
+
+    ```ruby
+    require 'httparty'
+    
+    response = HTTParty.get(
+      'https://example.com',
+      http_proxyaddr: 'geo.g-w.info',
+      http_proxyport: 10080,
+      http_proxyuser: 'user-res-country-US',
+      http_proxypass: 'your_password'
+    )
+    
+    puts response.body
+    ```
+  </Tab>
+  <Tab title="Go">
+    ```go
+    package main
+    import (
+        "fmt"
+        "io"
+        "net/http"
+        "net/url"
+    )
+    
+    func main() {
+        proxyURL, _ := url.Parse("http://user-res-country-US:pass@geo.g-w.info:10080")
+        
+        client := &http.Client{
+            Transport: &http.Transport{
+                Proxy: http.ProxyURL(proxyURL),
+            },
+        }
+    
+        resp, err := client.Get("https://httpbin.org/ip")
+        if err != nil {
+            panic(err)
+        }
+        defer resp.Body.Close()
+    
+        body, _ := io.ReadAll(resp.Body)
+        fmt.Println(string(body))
+    }
+    ```
+  </Tab>
+  <Tab title="Java">
+    ```java
+    import java.net.*;
+    import java.io.*;
+    public class ProxyExample {
+        public static void main(String[] args) throws Exception {
+            String proxyHost = "geo.g-w.info";
+            int proxyPort = 10080;
+            String proxyUser = "user-res-country-US";
+            String proxyPass = "your_password";
+    
+            Authenticator.setDefault(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(proxyUser, proxyPass.toCharArray());
+                }
+            });
+    
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+            
+            URL url = new URL("https://httpbin.org/ip");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
+            
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                System.out.println(line);
+            }
+            in.close();
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="C#">
+    ```csharp
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    class Program
+    {
+        static async Task Main()
+        {
+            var proxy = new WebProxy
+            {
+                Address = new Uri("http://geo.g-w.info:10080"),
+                Credentials = new NetworkCredential("user-res-country-US", "your_password")
+            };
+    
+            var handler = new HttpClientHandler
+            {
+                Proxy = proxy,
+                UseProxy = true
+            };
+    
+            using var client = new HttpClient(handler);
+            var response = await client.GetStringAsync("https://httpbin.org/ip");
+            Console.WriteLine(response);
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Tool integrations
+
+### Scrapy
+
+**Create middleware file** (`middlewares.py`):
+
+```python
+class FloppydataProxyMiddleware:
+    def __init__(self, proxy_user, proxy_pass):
+        self.proxy_user = proxy_user
+        self.proxy_pass = proxy_pass
+        
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(
+            proxy_user=crawler.settings.get('FLOPPY_USER'),
+            proxy_pass=crawler.settings.get('FLOPPY_PASS')
+        )
+    
+    def process_request(self, request, spider):
+        # Build proxy URL with Smart Parameters
+        proxy_username = f"{self.proxy_user}-res-country-US-session-{spider.name}"
+        proxy_url = f"http://{proxy_username}:{self.proxy_pass}@geo.g-w.info:10080"
+        
+        request.meta['proxy'] = proxy_url
+```
+
+**Update settings** (`settings.py`):
+
+```python
+# Enable middleware
+DOWNLOADER_MIDDLEWARES = {
+    'myproject.middlewares.FloppydataProxyMiddleware': 350,
+}
+ 
+# Credentials from environment
+import os
+FLOPPY_USER = os.getenv('FLOPPY_USER')
+FLOPPY_PASS = os.getenv('FLOPPY_PASS')
+ 
+# Disable robots.txt
+ROBOTSTXT_OBEY = False
+```
+
+**Use in spider:**
+
+```python
+import scrapy
+ 
+class MySpider(scrapy.Spider):
+    name = 'myspider'
+    start_urls = ['https://example.com']
+    
+    def parse(self, response):
+        # Spider automatically uses Floppydata proxy
+        yield {
+            'title': response.css('h1::text').get(),
+            'url': response.url
+        }
+```
+
+### Selenium
+
+**Chrome:**
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+ 
+PROXY_USER = "user123-res-country-US"
+PROXY_PASS = "your_password"
+PROXY_HOST = "geo.g-w.info:10080"
+ 
+chrome_options = Options()
+ 
+# Configure proxy
+chrome_options.add_argument(f'--proxy-server=http://{PROXY_HOST}')
+ 
+# Create driver
+driver = webdriver.Chrome(options=chrome_options)
+ 
+# Authenticate (inject script)
+driver.execute_cdp_cmd('Network.enable', {})
+driver.execute_cdp_cmd('Network.setExtraHTTPHeaders', {
+    'headers': {
+        'Proxy-Authorization': f'Basic {PROXY_USER}:{PROXY_PASS}'
+    }
+})
+ 
+# Use driver
+driver.get('https://httpbin.org/ip')
+print(driver.page_source)
+driver.quit()
+```
+
+**Firefox:**
+
+```python
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+ 
+PROXY_HOST = "geo.g-w.info"
+PROXY_PORT = 10080
+PROXY_USER = "user123-res-country-US"
+PROXY_PASS = "your_password"
+ 
+firefox_options = Options()
+firefox_options.set_preference('network.proxy.type', 1)
+firefox_options.set_preference('network.proxy.http', PROXY_HOST)
+firefox_options.set_preference('network.proxy.http_port', PROXY_PORT)
+firefox_options.set_preference('network.proxy.ssl', PROXY_HOST)
+firefox_options.set_preference('network.proxy.ssl_port', PROXY_PORT)
+ 
+# Authentication
+firefox_options.set_preference('network.proxy.username', PROXY_USER)
+firefox_options.set_preference('network.proxy.password', PROXY_PASS)
+ 
+driver = webdriver.Firefox(options=firefox_options)
+driver.get('https://httpbin.org/ip')
+print(driver.page_source)
+driver.quit()
+```
+
+**Alternative: Using proxy authentication extension:**
+
+```python
+from selenium import webdriver
+import zipfile
+import os
+ 
+def create_proxy_auth_extension(proxy_host, proxy_port, proxy_user, proxy_pass):
+    manifest_json = """
+    {
+        "version": "1.0.0",
+        "manifest_version": 2,
+        "name": "Chrome Proxy",
+        "permissions": ["proxy", "tabs", "unlimitedStorage", "storage", "webRequest", "webRequestBlocking"],
+        "background": {"scripts": ["background.js"]},
+        "minimum_chrome_version": "76.0.0"
+    }
+    """
+    
+    background_js = f"""
+    var config = {{
+        mode: "fixed_servers",
+        rules: {{
+            singleProxy: {{
+                scheme: "http",
+                host: "{proxy_host}",
+                port: {proxy_port}
+            }},
+            bypassList: ["localhost"]
+        }}
+    }};
+ 
+    chrome.proxy.settings.set({{value: config, scope: "regular"}}, function() {{}});
+ 
+    function callbackFn(details) {{
+        return {{
+            authCredentials: {{
+                username: "{proxy_user}",
+                password: "{proxy_pass}"
+            }}
+        }};
+    }}
+ 
+    chrome.webRequest.onAuthRequired.addListener(
+        callbackFn,
+        {{urls: ["<all_urls>"]}},
+        ['blocking']
+    );
+    """
+    
+    # Create extension
+    pluginfile = 'proxy_auth_plugin.zip'
+    
+    with zipfile.ZipFile(pluginfile, 'w') as zp:
+        zp.writestr("manifest.json", manifest_json)
+        zp.writestr("background.js", background_js)
+    
+    return pluginfile
+ 
+# Use extension
+proxy_extension = create_proxy_auth_extension(
+    'geo.g-w.info',
+    10080,
+    'user123-res-country-US',
+    'your_password'
+)
+ 
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_extension(proxy_extension)
+ 
+driver = webdriver.Chrome(options=chrome_options)
+driver.get('https://httpbin.org/ip')
+print(driver.page_source)
+driver.quit()
+ 
+# Cleanup
+os.remove(proxy_extension)
+```
+
+### Puppeteer
+
+**Install:**
+
+```bash
+npm install puppeteer
+```
+
+**Basic setup:**
+
+```javascript
+const puppeteer = require('puppeteer');
+ 
+(async () => {
+    const PROXY_USER = 'user123-res-country-US-session-pup01';
+    const PROXY_PASS = 'your_password';
+    const PROXY_SERVER = 'geo.g-w.info:10080';
+ 
+    const browser = await puppeteer.launch({
+        args: [`--proxy-server=${PROXY_SERVER}`]
+    });
+ 
+    const page = await browser.newPage();
+ 
+    // Authenticate
+    await page.authenticate({
+        username: PROXY_USER,
+        password: PROXY_PASS
+    });
+ 
+    // Navigate
+    await page.goto('https://httpbin.org/ip');
+    
+    const content = await page.content();
+    console.log(content);
+ 
+    await browser.close();
+})();
+```
+
+**With custom User-Agent:**
+
+```javascript
+const puppeteer = require('puppeteer');
+ 
+(async () => {
+    const browser = await puppeteer.launch({
+        args: ['--proxy-server=geo.g-w.info:10080']
+    });
+ 
+    const page = await browser.newPage();
+ 
+    await page.authenticate({
+        username: 'user123-res-country-US',
+        password: 'your_password'
+    });
+ 
+    // Set User-Agent
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36');
+ 
+    await page.goto('https://example.com');
+    
+    const title = await page.title();
+    console.log(title);
+ 
+    await browser.close();
+})();
+```
+
+### Playwright
+
+**Install:**
+
+```bash
+npm install playwright
+```
+
+**Chromium:**
+
+```javascript
+const { chromium } = require('playwright');
+ 
+(async () => {
+    const browser = await chromium.launch({
+        proxy: {
+            server: 'http://geo.g-w.info:10080',
+            username: 'user123-res-country-US',
+            password: 'your_password'
+        }
+    });
+ 
+    const page = await browser.newPage();
+    await page.goto('https://httpbin.org/ip');
+    
+    const content = await page.content();
+    console.log(content);
+ 
+    await browser.close();
+})();
+```
+
+**Firefox:**
+
+```javascript
+const { firefox } = require('playwright');
+ 
+(async () => {
+    const browser = await firefox.launch({
+        proxy: {
+            server: 'http://geo.g-w.info:10080',
+            username: 'user123-res-country-US-session-ff01',
+            password: 'your_password'
+        }
+    });
+ 
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    
+    await page.goto('https://example.com');
+    const title = await page.title();
+    console.log(title);
+ 
+    await browser.close();
+})();
+```
+
+**Python (Playwright):**
+
+```python
+from playwright.sync_api import sync_playwright
+ 
+with sync_playwright() as p:
+    browser = p.chromium.launch(
+        proxy={
+            'server': 'http://geo.g-w.info:10080',
+            'username': 'user123-res-country-US',
+            'password': 'your_password'
+        }
+    )
+    
+    page = browser.new_page()
+    page.goto('https://httpbin.org/ip')
+    
+    print(page.content())
+    browser.close()
+```
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="Use environment variables" icon="shield">
+    Never hardcode credentials in your code
+  </Card>
+
+  <Card title="Sessions for multi-step flows" icon="link">
+    Use sessions for login, checkout, and account workflows
+  </Card>
+
+  <Card title="Rotation for scraping" icon="arrows-rotate">
+    Use rotation when collecting data from many pages
+  </Card>
+
+  <Card title="Error handling" icon="triangle-exclamation">
+    Always handle proxy errors and implement retry logic
+  </Card>
+</CardGroup>
+
+### Example error handling
+
+```python
+import requests
+import time
+ 
+def make_request_with_retry(url, proxies, max_retries=3):
+    for attempt in range(max_retries):
+        try:
+            response = requests.get(url, proxies=proxies, timeout=30)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.ProxyError:
+            print(f"Proxy error on attempt {attempt + 1}")
+            if attempt == max_retries - 1:
+                raise
+            time.sleep(2 ** attempt)  # Exponential backoff
+        except requests.exceptions.Timeout:
+            print(f"Timeout on attempt {attempt + 1}")
+            time.sleep(5)
+    
+    return None
+```
