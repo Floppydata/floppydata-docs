@@ -46,6 +46,7 @@
       },
       {
         "tab": "Introduction",
+        "hidden": true,
         "pages": [
           "Overview",
           {
@@ -144,6 +145,7 @@
       },
       {
         "tab": "Web Unlocker",
+        "hidden": true,
         "pages": [
           "overview",
           "getting-started",
