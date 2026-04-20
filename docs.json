@@ -28,6 +28,15 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "Getting Started",
+        "hidden": true,
+        "pages": [
+          "owerwiew",
+          "authentication",
+          "quick-start-1"
+        ]
+      },
+      {
         "tab": "Introduction",
         "pages": [
           "Overview",
@@ -136,13 +145,8 @@
         ]
       },
       {
-        "tab": "Getting Started",
-        "hidden": true,
-        "pages": [
-          "owerwiew",
-          "authentication",
-          "quick-start-1"
-        ]
+        "tab": "Proxies",
+        "hidden": true
       }
     ]
   },
