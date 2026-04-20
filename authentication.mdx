@@ -1,0 +1,417 @@
+---
+title: "Authentication"
+---
+
+## Get your credentials and learn how to authenticate with Floppydata
+
+Floppydata uses two authentication methods depending on which product you're using.
+
+## Authentication methods
+
+| Product | Authentication | Format |
+| --- | --- | --- |
+| **Proxies** | Username \+ Password | Passed in proxy connection string |
+| **Web Unlocker** | API Key | Passed in `X-Api-Key` header |
+| **Client API** | API Key | Passed in `X-Api-Key` header |
+
+## Getting your credentials
+
+<Steps>
+  <Step title="Log in to dashboard">
+    Go to [app.floppydata.com](https://app.floppydata.com) and log in
+  </Step>
+  <Step title="Navigate to settings">
+    Click on your profile icon → **Settings** → **API Keys & Credentials**
+  </Step>
+  <Step title="Copy your credentials">
+    You'll see:
+
+    **For Proxies:**
+
+    ```text
+    Username: user_abc123xyz
+    Password: your_secure_password_here
+    ```
+
+    **For API access:**
+
+    ```text
+    API Key: floppy_live_1234567890abcdefghijklmnop
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+  Click the copy icon to copy credentials to clipboard
+</Tip>
+
+## Using proxy credentials
+
+### Connection format
+
+```text
+http://USERNAME:PASSWORD@geo.g-w.info:PORT
+```
+
+### Example
+
+```text
+http://user_abc123xyz:your_password@geo.g-w.info:10080
+```
+
+### Available ports
+
+| Port | Protocol | Use case |
+| --- | --- | --- |
+| `10080` | HTTP | Default, works with most tools |
+| `10443` | HTTPS | Secure HTTP connection |
+| `10800` | SOCKS5 | Advanced use, automation tools |
+
+<Tip>
+  Not sure which port? Start with **10080** (HTTP)
+</Tip>
+
+### Adding Smart Parameters
+
+Smart Parameters control proxy behavior. They're added to the username:
+
+```text
+USERNAME-parameter1-value1-parameter2-value2
+```
+
+**Example: US Residential proxy with sticky session**
+
+```text
+user_abc123xyz-res-country-US-session-mysession01
+```
+
+<Card title="Learn more about Smart Parameters" icon="wand-magic-sparkles" href="/proxies/basics#smart-parameters">
+  See all available parameters and how to use themUsing API keys
+</Card>
+
+### For Web Unlocker
+
+Pass your API key in the `X-Api-Key` header:
+
+<CodeGroup>
+
+```python Python
+import requests
+ 
+headers = {
+    'X-Api-Key': 'floppy_live_1234567890abcdefghijklmnop',
+    'Content-Type': 'application/json'
+}
+ 
+response = requests.post(
+    'https://client-api.floppy.host/v1/unlocker',
+    headers=headers,
+    json={'url': 'https://example.com'}
+)
+```
+
+```javascript Node.js
+const axios = require('axios');
+ 
+const headers = {
+    'X-Api-Key': 'floppy_live_1234567890abcdefghijklmnop',
+    'Content-Type': 'application/json'
+};
+ 
+const response = await axios.post(
+    'https://client-api.floppy.host/v1/unlocker',
+    { url: 'https://example.com' },
+    { headers }
+);
+```
+
+```bash cURL
+curl -X POST \
+  -H "X-Api-Key: floppy_live_1234567890abcdefghijklmnop" \
+  -H "Content-Type: application/json" \
+  -d '{"url": "https://example.com"}' \
+  https://client-api.floppy.host/v1/unlocker
+```
+
+</CodeGroup>
+
+### For Client API endpoints
+
+Same format for all Client API requests:
+
+```bash
+curl -H "X-Api-Key: YOUR_API_KEY" \
+  https://client-api.floppy.host/v1/rotating/balance
+```
+
+## Security best practices
+
+<AccordionGroup>
+  <Accordion title="✅ DO — Use environment variables" icon="check">
+    ```python Python
+    import os
+    PROXY_USER = os.getenv('FLOPPY_USER')
+    PROXY_PASS = os.getenv('FLOPPY_PASS')
+    API_KEY = os.getenv('FLOPPY_API_KEY')
+    ```
+
+    **Store in .env file:**
+
+    ```bash
+    # .env
+    FLOPPY_USER=user_abc123xyz
+    FLOPPY_PASS=your_password
+    FLOPPY_API_KEY=floppy_live_1234567890abcdefghijklmnop
+    ```
+
+    **Add .env to .gitignore:**
+
+    ```bash
+    # .gitignore
+    .env
+    *.env
+    ```
+  </Accordion>
+
+  <Accordion title="✅ DO — Rotate API keys periodically" icon="check">
+    Generate new keys every 3-6 months in Dashboard → Settings
+  </Accordion>
+
+  <Accordion title="✅ DO — Use IP whitelisting" icon="check">
+    Restrict API access to specific IPs for extra security (if available in your plan)
+  </Accordion>
+
+  <Accordion title="❌ DON'T — Hardcode credentials" icon="xmark">
+    - ❌ Hardcode credentials in source code
+    - ❌ Commit credentials to Git repositories
+    - ❌ Share credentials in plain text (email, chat)
+    - ❌ Use the same password for multiple services
+    - ❌ Expose credentials in logs or error messages
+    - ❌ Store credentials in browser localStorage
+  </Accordion>
+</AccordionGroup>
+
+## Testing your connection
+
+### Test proxy connection
+
+**Simple test with cURL:**
+
+```bash
+curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 \
+  http://ip-api.com/json
+```
+
+**Expected response:**
+
+```json
+{
+  "query": "123.45.67.89",
+  "country": "United States",
+  "city": "New York",
+  "isp": "ISP Name"
+}
+```
+
+<Check>
+  If you see a different IP than your own → **Proxy is working!**
+</Check>
+
+### Test API key
+
+```bash
+curl -H "X-Api-Key: YOUR_API_KEY" \
+  https://client-api.floppy.host/v1/rotating/balance
+```
+
+**Expected response:**
+
+```json
+{
+  "balance": 10.50,
+  "currency": "USD"
+}
+```
+
+<Check>
+  If you see your balance → **API Key is working!**
+</Check>
+
+## Quick setup examples
+
+<Tabs>
+  <Tab title="Python">
+    **1. Install dependencies**
+
+    ```bash
+    pip install python-dotenv requests
+    ```
+
+    **2. Create .env file**
+
+    ```bash
+    FLOPPY_USER=user_abc123xyz
+    FLOPPY_PASS=your_password
+    FLOPPY_API_KEY=floppy_live_1234567890abcdefghijklmnop
+    ```
+
+    **3. Use in your code**
+
+    ```python
+    import os
+    import requests
+    from dotenv import load_dotenv
+    
+    load_dotenv()
+    
+    # For Proxy
+    proxy_url = f"http://{os.getenv('FLOPPY_USER')}:{os.getenv('FLOPPY_PASS')}@geo.g-w.info:10080"
+    proxies = {'http': proxy_url, 'https': proxy_url}
+    
+    response = requests.get('http://example.com', proxies=proxies)
+    
+    # For Web Unlocker / API
+    headers = {'X-Api-Key': os.getenv('FLOPPY_API_KEY')}
+    response = requests.post(
+        'https://client-api.floppy.host/v1/unlocker',
+        headers=headers,
+        json={'url': 'https://example.com'}
+    )
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    **1. Install dependencies**
+
+    ```bash
+    npm install dotenv axios
+    ```
+
+    **2. Create .env file**
+
+    ```bash
+    FLOPPY_USER=user_abc123xyz
+    FLOPPY_PASS=your_password
+    FLOPPY_API_KEY=floppy_live_1234567890abcdefghijklmnop
+    ```
+
+    **3. Use in your code**
+
+    ```javascript
+    require('dotenv').config();
+    const axios = require('axios');
+    
+    // For Proxy
+    const proxy = {
+        host: 'geo.g-w.info',
+        port: 10080,
+        auth: {
+            username: process.env.FLOPPY_USER,
+            password: process.env.FLOPPY_PASS
+        }
+    };
+    
+    axios.get('http://example.com', { proxy })
+        .then(response => console.log(response.data));
+    
+    // For Web Unlocker / API
+    const headers = { 'X-Api-Key': process.env.FLOPPY_API_KEY };
+    
+    axios.post(
+        'https://client-api.floppy.host/v1/unlocker',
+        { url: 'https://example.com' },
+        { headers }
+    ).then(response => console.log(response.data));
+    ```
+  </Tab>
+</Tabs>
+
+## Managing API keys
+
+### Creating new keys
+
+<Steps>
+  <Step title="Navigate to API keys">
+    Go to Dashboard → Settings → API Keys
+  </Step>
+  <Step title="Generate new key">
+    Click **"Generate New Key"** and give it a descriptive name
+  </Step>
+  <Step title="Copy and store">
+    Copy the key immediately (it won't be shown again) and store securely
+  </Step>
+</Steps>
+
+### Rotating keys
+
+<Info>
+  **Why rotate?**
+
+  - Security best practice
+  - Compromised credentials
+  - Team member changes
+  - Regular maintenance
+</Info>
+
+**How to rotate:**
+
+1. Generate new API key
+2. Update your applications with new key
+3. Test that new key works
+4. Delete old key from dashboard
+
+### Deleting keys
+
+<Warning>
+  Deleting a key immediately invalidates it. Update your apps first!
+</Warning>
+
+1. Go to Dashboard → Settings → API Keys
+2. Find the key to delete
+3. Click **Delete** icon
+4. Confirm deletion
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="407 Proxy Authentication Required" icon="triangle-exclamation">
+    **Cause**: Incorrect username or password
+
+    **Solutions**:
+
+    1. Double-check credentials in dashboard
+    2. Ensure no extra spaces in username/password
+    3. Try copying credentials again
+    4. Check for special characters that need URL encoding
+  </Accordion>
+
+  <Accordion title="401 Unauthorized (API Key)" icon="triangle-exclamation">
+    **Cause**: Invalid or missing API key
+
+    **Solutions**:
+
+    1. Verify API key in dashboard
+    2. Check header name is exactly `X-Api-Key`
+    3. Ensure key hasn't been deleted
+    4. Generate new key if needed
+  </Accordion>
+
+  <Accordion title="403 Forbidden" icon="triangle-exclamation">
+    **Cause**: IP whitelisting enabled but your IP not added
+
+    **Solutions**:
+
+    1. Check if IP whitelisting is enabled (Dashboard → Settings)
+    2. Add your current IP to whitelist
+    3. Get your current IP: `curl https://api.ipify.org`
+  </Accordion>
+
+  <Accordion title="Connection Refused" icon="triangle-exclamation">
+    **Cause**: Wrong host or port
+
+    **Solutions**:
+
+    1. Verify host is `geo.g-w.info` (not .com or other variations)
+    2. Check port: 10080 (HTTP), 10443 (HTTPS), or 10800 (SOCKS5)
+    3. Check firewall settings
+  </Accordion>
+</AccordionGroup>

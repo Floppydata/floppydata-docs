@@ -38,6 +38,7 @@
               "ip-types-overview",
               "smart-parameters-and-username-structure",
               "sessions-and-rotation",
+              "untitled-page",
               "geo",
               "quick-start"
             ]
@@ -138,7 +139,9 @@
         "tab": "Getting Started",
         "hidden": true,
         "pages": [
-          "owerwiew"
+          "owerwiew",
+          "authentication",
+          "quick-start-1"
         ]
       }
     ]
