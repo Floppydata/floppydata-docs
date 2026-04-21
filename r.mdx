@@ -261,14 +261,26 @@ This means:
 </ParamField>
 
 <ParamField path="state" type="string">
-  US state targeting (abbreviation or full name)
+  US state targeting (full name or abbreviation)
 
   **Examples:**
 
-  - `state-CA` or `state-California`
-  - `state-NY` or `state-New_York`
+  - `state-California` or `state-CA`
+  - `state-North_Carolina` or `state-NC`
 
-  **Example:** `user123-res-country-US-state-TX`
+  **Works with:** Residential and Mobile proxies only
+
+  **Example:** `user123-res-country-US-state-California`
+</ParamField>
+
+<ParamField path="asn" type="number">
+  Target specific ISP network by Autonomous System Number
+
+  **Example:** `user123-res-country-US-asn-7018`
+
+  **Works with:** Residential and Mobile proxies only
+
+  **Use case:** Better compatibility with specific ISP networks
 </ParamField>
 
 <ParamField path="session" type="string">
