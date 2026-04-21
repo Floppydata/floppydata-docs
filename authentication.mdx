@@ -144,53 +144,6 @@ curl -H "X-Api-Key: YOUR_API_KEY" \
   https://client-api.floppy.host/v1/rotating/balance
 ```
 
-## Security best practices
-
-<AccordionGroup>
-  <Accordion title="✅ DO — Use environment variables" icon="check">
-    ```python Python
-    import os
-    PROXY_USER = os.getenv('FLOPPY_USER')
-    PROXY_PASS = os.getenv('FLOPPY_PASS')
-    API_KEY = os.getenv('FLOPPY_API_KEY')
-    ```
-
-    **Store in .env file:**
-
-    ```bash
-    # .env
-    FLOPPY_USER=user_abc123xyz
-    FLOPPY_PASS=your_password
-    FLOPPY_API_KEY=floppy_live_1234567890abcdefghijklmnop
-    ```
-
-    **Add .env to .gitignore:**
-
-    ```bash
-    # .gitignore
-    .env
-    *.env
-    ```
-  </Accordion>
-
-  <Accordion title="✅ DO — Rotate API keys periodically" icon="check">
-    Generate new keys every 3-6 months in Dashboard → Settings
-  </Accordion>
-
-  <Accordion title="✅ DO — Use IP whitelisting" icon="check">
-    Restrict API access to specific IPs for extra security (if available in your plan)
-  </Accordion>
-
-  <Accordion title="❌ DON'T — Hardcode credentials" icon="xmark">
-    - ❌ Hardcode credentials in source code
-    - ❌ Commit credentials to Git repositories
-    - ❌ Share credentials in plain text (email, chat)
-    - ❌ Use the same password for multiple services
-    - ❌ Expose credentials in logs or error messages
-    - ❌ Store credentials in browser localStorage
-  </Accordion>
-</AccordionGroup>
-
 ## Testing your connection
 
 ### Test proxy connection

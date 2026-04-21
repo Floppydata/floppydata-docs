@@ -1,0 +1,524 @@
+---
+title: "Browser & Extension Setup"
+---
+
+Learn how to set up Floppydata proxies in your browser or antidetect browser for anonymous browsing, multi-accounting, and bypassing geo-restrictions.
+
+<Note>
+  **For non-developers:** This guide is for users who want to use proxies in browsers, extensions, or antidetect browsers — no programming knowledge required!
+</Note>
+
+## What you'll need
+
+Before starting, make sure you have:
+
+<Steps>
+  <Step title="Floppydata account">
+    [Sign up](https://app.floppydata.com/register) if you don't have one
+  </Step>
+  <Step title="Your proxy credentials">
+    Find them in [Dashboard → Settings](https://app.floppydata.com/settings):
+
+    - Username: `user123`
+    - Password: `your_password`
+  </Step>
+  <Step title="Proxy connection details">
+    - **Server/Host**: `geo.g-w.info`
+    - **Port**: `10080` (HTTP) or `10800` (SOCKS5)
+    - **Type**: HTTP or SOCKS5
+  </Step>
+</Steps>
+
+## Quick setup options
+
+<CardGroup cols={3}>
+  <Card title="Regular Browsers" icon="globe" href="#regular-browsers">
+    Chrome, Firefox, Safari, Edge
+  </Card>
+
+  <Card title="Antidetect Browsers" icon="mask" href="#antidetect-browsers">
+    Multi-account management tools
+  </Card>
+
+  <Card title="Browser Extensions" icon="puzzle-piece" href="#browser-extensions">
+    FoxyProxy, SwitchyOmega
+  </Card>
+</CardGroup>
+
+## Regular browsers
+
+### Chrome / Edge
+
+<Tabs>
+  <Tab title="Windows">
+    **Option 1: Using system proxy settings**
+
+    1. Open Windows Settings → **Network & Internet** → **Proxy**
+    2. Under "Manual proxy setup", toggle **On**
+    3. Enter proxy details:
+       - **Address**: `geo.g-w.info`
+       - **Port**: `10080`
+    4. Click **Save**
+
+    **Option 2: Using Chrome extension**
+
+    See [Browser Extensions](#browser-extensions) section below
+  </Tab>
+  <Tab title="macOS">
+    1. Open **System Preferences** → **Network**
+    2. Select your active connection (Wi-Fi or Ethernet)
+    3. Click **Advanced** → **Proxies** tab
+    4. Check **Web Proxy (HTTP)** and/or **Secure Web Proxy (HTTPS)**
+    5. Enter:
+       - **Server**: `geo.g-w.info`
+       - **Port**: `10080`
+       - **Username**: Your Floppydata username
+       - **Password**: Your Floppydata password
+    6. Click **OK** → **Apply**
+  </Tab>
+</Tabs>
+
+<Warning>
+  **Authentication in Chrome/Edge system proxy:** Windows/Mac system proxies don't always prompt for authentication. If you get "407 Proxy Authentication Required" errors, use a browser extension instead (see below).
+</Warning>
+
+### Firefox
+
+Firefox has built-in proxy settings with authentication support:
+
+<Steps>
+  <Step title="Open Settings">
+    Menu (≡) → **Settings** → **General**
+
+    Scroll down to **Network Settings** → Click **Settings...**
+  </Step>
+  <Step title="Configure proxy">
+    Select **Manual proxy configuration**
+
+    Enter:
+
+    - **HTTP Proxy**: `geo.g-w.info`
+    - **Port**: `10080`
+    - Check **"Also use this proxy for HTTPS"**
+  </Step>
+  <Step title="Test connection">
+    Click **OK** and visit [http://ip-api.com](http://ip-api.com)
+
+    Firefox will prompt for username and password — enter your Floppydata credentials
+  </Step>
+</Steps>
+
+<Tip>
+  **Smart Parameters in Firefox:** When Firefox prompts for username, you can add Smart Parameters:
+
+  ```text
+  user123-res-country-US-session-firefox01
+  ```
+</Tip>
+
+### Safari (macOS)
+
+Safari uses system proxy settings:
+
+<Steps>
+  <Step title="Open Network Settings">
+    **System Preferences** → **Network**
+  </Step>
+  <Step title="Configure proxy">
+    1. Select your connection (Wi-Fi/Ethernet)
+    2. Click **Advanced** → **Proxies**
+    3. Check **Web Proxy (HTTP)**
+    4. Enter:
+       - **Server**: `geo.g-w.info`
+       - **Port**: `10080`
+       - **Username**: Your username
+       - **Password**: Your password
+    5. Click **OK** → **Apply**
+  </Step>
+</Steps>
+
+## Antidetect browsers
+
+Antidetect browsers are designed for multi-accounting and managing multiple browser profiles with different fingerprints and proxies.
+
+### Dolphin Anty
+
+**Popular for:** E-commerce, social media, traffic arbitrage
+
+<Steps>
+  <Step title="Create new profile">
+    Click **"New Profile"** in Dolphin Anty
+  </Step>
+  <Step title="Configure proxy">
+    In the profile creation window:
+
+    1. Go to **Proxy** section
+    2. Select proxy type: **HTTP** or **SOCKS5**
+    3. Enter:
+       - **Host**: `geo.g-w.info`
+       - **Port**: `10080` (HTTP) or `10800` (SOCKS5)
+       - **Login**: `user123-res-country-US-session-profile01`
+       - **Password**: Your password
+    4. Click **Check Proxy** to test
+  </Step>
+  <Step title="Save and launch">
+    Click **"Create"** and launch the profile
+
+    Each profile can have different proxy settings!
+  </Step>
+</Steps>
+
+<Tip>
+  **Pro tip:** Use unique session IDs for each profile:
+
+  - Profile 1: `user123-res-country-US-session-profile01`
+  - Profile 2: `user123-res-country-US-session-profile02` This gives each profile a different IP address.
+</Tip>
+
+---
+
+### AdsPower
+
+**Popular for:** Facebook ads, TikTok, Amazon
+
+<Steps>
+  <Step title="Open profile settings">
+    Click **"New Profile"** or edit existing profile
+  </Step>
+  <Step title="Configure proxy">
+    Under **Proxy Settings**:
+
+    1. Proxy Type: **HTTP** or **SOCKS5**
+    2. Proxy Host: `geo.g-w.info`
+    3. Proxy Port: `10080` or `10800`
+    4. Proxy Account: Your username with Smart Parameters
+    5. Proxy Password: Your password
+    6. Click **Test Proxy**
+  </Step>
+  <Step title="Save profile">
+    Click **OK** to save
+  </Step>
+</Steps>
+
+### Multilogin
+
+**Popular for:** Professional multi-accounting, high-security needs
+
+<Steps>
+  <Step title="Create browser profile">
+    Click **"Create New Profile"**
+  </Step>
+  <Step title="Set up proxy">
+    In **Connection** tab:
+
+    1. Connection Type: **Proxy**
+    2. Proxy Type: **HTTP** or **SOCKS5**
+    3. Host: `geo.g-w.info`
+    4. Port: `10080` or `10800`
+    5. Username: `user123-res-country-US`
+    6. Password: Your password
+    7. Click **Test Connection**
+  </Step>
+</Steps>
+
+### Octo Browser
+
+**Popular for:** Affiliate marketing, dropshipping
+
+<Steps>
+  <Step title="Create profile">
+    Click **"Add Profile"**
+  </Step>
+  <Step title="Proxy configuration">
+    Scroll to **Proxy** section:
+
+    1. Add New Proxy
+    2. Type: **HTTP** or **SOCKS5**
+    3. Address: `geo.g-w.info:10080`
+    4. Login: Your username
+    5. Password: Your password
+    6. Click **Check**
+  </Step>
+</Steps>
+
+### Gologin
+
+**Popular for:** Crypto, betting, social media
+
+<Steps>
+  <Step title="Create profile">
+    Click **"Create Profile"**
+  </Step>
+  <Step title="Add proxy">
+    Under **Proxy**:
+
+    1. Protocol: **HTTP** or **SOCKS5**
+    2. Host: `geo.g-w.info`
+    3. Port: `10080` or `10800`
+    4. Login: Your username (can include Smart Parameters)
+    5. Password: Your password
+    6. Click **Check Proxy**
+  </Step>
+</Steps>
+
+### Undetectable
+
+**Popular for:** Amazon, eBay, e-commerce
+
+<Steps>
+  <Step title="Profile setup">
+    Create new profile → **Proxy** tab
+  </Step>
+  <Step title="Enter details">
+    - Type: **HTTP** or **SOCKS5**
+    - Address: `geo.g-w.info`
+    - Port: `10080` or `10800`
+    - Username: Your username
+    - Password: Your password
+  </Step>
+</Steps>
+
+## Browser extensions
+
+Extensions make it easy to switch proxies on/off without changing system settings.
+
+### FoxyProxy (Chrome, Firefox, Edge)
+
+**Most popular proxy extension**
+
+<Steps>
+  <Step title="Install extension">
+    - [Chrome Web Store](https://chrome.google.com/webstore/detail/foxyproxy)
+    - [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/foxyproxy-standard/)
+  </Step>
+  <Step title="Add proxy">
+    1. Click FoxyProxy icon → **Options**
+    2. Click **Add** (new proxy)
+    3. Enter:
+       - **Title**: Floppydata US
+       - **Type**: HTTP or SOCKS5
+       - **Hostname**: `geo.g-w.info`
+       - **Port**: `10080` or `10800`
+       - **Username**: `user123-res-country-US`
+       - **Password**: Your password
+    4. Click **Save**
+  </Step>
+  <Step title="Activate proxy">
+    Click FoxyProxy icon → Select your proxy
+
+    The icon will turn colored when proxy is active
+  </Step>
+</Steps>
+
+<Tip>
+  **Create multiple proxies** for different locations:
+
+  - Floppydata US: `user123-res-country-US`
+  - Floppydata UK: `user123-res-country-GB`
+  - Floppydata Mobile: `user123-mobile-country-US`
+</Tip>
+
+### Proxy SwitchyOmega (Chrome, Edge)
+
+**Advanced proxy management**
+
+<Steps>
+  <Step title="Install">
+    [Chrome Web Store](https://chrome.google.com/webstore/detail/proxy-switchyomega)
+  </Step>
+  <Step title="Create profile">
+    1. Click extension icon → **Options**
+    2. Click **New Profile** → Name it "Floppydata"
+    3. Select **Proxy Profile**
+  </Step>
+  <Step title="Configure">
+    Under your new profile:
+
+    - Protocol: **HTTP** or **SOCKS5**
+    - Server: `geo.g-w.info`
+    - Port: `10080` or `10800`
+    - Authentication: **Enable**
+    - Username: Your username
+    - Password: Your password
+
+    Click **Apply Changes**
+  </Step>
+  <Step title="Use proxy">
+    Click extension icon → Select "Floppydata" profile
+  </Step>
+</Steps>
+
+## Mobile devices
+
+### iOS (iPhone/iPad)
+
+<Steps>
+  <Step title="Open Wi-Fi settings">
+    **Settings** → **Wi-Fi** → Tap (i) next to your network
+  </Step>
+  <Step title="Configure proxy">
+    Scroll to **HTTP PROXY** section:
+
+    1. Tap **Configure Proxy** → **Manual**
+    2. Enter:
+       - **Server**: `geo.g-w.info`
+       - **Port**: `10080`
+       - **Authentication**: ON
+       - **Username**: Your username
+       - **Password**: Your password
+    3. Tap **Save**
+  </Step>
+</Steps>
+
+<Note>
+  iOS system proxy applies to Safari and most apps
+</Note>
+
+### Android
+
+<Steps>
+  <Step title="Open Wi-Fi settings">
+    **Settings** → **Network & Internet** → **Wi-Fi**
+
+    Long-press your connected network → **Modify Network**
+  </Step>
+  <Step title="Show advanced options">
+    Tap **Advanced Options**
+
+    Set **Proxy** to **Manual**
+  </Step>
+  <Step title="Enter details">
+    - **Proxy hostname**: `geo.g-w.info`
+    - **Proxy port**: `10080`
+
+    Tap **Save**
+  </Step>
+</Steps>
+
+<Warning>
+  Android system proxy doesn't support authentication natively. For authenticated proxies, use apps like:
+
+  - **Drony** (Play Store)
+  - **ProxyDroid** (Play Store)
+  - **SocksDroid** (for SOCKS5)
+</Warning>
+
+## Testing your proxy
+
+After setup, verify your proxy is working:
+
+### Quick test websites
+
+Visit these sites to check your proxy IP:
+
+- [**https://ipinfo.io**](https://ipinfo.io) — Shows your IP and location
+- [**https://ip-api.com**](https://ip-api.com) — Detailed geo info
+- [**https://whoer.net**](https://whoer.net) — IP and anonymity check
+- [**https://browserleaks.com**](https://browserleaks.com) — Full privacy check
+
+<Check>
+  **What to verify:**
+
+  - IP address is different from your real IP
+  - Location matches your proxy country
+  - No DNS leaks
+  - WebRTC not leaking real IP
+</Check>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Proxy not connecting" icon="plug">
+    **Check:**
+
+    1. Credentials are correct (copy fresh from dashboard)
+    2. Port is correct: `10080` (HTTP) or `10800` (SOCKS5)
+    3. Host is exactly: `geo.g-w.info` (not .com)
+    4. No extra spaces in username/password
+
+    **Test:**
+
+    ```bash
+    curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 http://ip-api.com/json
+    ```
+  </Accordion>
+
+  <Accordion title="407 Authentication error" icon="key">
+    **Causes:**
+
+    - Wrong username or password
+    - Special characters not encoded
+    - Extra spaces
+
+    **Solutions:**
+
+    1. Copy credentials again from dashboard
+    2. Remove any spaces before/after
+    3. Try resetting password in dashboard
+  </Accordion>
+
+  <Accordion title="Slow connection" icon="gauge">
+    **Try:**
+
+    1. Switch proxy type: Datacenter is fastest
+       - `user123-dc-country-US`
+    2. Choose closer location to your target
+    3. Check if target website is slow (not proxy issue)
+  </Accordion>
+
+  <Accordion title="IP keeps changing" icon="arrows-rotate">
+    **Cause:** You're not using a session parameter
+
+    **Solution:** Add session to keep same IP:
+
+    ```text
+    user123-res-country-US-session-stable01
+    ```
+  </Accordion>
+
+  <Accordion title="Website detects proxy" icon="eye">
+    **Try:**
+
+    1. Use Mobile proxies (highest trust)
+       - `user123-mobile-country-US`
+    2. Use residential instead of datacenter
+    3. Add realistic user agent in browser
+    4. Consider Web Unlocker for heavily protected sites
+  </Accordion>
+</AccordionGroup>
+
+## Best practices
+
+<CardGroup cols={2}>
+  <Card title="For multi-accounting" icon="users">
+    - Use separate session ID per account
+    - Never share proxies between linked accounts
+    - Use Static ISP for important accounts (Facebook ads, Amazon)
+    - Stay consistent (don't change countries)
+  </Card>
+
+  <Card title="For privacy" icon="lock">
+    - Use residential proxies (look like real users)
+    - Enable rotation for different IP each time
+    - Check for DNS/WebRTC leaks
+    - Use HTTPS websites
+  </Card>
+
+  <Card title="For social media" icon="heart">
+    - Mobile proxies have highest trust
+    - Use unique session per account
+    - Don't switch locations frequently
+    - Add realistic delays between actions
+  </Card>
+
+  <Card title="For e-commerce" icon="cart-shopping">
+    - Static ISP proxies prevent account linking
+    - One dedicated IP per store/account
+    - Never log into multiple accounts from same IP
+    - Keep proxy consistent over time
+  </Card>
+</CardGroup>
+
+<Info>
+  **For developers:** Looking for code examples? Check out [Using Proxies](/proxies/using-proxies) for Python, Node.js, and framework integrations.
+</Info>
