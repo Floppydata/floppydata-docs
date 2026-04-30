@@ -47,45 +47,6 @@
         ]
       },
       {
-        "tab": "Introduction",
-        "hidden": true,
-        "pages": [
-          "Overview",
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "how-floppydata-works",
-              "ip-types-overview",
-              "smart-parameters-and-username-structure",
-              "sessions-and-rotation",
-              "untitled-page",
-              "geo",
-              "quick-start"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Integrations",
-        "hidden": true,
-        "pages": [
-          {
-            "group": "Browsers",
-            "pages": []
-          },
-          {
-            "group": "Antidetect Browsers",
-            "pages": [
-              "gologin"
-            ]
-          },
-          {
-            "group": "Python / Node / Playwright System Setup",
-            "pages": []
-          }
-        ]
-      },
-      {
         "tab": "API reference",
         "groups": [
           {
