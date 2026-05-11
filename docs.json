@@ -29,7 +29,6 @@
     "tabs": [
       {
         "tab": "Getting Started",
-        "hidden": true,
         "pages": [
           "owerwiew",
           "authentication",
