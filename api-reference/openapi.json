@@ -5,6 +5,11 @@
     "description": "API documentation for FloppyData Client API. You can manage your API keys in [account settings](https://app.floppydata.com/settings/account)",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://api.floppydata.net"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "apiKeyHeader": {
