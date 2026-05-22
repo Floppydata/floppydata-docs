@@ -103,17 +103,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "Web Unlocker",
-        "hidden": true,
-        "pages": [
-          "overview",
-          "getting-started",
-          "request-options",
-          "usage-and-history",
-          "troubleshooting"
-        ]
       }
     ]
   },
