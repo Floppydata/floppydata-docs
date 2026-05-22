@@ -30,19 +30,18 @@
       {
         "tab": "Getting Started",
         "pages": [
-          "owerwiew",
+          "product-overview",
           "authentication",
-          "quick-start-1"
+          "quickstart"
         ]
       },
       {
         "tab": "Proxies",
-        "hidden": true,
         "pages": [
-          "r",
-          "using-proxies",
-          "troubleshooting-1",
-          "browser-and-extension-setu"
+          "proxies/basics",
+          "proxies/using-proxies",
+          "proxies/troubleshooting",
+          "proxies/browser-and-extension-setup"
         ]
       },
       {
