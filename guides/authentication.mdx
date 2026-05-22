@@ -15,7 +15,7 @@ X-Api-Key: YOUR_API_KEY
 
 ```bash
 export FLOPPY_API_KEY='YOUR_API_KEY'
-export FLOPPY_BASE_URL='https://client-api.floppy.host'
+export FLOPPY_BASE_URL='https://api.floppydata.net'
 ```
 
 ## Health Check Style Call
@@ -29,5 +29,5 @@ curl --request GET \
 ## Common Mistakes
 
 - Missing `X-Api-Key` header
-- Typos in base URL (`client-api.floppy.host`)
+- Typos in base URL (`api.floppydata.net`)
 - Sending request body without `Content-Type: application/json` on POST requests

@@ -104,7 +104,7 @@ headers = {
 }
  
 response = requests.post(
-    'https://client-api.floppy.host/v1/unlocker',
+    'https://api.floppydata.net/v1/unlocker',
     headers=headers,
     json={'url': 'https://example.com'}
 )
@@ -119,7 +119,7 @@ const headers = {
 };
  
 const response = await axios.post(
-    'https://client-api.floppy.host/v1/unlocker',
+    'https://api.floppydata.net/v1/unlocker',
     { url: 'https://example.com' },
     { headers }
 );
@@ -130,7 +130,7 @@ curl -X POST \
   -H "X-Api-Key: floppy_live_1234567890abcdefghijklmnop" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://example.com"}' \
-  https://client-api.floppy.host/v1/unlocker
+  https://api.floppydata.net/v1/unlocker
 ```
 
 </CodeGroup>
@@ -141,7 +141,7 @@ Same format for all Client API requests:
 
 ```bash
 curl -H "X-Api-Key: YOUR_API_KEY" \
-  https://client-api.floppy.host/v1/rotating/balance
+  https://api.floppydata.net/v1/rotating/balance
 ```
 
 ## Testing your connection
@@ -174,7 +174,7 @@ curl -x http://USERNAME:PASSWORD@geo.g-w.info:10080 \
 
 ```bash
 curl -H "X-Api-Key: YOUR_API_KEY" \
-  https://client-api.floppy.host/v1/rotating/balance
+  https://api.floppydata.net/v1/rotating/balance
 ```
 
 **Expected response:**
@@ -226,7 +226,7 @@ curl -H "X-Api-Key: YOUR_API_KEY" \
     # For Web Unlocker / API
     headers = {'X-Api-Key': os.getenv('FLOPPY_API_KEY')}
     response = requests.post(
-        'https://client-api.floppy.host/v1/unlocker',
+        'https://api.floppydata.net/v1/unlocker',
         headers=headers,
         json={'url': 'https://example.com'}
     )
@@ -270,7 +270,7 @@ curl -H "X-Api-Key: YOUR_API_KEY" \
     const headers = { 'X-Api-Key': process.env.FLOPPY_API_KEY };
     
     axios.post(
-        'https://client-api.floppy.host/v1/unlocker',
+        'https://api.floppydata.net/v1/unlocker',
         { url: 'https://example.com' },
         { headers }
     ).then(response => console.log(response.data));

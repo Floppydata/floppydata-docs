@@ -105,7 +105,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://client-api.floppy.host/v1/rotating/balance
+      https://api.floppydata.net/v1/rotating/balance
     ```
 
     **3. Try different proxy parameters**
@@ -229,7 +229,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     response = requests.post(
-        'https://client-api.floppy.host/v1/unlocker',
+        'https://api.floppydata.net/v1/unlocker',
         headers={'X-Api-Key': 'YOUR_KEY'},
         json={'url': 'https://protected-site.com'}
     )
@@ -416,7 +416,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     response = requests.post(
-        'https://client-api.floppy.host/v1/unlocker',
+        'https://api.floppydata.net/v1/unlocker',
         headers={'X-Api-Key': 'YOUR_KEY'},
         json={
             'url': 'https://protected-site.com',
@@ -668,7 +668,7 @@ curl -X POST \
   -d '{
     "connectionString": "http://user-res-country-US:pass@geo.g-w.info:10080"
   }' \
-  https://client-api.floppy.host/v1/tools/checkProxy
+  https://api.floppydata.net/v1/tools/checkProxy
 ```
 
 ## FAQ
@@ -679,7 +679,7 @@ curl -X POST \
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://client-api.floppy.host/v1/rotating/balance
+      https://api.floppydata.net/v1/rotating/balance
     ```
 
     **Via Dashboard:** [app.floppydata.com](https://app.floppydata.com)
@@ -718,7 +718,7 @@ curl -X POST \
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://client-api.floppy.host/v1/rotating/statistics
+      https://api.floppydata.net/v1/rotating/statistics
     ```
 
     Or contact support for custom limits.
