@@ -29,6 +29,11 @@ curl --request GET \
 
 Supported query parameters include `type`, `country`, `city`, `rotation`, `session`, and `protocol`.
 
+- `type` must be `residential`, `mobile`, or `datacenter`.
+- `rotation=-1` requests a new IP every request.
+- `rotation=0` keeps the same IP within a session.
+- `rotation=1..60` rotates after that many minutes.
+
 ## 3. List Available Locations
 
 ```bash

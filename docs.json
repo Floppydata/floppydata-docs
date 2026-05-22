@@ -32,7 +32,8 @@
         "pages": [
           "product-overview",
           "authentication",
-          "quickstart"
+          "quickstart",
+          "development"
         ]
       },
       {
@@ -84,15 +85,6 @@
       {
         "tab": "Guides",
         "groups": [
-          {
-            "group": "Getting started",
-            "root": "index",
-            "pages": [
-              "quickstart",
-              "guides/authentication",
-              "development"
-            ]
-          },
           {
             "group": "By product",
             "root": "guides/rotating-proxy",

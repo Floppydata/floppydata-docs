@@ -112,10 +112,10 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # If city fails, try country only
-    proxy_username = "user123-res-country-US"  # Instead of city
+    proxy_username = "user123-type-residential-country-US"  # Instead of city
     
     # Try different proxy type
-    proxy_username = "user123-mobile-country-US"  # Mobile instead of residential
+    proxy_username = "user123-type-mobile-country-US"  # Mobile instead of residential
     ```
 
     **4. Check target website**
@@ -179,7 +179,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
     
     for i, url in enumerate(urls):
         session = session_ids[i % len(session_ids)]
-        proxy_username = f"user123-res-country-US-session-{session}"
+        proxy_username = f"user123-type-residential-country-US-session-{session}"
         # ... make request
     ```
 
@@ -210,17 +210,17 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # If residential fails, try mobile
-    proxy_username = "user123-mobile-country-US"
+    proxy_username = "user123-type-mobile-country-US"
     
     # Or datacenter
-    proxy_username = "user123-dc-country-US"
+    proxy_username = "user123-type-datacenter-country-US"
     ```
 
     **3. Use session parameter**
 
     ```python
     # Try sticky session
-    proxy_username = "user123-res-country-US-session-retry01"
+    proxy_username = "user123-type-residential-country-US-session-retry01"
     ```
 
     **4. Consider Web Unlocker**
@@ -265,7 +265,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # If targeting US site, use US proxy
-    proxy_username = "user123-res-country-US"
+    proxy_username = "user123-type-residential-country-US"
     
     # Choose location closer to target
     ```
@@ -274,7 +274,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # Datacenter proxies are faster
-    proxy_username = "user123-dc-country-US"
+    proxy_username = "user123-type-datacenter-country-US"
     ```
 
     **4. Set separate connect and read timeouts**
@@ -382,7 +382,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # Higher trust level
-    proxy_username = "user123-mobile-country-US"
+    proxy_username = "user123-type-mobile-country-US"
     ```
 
     **2. Add realistic headers**
@@ -433,18 +433,18 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
 <AccordionGroup>
   <Accordion title="Solutions" icon="wrench">
-    **1. Force IP rotation**
+    **1. Force per-request rotation**
 
     ```python
-    # Remove session or use rotation-1
-    proxy_username = "user123-res-country-US-rotation-1"
+    # Use rotation--1 in the username, or rotation=-1 in the builder API
+    proxy_username = "user123-type-residential-country-US-rotation--1"
     ```
 
     **2. Try different proxy type**
 
     ```python
     # Mobile has higher trust
-    proxy_username = "user123-mobile-country-US"
+    proxy_username = "user123-type-mobile-country-US"
     ```
 
     **3. Add delays between requests**
@@ -463,7 +463,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
     # Rotate through multiple sessions
     for i, url in enumerate(urls):
         session_id = f"session{i % 10}"
-        proxy_username = f"user123-res-country-US-session-{session_id}"
+        proxy_username = f"user123-type-residential-country-US-session-{session_id}"
         # ... make request
     ```
   </Accordion>
@@ -500,12 +500,13 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
     thread.start()
     ```
 
-    **2. Use static proxy instead**
+    **2. Use a static IP instead**
 
-    For long-running sessions, consider Static ISP:
+    For long-running sessions, use a static IP returned by the Static IP List endpoint:
 
-    ```python
-    proxy_username = "user123-isp-country-US"  # Fixed IP, no expiration
+    ```bash
+    curl -H "X-Api-Key: YOUR_KEY" \
+      https://api.floppydata.net/v1/static/list
     ```
   </Accordion>
 </AccordionGroup>
@@ -522,23 +523,23 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # From this
-    proxy_username = "user123-res-country-US-session-s01"
+    proxy_username = "user123-type-residential-country-US-session-s01"
     
     # To this
-    proxy_username = "user123-res-country-US"
+    proxy_username = "user123-type-residential-country-US"
     ```
 
     **2. Change session value**
 
     ```python
     # Change session ID to get new IP
-    proxy_username = "user123-res-country-US-session-s02"  # New IP
+    proxy_username = "user123-type-residential-country-US-session-s02"  # New IP
     ```
 
     **3. Force rotation**
 
     ```python
-    proxy_username = "user123-res-country-US-rotation-1"
+    proxy_username = "user123-type-residential-country-US-rotation--1"
     ```
   </Accordion>
 </AccordionGroup>
@@ -553,14 +554,14 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```python
     # Faster but lower trust
-    proxy_username = "user123-dc-country-US"
+    proxy_username = "user123-type-datacenter-country-US"
     ```
 
     **2. Use closer proxy location**
 
     ```python
     # If scraping US site, use US proxy
-    proxy_username = "user123-res-country-US"
+    proxy_username = "user123-type-residential-country-US"
     ```
 
     **3. Implement connection pooling**
@@ -666,7 +667,7 @@ curl -X POST \
   -H "X-Api-Key: YOUR_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "connectionString": "http://user-res-country-US:pass@geo.g-w.info:10080"
+    "connectionString": "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
   }' \
   https://api.floppydata.net/v1/tools/checkProxy
 ```
@@ -698,14 +699,14 @@ curl -X POST \
 
     ```python
     # Same session = same IP across devices
-    proxy_username = "user123-res-country-US-session-shared01"
+    proxy_username = "user123-type-residential-country-US-session-shared01"
     ```
   </Accordion>
 
   <Accordion title="Why am I getting different speeds?" icon="circle-question">
     Speed depends on:
 
-    - **Proxy type**: Datacenter \> ISP \> Residential \> Mobile
+    - **Proxy type**: Datacenter \> Residential \> Mobile
     - **Location**: Closer proxy = faster
     - **Network congestion**: Varies by time
     - **Target website**: Some sites are just slow
@@ -730,18 +731,16 @@ curl -X POST \
     When enabled, only whitelisted IPs can use your proxies.
   </Accordion>
 
-  <Accordion title="What's the difference between rotation-1 and no session?" icon="circle-question">
-    **No session** (default):
+  <Accordion title="What's the difference between rotation--1 and rotation-0?" icon="circle-question">
+    **rotation--1** means `rotation=-1` in the builder API:
 
     - New IP every request
-    - Natural rotation
+    - Best for broad scraping where identity stability is not needed
 
-    **rotation-1**:
+    **rotation-0** means `rotation=0` in the builder API:
 
-    - Explicitly forces new IP
-    - Overrides any session parameter
-
-    In practice, both rotate IPs. Use `rotation-1` when you want to be explicit or override session behavior.
+    - Keep the same IP within a session
+    - Best for login, checkout, or other multi-step flows
   </Accordion>
 </AccordionGroup>
 

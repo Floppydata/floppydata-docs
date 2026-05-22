@@ -40,7 +40,7 @@ PROXY_USER = "user123"
 PROXY_PASS = "your_password"
  
 # Build proxy URL with Smart Parameters
-proxy_username = f"{PROXY_USER}-res-country-US-session-session01"
+proxy_username = f"{PROXY_USER}-type-residential-country-US-session-session01"
 proxy_url = f"http://{proxy_username}:{PROXY_PASS}@geo.g-w.info:10080"
  
 proxies = {
@@ -65,7 +65,7 @@ load_dotenv()
 PROXY_USER = os.getenv('FLOPPY_USER')
 PROXY_PASS = os.getenv('FLOPPY_PASS')
  
-proxy_username = f"{PROXY_USER}-res-country-US"
+proxy_username = f"{PROXY_USER}-type-residential-country-US"
 proxy_url = f"http://{proxy_username}:{PROXY_PASS}@geo.g-w.info:10080"
  
 proxies = {'http': proxy_url, 'https': proxy_url}
@@ -81,7 +81,7 @@ import requests
 session = requests.Session()
  
 # Set proxy for all requests in this session
-proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+proxy_url = "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
 session.proxies = {'http': proxy_url, 'https': proxy_url}
  
 # All requests use the proxy
@@ -102,7 +102,7 @@ pip install httpx
 ```python
 import httpx
  
-proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+proxy_url = "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
  
 with httpx.Client(proxies=proxy_url) as client:
     response = client.get('https://example.com')
@@ -116,7 +116,7 @@ import httpx
 import asyncio
  
 async def fetch():
-    proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+    proxy_url = "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
     
     async with httpx.AsyncClient(proxies=proxy_url) as client:
         response = await client.get('https://example.com')
@@ -140,7 +140,7 @@ import aiohttp
 import asyncio
  
 async def fetch():
-    proxy_url = "http://user-res-country-US:pass@geo.g-w.info:10080"
+    proxy_url = "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
     
     async with aiohttp.ClientSession() as session:
         async with session.get(
@@ -171,7 +171,7 @@ const PROXY_USER = 'user123';
 const PROXY_PASS = 'your_password';
  
 // Configure proxy with Smart Parameters
-const proxyUsername = `${PROXY_USER}-res-country-US-session-session01`;
+const proxyUsername = `${PROXY_USER}-type-residential-country-US-session-session01`;
  
 const proxy = {
     host: 'geo.g-w.info',
@@ -197,7 +197,7 @@ const axios = require('axios');
 const PROXY_USER = process.env.FLOPPY_USER;
 const PROXY_PASS = process.env.FLOPPY_PASS;
  
-const proxyUsername = `${PROXY_USER}-res-country-US`;
+const proxyUsername = `${PROXY_USER}-type-residential-country-US`;
  
 const proxy = {
     host: 'geo.g-w.info',
@@ -222,7 +222,7 @@ const api = axios.create({
         host: 'geo.g-w.info',
         port: 10080,
         auth: {
-            username: 'user-res-country-US',
+            username: 'user-type-residential-country-US',
             password: 'your_password'
         }
     }
@@ -247,7 +247,7 @@ npm install got
 const got = require('got');
 const { HttpsProxyAgent } = require('https-proxy-agent');
  
-const proxyUrl = 'http://user-res-country-US:pass@geo.g-w.info:10080';
+const proxyUrl = 'http://user-type-residential-country-US:pass@geo.g-w.info:10080';
 const agent = new HttpsProxyAgent(proxyUrl);
  
 got('https://example.com', {
@@ -271,7 +271,7 @@ npm install node-fetch https-proxy-agent
 const fetch = require('node-fetch');
 const { HttpsProxyAgent } = require('https-proxy-agent');
  
-const proxyUrl = 'http://user-res-country-US:pass@geo.g-w.info:10080';
+const proxyUrl = 'http://user-type-residential-country-US:pass@geo.g-w.info:10080';
 const agent = new HttpsProxyAgent(proxyUrl);
  
 fetch('https://example.com', { agent })
@@ -287,7 +287,7 @@ fetch('https://example.com', { agent })
 
     ```php
     <?php
-    $proxyUser = 'user123-res-country-US';
+    $proxyUser = 'user123-type-residential-country-US';
     $proxyPass = 'your_password';
     $proxyUrl = "geo.g-w.info:10080";
     $ch = curl_init('https://httpbin.org/ip');
@@ -311,7 +311,7 @@ fetch('https://example.com', { agent })
     use GuzzleHttp\Client;
     
     $client = new Client([
-        'proxy' => 'http://user-res-country-US:pass@geo.g-w.info:10080'
+        'proxy' => 'http://user-type-residential-country-US:pass@geo.g-w.info:10080'
     ]);
     
     $response = $client->get('https://example.com');
@@ -325,7 +325,7 @@ fetch('https://example.com', { agent })
     ```ruby
     require 'net/http'
     require 'uri'
-    proxy_uri = URI.parse('http://user-res-country-US:pass@geo.g-w.info:10080')
+    proxy_uri = URI.parse('http://user-type-residential-country-US:pass@geo.g-w.info:10080')
     
     Net::HTTP.start(
       'example.com',
@@ -349,7 +349,7 @@ fetch('https://example.com', { agent })
       'https://example.com',
       http_proxyaddr: 'geo.g-w.info',
       http_proxyport: 10080,
-      http_proxyuser: 'user-res-country-US',
+      http_proxyuser: 'user-type-residential-country-US',
       http_proxypass: 'your_password'
     )
     
@@ -367,7 +367,7 @@ fetch('https://example.com', { agent })
     )
     
     func main() {
-        proxyURL, _ := url.Parse("http://user-res-country-US:pass@geo.g-w.info:10080")
+        proxyURL, _ := url.Parse("http://user-type-residential-country-US:pass@geo.g-w.info:10080")
         
         client := &http.Client{
             Transport: &http.Transport{
@@ -394,7 +394,7 @@ fetch('https://example.com', { agent })
         public static void main(String[] args) throws Exception {
             String proxyHost = "geo.g-w.info";
             int proxyPort = 10080;
-            String proxyUser = "user-res-country-US";
+            String proxyUser = "user-type-residential-country-US";
             String proxyPass = "your_password";
     
             Authenticator.setDefault(new Authenticator() {
@@ -430,7 +430,7 @@ fetch('https://example.com', { agent })
             var proxy = new WebProxy
             {
                 Address = new Uri("http://geo.g-w.info:10080"),
-                Credentials = new NetworkCredential("user-res-country-US", "your_password")
+                Credentials = new NetworkCredential("user-type-residential-country-US", "your_password")
             };
     
             var handler = new HttpClientHandler
@@ -469,7 +469,7 @@ class FloppydataProxyMiddleware:
     
     def process_request(self, request, spider):
         # Build proxy URL with Smart Parameters
-        proxy_username = f"{self.proxy_user}-res-country-US-session-{spider.name}"
+        proxy_username = f"{self.proxy_user}-type-residential-country-US-session-{spider.name}"
         proxy_url = f"http://{proxy_username}:{self.proxy_pass}@geo.g-w.info:10080"
         
         request.meta['proxy'] = proxy_url
@@ -517,7 +517,7 @@ class MySpider(scrapy.Spider):
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
  
-PROXY_USER = "user123-res-country-US"
+PROXY_USER = "user123-type-residential-country-US"
 PROXY_PASS = "your_password"
 PROXY_HOST = "geo.g-w.info:10080"
  
@@ -551,7 +551,7 @@ from selenium.webdriver.firefox.options import Options
  
 PROXY_HOST = "geo.g-w.info"
 PROXY_PORT = 10080
-PROXY_USER = "user123-res-country-US"
+PROXY_USER = "user123-type-residential-country-US"
 PROXY_PASS = "your_password"
  
 firefox_options = Options()
@@ -634,7 +634,7 @@ def create_proxy_auth_extension(proxy_host, proxy_port, proxy_user, proxy_pass):
 proxy_extension = create_proxy_auth_extension(
     'geo.g-w.info',
     10080,
-    'user123-res-country-US',
+    'user123-type-residential-country-US',
     'your_password'
 )
  
@@ -664,7 +664,7 @@ npm install puppeteer
 const puppeteer = require('puppeteer');
  
 (async () => {
-    const PROXY_USER = 'user123-res-country-US-session-pup01';
+    const PROXY_USER = 'user123-type-residential-country-US-session-pup01';
     const PROXY_PASS = 'your_password';
     const PROXY_SERVER = 'geo.g-w.info:10080';
  
@@ -703,7 +703,7 @@ const puppeteer = require('puppeteer');
     const page = await browser.newPage();
  
     await page.authenticate({
-        username: 'user123-res-country-US',
+        username: 'user123-type-residential-country-US',
         password: 'your_password'
     });
  
@@ -736,7 +736,7 @@ const { chromium } = require('playwright');
     const browser = await chromium.launch({
         proxy: {
             server: 'http://geo.g-w.info:10080',
-            username: 'user123-res-country-US',
+            username: 'user123-type-residential-country-US',
             password: 'your_password'
         }
     });
@@ -760,7 +760,7 @@ const { firefox } = require('playwright');
     const browser = await firefox.launch({
         proxy: {
             server: 'http://geo.g-w.info:10080',
-            username: 'user123-res-country-US-session-ff01',
+            username: 'user123-type-residential-country-US-session-ff01',
             password: 'your_password'
         }
     });
@@ -785,7 +785,7 @@ with sync_playwright() as p:
     browser = p.chromium.launch(
         proxy={
             'server': 'http://geo.g-w.info:10080',
-            'username': 'user123-res-country-US',
+            'username': 'user123-type-residential-country-US',
             'password': 'your_password'
         }
     )

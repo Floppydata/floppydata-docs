@@ -2,7 +2,7 @@
 title: "Proxy Basics"
 ---
 
-Learn how to use Floppydata proxies to route your requests through residential, mobile, ISP, or datacenter IPs with precise control.
+Learn how to use Floppydata proxies to route your requests through residential, mobile, or datacenter IPs with precise control.
 
 ## How it works
 
@@ -55,7 +55,7 @@ http://USERNAME:PASSWORD@geo.g-w.info:PORT
 **Example:**
 
 ```text
-http://user123-res-country-US:yourpassword@geo.g-w.info:10080
+http://user123-type-residential-country-US:yourpassword@geo.g-w.info:10080
 ```
 
 The magic happens in the username — Smart Parameters control where and how your request is routed.
@@ -85,12 +85,13 @@ The magic happens in the username — Smart Parameters control where and how you
 
 ## Proxy types
 
-Floppydata offers **five proxy types** grouped into **two categories**:
+Smart Parameters support **three rotating proxy types**:
 
-- **Rotating proxies** – IPs from a shared pool, can change across requests
-- **Static proxies** – Fixed IP assigned to your account
+- `residential`
+- `mobile`
+- `datacenter`
 
-### Rotating proxies
+Static IPs are a separate product. For static IPs, use the credentials returned by the [Static IP List](/api-reference/endpoint/static-list) endpoint instead of adding a Smart Parameter type.
 
 <AccordionGroup>
   <Accordion title="Residential" icon="house">
@@ -139,7 +140,7 @@ Floppydata offers **five proxy types** grouped into **two categories**:
   </Accordion>
 </AccordionGroup>
 
-### Static proxies
+### Static IPs
 
 <AccordionGroup>
   <Accordion title="ISP Static" icon="tower-cell">
@@ -209,12 +210,12 @@ USERNAME-parameter1-value1-parameter2-value2
 ### Example
 
 ```text
-user123-res-country-US-city-New_York-session-abc123
+user123-type-residential-country-US-city-New_York-session-abc123
 ```
 
 This means:
 
-- `res` — use residential proxies
+- `type-residential` — use residential proxies
 - `country-US` — route through United States
 - `city-New_York` — narrow to New York
 - `session-abc123` — keep same IP (sticky session)
@@ -222,16 +223,15 @@ This means:
 ## Available parameters
 
 <ParamField path="type" type="string">
-  Proxy type to use
+  Rotating proxy type to use
 
   **Values:**
 
-  - `res` — Residential (default)
+  - `residential` — Residential
   - `mobile` — Mobile (4G/5G)
-  - `dc` — Datacenter
-  - `isp` — ISP Static
+  - `datacenter` — Datacenter
 
-  **Example:** `user123-mobile-country-US`
+  **Example:** `user123-type-mobile-country-US`
 </ParamField>
 
 <ParamField path="country" type="string">
@@ -243,7 +243,7 @@ This means:
   - `country-GB` — United Kingdom
   - `country-DE` — Germany
 
-  **Example:** `user123-res-country-FR`
+  **Example:** `user123-type-residential-country-FR`
 </ParamField>
 
 <ParamField path="city" type="string">
@@ -257,7 +257,7 @@ This means:
 
   **Note:** Falls back to country-level if city unavailable
 
-  **Example:** `user123-res-country-US-city-Chicago`
+  **Example:** `user123-type-residential-country-US-city-Chicago`
 </ParamField>
 
 <ParamField path="state" type="string">
@@ -270,13 +270,13 @@ This means:
 
   **Works with:** Residential and Mobile proxies only
 
-  **Example:** `user123-res-country-US-state-California`
+  **Example:** `user123-type-residential-country-US-state-California`
 </ParamField>
 
 <ParamField path="asn" type="number">
   Target specific ISP network by Autonomous System Number
 
-  **Example:** `user123-res-country-US-asn-7018`
+  **Example:** `user123-type-residential-country-US-asn-7018`
 
   **Works with:** Residential and Mobile proxies only
 
@@ -290,35 +290,36 @@ This means:
 
   - Same session ID → same IP
   - Different session ID → different IP
-  - No session → rotation
+  - Combine with `rotation-0` for a stable session IP
 
   **Lifetime:** Up to 10 minutes of inactivity
 
-  **Example:** `user123-res-country-US-session-login01`
+  **Example:** `user123-type-residential-country-US-session-login01`
 </ParamField>
 
 <ParamField path="rotation" type="number">
-  Force IP rotation
+  Rotation interval in minutes
 
   **Values:**
 
-  - `1` — new IP every request
-  - `0` — keep IP within session
+  - `-1` — new IP every request
+  - `0` — keep the same IP within a session
+  - `1` to `60` — rotate after this many minutes
 
-  **Example:** `user123-res-country-US-rotation-1`
+  **Example:** `user123-type-residential-country-US-rotation--1`
 </ParamField>
 
 ## Sessions and rotation
 
-### Default behavior: Rotation
+### Per-request rotation
 
-By default, Floppydata assigns a new IP for each request:
+Set `rotation` to `-1` when you want a new IP for every request:
 
-| Request | IP |
-| --- | --- |
-| 1st request | `104.28.11.x` |
-| 2nd request | `91.108.56.x` |
-| 3rd request | `185.220.x.x` |
+```python
+proxy_username = "user123-type-residential-country-US-rotation--1"
+```
+
+When you build this through the API, pass `rotation=-1`. In the generated username, the negative value appears as `rotation--1`.
 
 ### Sticky sessions
 
@@ -326,14 +327,14 @@ To keep the same IP across multiple requests, use a session:
 
 ```python
 # Same session = same IP
-proxy_username = "user123-res-country-US-session-checkout01"
+proxy_username = "user123-type-residential-country-US-session-checkout01"
 ```
 
 **What happens:**
 
 - All requests with the same session ID use the same IP
 - Changing the session ID assigns a new IP
-- Removing the session returns to rotation
+- `rotation-0` keeps the same IP within the session
 
 ### Session lifetime
 
@@ -346,12 +347,12 @@ Sessions stay active for **up to 10 minutes of inactivity**. Each request resets
 12:25 → Request (IP B) — session expired after 10min inactivity
 ```
 
-### Forcing rotation
+### Interval rotation
 
-Explicitly force a new IP for every request:
+Use a value from `1` to `60` to rotate after that many minutes:
 
 ```python
-proxy_username = "user123-res-country-US-rotation-1"
+proxy_username = "user123-type-residential-country-US-session-crawl01-rotation-15"
 ```
 
 ### Changing IP manually
@@ -360,10 +361,10 @@ To get a new IP before session expires, change the session value:
 
 ```python
 # Original session
-"user123-res-country-US-session-s01"  # → IP A
+"user123-type-residential-country-US-session-s01"  # → IP A
  
 # New session → new IP
-"user123-res-country-US-session-s02"  # → IP B
+"user123-type-residential-country-US-session-s02"  # → IP B
 ```
 
 <Info>
@@ -375,9 +376,9 @@ To get a new IP before session expires, change the session value:
 Run multiple sessions simultaneously:
 
 ```python
-"user123-res-country-US-session-user1"  # → IP A
-"user123-res-country-US-session-user2"  # → IP B
-"user123-res-country-US-session-user3"  # → IP C
+"user123-type-residential-country-US-session-user1"  # → IP A
+"user123-type-residential-country-US-session-user2"  # → IP B
+"user123-type-residential-country-US-session-user3"  # → IP C
 ```
 
 Each session gets its own IP for parallel workflows.
@@ -398,7 +399,7 @@ Each session gets its own IP for parallel workflows.
 
     ```python
     # Scraping 1000 product pages
-    proxy_username = "user123-res-country-US"  # New IP each request
+    proxy_username = "user123-type-residential-country-US-rotation--1"  # New IP each request
     ```
   </Tab>
   <Tab title="Use Sessions">
@@ -414,7 +415,7 @@ Each session gets its own IP for parallel workflows.
 
     ```python
     # Login flow with multiple steps
-    proxy_username = "user123-res-country-US-session-login01"  # Same IP
+    proxy_username = "user123-type-residential-country-US-session-login01"  # Same IP
     ```
   </Tab>
 </Tabs>
@@ -426,17 +427,17 @@ Control where your requests originate from.
 ### Country-level targeting
 
 ```python
-proxy_username = "user123-res-country-US"  # United States
-proxy_username = "user123-res-country-GB"  # United Kingdom
-proxy_username = "user123-res-country-DE"  # Germany
+proxy_username = "user123-type-residential-country-US"  # United States
+proxy_username = "user123-type-residential-country-GB"  # United Kingdom
+proxy_username = "user123-type-residential-country-DE"  # Germany
 ```
 
 ### City-level targeting
 
 ```python
-proxy_username = "user123-res-country-US-city-New_York"
-proxy_username = "user123-res-country-US-city-Los_Angeles"
-proxy_username = "user123-res-country-GB-city-London"
+proxy_username = "user123-type-residential-country-US-city-New_York"
+proxy_username = "user123-type-residential-country-US-city-Los_Angeles"
+proxy_username = "user123-type-residential-country-GB-city-London"
 ```
 
 <Tip>
@@ -446,8 +447,8 @@ proxy_username = "user123-res-country-GB-city-London"
 ### State-level targeting (US only)
 
 ```python
-proxy_username = "user123-res-country-US-state-CA"  # California
-proxy_username = "user123-res-country-US-state-New_York"
+proxy_username = "user123-type-residential-country-US-state-CA"  # California
+proxy_username = "user123-type-residential-country-US-state-New_York"
 ```
 
 ### Available locations
@@ -470,31 +471,31 @@ If a specific city is unavailable, Floppydata automatically falls back to countr
 <CodeGroup>
 
 ```python Basic residential
-"user123-res-country-US"
+"user123-type-residential-country-US"
 ```
 
 ```python With session
-"user123-res-country-US-session-login01"
+"user123-type-residential-country-US-session-login01"
 ```
 
 ```python City + session
-"user123-res-country-US-city-Chicago-session-user1"
+"user123-type-residential-country-US-city-Chicago-session-user1"
 ```
 
 ```python Mobile proxy
-"user123-mobile-country-US"
+"user123-type-mobile-country-US"
 ```
 
-```python Force rotation
-"user123-res-country-US-rotation-1"
+```python Per-request rotation
+"user123-type-residential-country-US-rotation--1"
 ```
 
-```python ISP static
-"user123-isp-country-US"
+```python Datacenter proxy
+"user123-type-datacenter-country-US"
 ```
 
 ```python State targeting
-"user123-res-country-US-state-California-session-s01"
+"user123-type-residential-country-US-state-California-session-s01"
 ```
 
 </CodeGroup>
@@ -510,7 +511,7 @@ PROXY_USER = "user123"
 PROXY_PASS = "your_password"
  
 # Residential, US, sticky session
-proxy_username = f"{PROXY_USER}-res-country-US-session-checkout01"
+proxy_username = f"{PROXY_USER}-type-residential-country-US-session-checkout01"
 proxy_url = f"http://{proxy_username}:{PROXY_PASS}@geo.g-w.info:10080"
  
 proxies = {
@@ -531,7 +532,7 @@ const PROXY_USER = 'user123';
 const PROXY_PASS = 'your_password';
  
 // Mobile, US, New York
-const proxyUsername = `${PROXY_USER}-mobile-country-US-city-New_York`;
+const proxyUsername = `${PROXY_USER}-type-mobile-country-US-city-New_York`;
  
 const proxy = {
     host: 'geo.g-w.info',
@@ -550,10 +551,10 @@ axios.get('https://example.com', { proxy })
 
 <AccordionGroup>
   <Accordion title="Why is my IP changing every request?" icon="question">
-    Rotation is enabled by default. To keep the same IP, add a session parameter:
+    Per-request rotation is enabled with `rotation--1`. To keep the same IP, add a session parameter and `rotation-0`:
 
     ```text
-    -session-YOUR_ID
+    -session-YOUR_ID-rotation-0
     ```
   </Accordion>
 
@@ -562,7 +563,7 @@ axios.get('https://example.com', { proxy })
 
     - Remove the session parameter
     - Change the session value
-    - Or use `rotation-1`
+    - Or use `rotation--1`
   </Accordion>
 
   <Accordion title="How long do sessions last?" icon="question">

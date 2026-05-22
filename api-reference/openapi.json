@@ -208,7 +208,7 @@
                     "username": {
                       "type": "string",
                       "description": "Proxy username with parameters",
-                      "example": "user-USERNAME-type-residential-session-my_session_1-country-US-city-New_York-rotation-15"
+                      "example": "user-USERNAME-type-residential-country-US-city-New_York-session-my_session_1-rotation-15"
                     },
                     "password": {
                       "type": "string",
@@ -228,7 +228,7 @@
                     "connectionString": {
                       "type": "string",
                       "description": "Full proxy connection string",
-                      "example": "http://user-USERNAME-type-residential-session-my_session_1-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+                      "example": "http://user-USERNAME-type-residential-country-US-city-New_York-session-my_session_1-rotation-15:PASSWORD@geo.g-w.info:10080"
                     }
                   },
                   "required": [
@@ -290,7 +290,7 @@
               "minimum": -1,
               "maximum": 60
             },
-            "description": "Rotation interval in minutes, -1 for per-request rotation, 0 for sticky session"
+            "description": "Rotation interval in minutes. Use -1 for a new IP on every request, 0 to keep the same IP within a session, or 1-60 to rotate after that many minutes."
           },
           {
             "in": "query",

@@ -112,7 +112,7 @@ Firefox has built-in proxy settings with authentication support:
   **Smart Parameters in Firefox:** When Firefox prompts for username, you can add Smart Parameters:
 
   ```text
-  user123-res-country-US-session-firefox01
+  user123-type-residential-country-US-session-firefox01
   ```
 </Tip>
 
@@ -157,7 +157,7 @@ Antidetect browsers are designed for multi-accounting and managing multiple brow
     3. Enter:
        - **Host**: `geo.g-w.info`
        - **Port**: `10080` (HTTP) or `10800` (SOCKS5)
-       - **Login**: `user123-res-country-US-session-profile01`
+       - **Login**: `user123-type-residential-country-US-session-profile01`
        - **Password**: Your password
     4. Click **Check Proxy** to test
   </Step>
@@ -171,8 +171,8 @@ Antidetect browsers are designed for multi-accounting and managing multiple brow
 <Tip>
   **Pro tip:** Use unique session IDs for each profile:
 
-  - Profile 1: `user123-res-country-US-session-profile01`
-  - Profile 2: `user123-res-country-US-session-profile02` This gives each profile a different IP address.
+  - Profile 1: `user123-type-residential-country-US-session-profile01`
+  - Profile 2: `user123-type-residential-country-US-session-profile02` This gives each profile a different IP address.
 </Tip>
 
 ### AdsPower
@@ -213,7 +213,7 @@ Antidetect browsers are designed for multi-accounting and managing multiple brow
     2. Proxy Type: **HTTP** or **SOCKS5**
     3. Host: `geo.g-w.info`
     4. Port: `10080` or `10800`
-    5. Username: `user123-res-country-US`
+    5. Username: `user123-type-residential-country-US`
     6. Password: Your password
     7. Click **Test Connection**
   </Step>
@@ -297,7 +297,7 @@ Extensions make it easy to switch proxies on/off without changing system setting
        - **Type**: HTTP or SOCKS5
        - **Hostname**: `geo.g-w.info`
        - **Port**: `10080` or `10800`
-       - **Username**: `user123-res-country-US`
+       - **Username**: `user123-type-residential-country-US`
        - **Password**: Your password
     4. Click **Save**
   </Step>
@@ -311,9 +311,9 @@ Extensions make it easy to switch proxies on/off without changing system setting
 <Tip>
   **Create multiple proxies** for different locations:
 
-  - Floppydata US: `user123-res-country-US`
-  - Floppydata UK: `user123-res-country-GB`
-  - Floppydata Mobile: `user123-mobile-country-US`
+  - Floppydata US: `user123-type-residential-country-US`
+  - Floppydata UK: `user123-type-residential-country-GB`
+  - Floppydata Mobile: `user123-type-mobile-country-US`
 </Tip>
 
 ### Proxy SwitchyOmega (Chrome, Edge)
@@ -459,7 +459,7 @@ Visit these sites to check your proxy IP:
     **Try:**
 
     1. Switch proxy type: Datacenter is fastest
-       - `user123-dc-country-US`
+       - `user123-type-datacenter-country-US`
     2. Choose closer location to your target
     3. Check if target website is slow (not proxy issue)
   </Accordion>
@@ -470,7 +470,7 @@ Visit these sites to check your proxy IP:
     **Solution:** Add session to keep same IP:
 
     ```text
-    user123-res-country-US-session-stable01
+    user123-type-residential-country-US-session-stable01
     ```
   </Accordion>
 
@@ -478,7 +478,7 @@ Visit these sites to check your proxy IP:
     **Try:**
 
     1. Use Mobile proxies (highest trust)
-       - `user123-mobile-country-US`
+       - `user123-type-mobile-country-US`
     2. Use residential instead of datacenter
     3. Add realistic user agent in browser
     4. Consider Web Unlocker for heavily protected sites

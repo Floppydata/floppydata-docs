@@ -24,7 +24,11 @@ Each `ip_list` item contains fields like:
 
 - `host`, `port`, `username`, `password`
 - `ip`, `country_code`, `country_name`
-- `proxy_type` (`isp` or `datacenter`)
+- `proxy_type` from your static IP inventory
+
+<Note>
+  Static IP `proxy_type` values describe already allocated static inventory. They are separate from rotating proxy Smart Parameter types, which are `residential`, `mobile`, and `datacenter`.
+</Note>
 
 ## Extract First Connection Values
 
