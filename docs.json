@@ -21,7 +21,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Account Settings",
+      "label": "Get API key",
       "href": "https://app.floppydata.com/settings/account"
     }
   },
