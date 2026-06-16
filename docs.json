@@ -83,6 +83,23 @@
         ]
       },
       {
+        "tab": "API v2",
+        "groups": [
+          {
+            "group": "Overview",
+            "root": "api-reference/v2/introduction",
+            "pages": []
+          },
+          {
+            "group": "Endpoint reference",
+            "openapi": {
+              "source": "/api-reference/v2/openapi.json",
+              "directory": "api-reference/v2"
+            }
+          }
+        ]
+      },
+      {
         "tab": "Guides",
         "groups": [
           {

@@ -1,0 +1,56 @@
+name: Sync Client API v2 OpenAPI
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout docs
+        uses: actions/checkout@v4
+
+      - name: Fetch Client API v2 OpenAPI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p api-reference/v2
+          curl --fail --silent --show-error --location --retry 3 --max-time 30 \
+            https://api.floppydata.net/v2/openapi.json \
+            | jq --sort-keys '.' > /tmp/client-api-v2-openapi.json
+          jq -e '.openapi and .info.version and ((.paths | length) > 0)' /tmp/client-api-v2-openapi.json >/dev/null
+          mv /tmp/client-api-v2-openapi.json api-reference/v2/openapi.json
+
+      - name: Install Mintlify CLI
+        run: npm install -g mint
+
+      - name: Validate OpenAPI and docs
+        run: |
+          mint openapi-check api-reference/v2/openapi.json
+          mint validate
+
+      - name: Detect spec changes
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet -- api-reference/v2/openapi.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit updated spec
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add api-reference/v2/openapi.json
+          git commit -m "docs: sync client api v2 openapi"
+          git push
