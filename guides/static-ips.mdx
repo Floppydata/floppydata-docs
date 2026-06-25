@@ -1,39 +1,40 @@
 ---
 title: "Static IP Guide"
-description: "Retrieve static IP inventory and pending IP count."
+description: "Retrieve static proxy inventory, pending IP count, and connection strings."
 ---
 
 ## Endpoint
 
-- `GET /v1/static/list`
+- `GET /v2/proxy/static`
 
 ## List Static IPs
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/static" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
 ## Response Shape
 
-- `ip_list`: array of static proxy records
-- `pending_ip_amount`: number of static IPs still pending allocation
+- `items`: array of static proxy records
+- `pendingCount`: number of static IPs still pending allocation
 
-Each `ip_list` item contains fields like:
+Each `items` entry contains fields like:
 
-- `host`, `port`, `username`, `password`
-- `ip`, `country_code`, `country_name`
-- `proxy_type` from your static IP inventory
+- `connection.host`, `connection.port`, `connection.username`, `connection.password`
+- `connection.connectionString`, the copy-paste proxy URL
+- `ip`, `countryCode`, `countryName`
+- `proxyType` from your static IP inventory
 
 <Note>
-  Static IP `proxy_type` values describe already allocated static inventory. They are separate from rotating proxy Smart Parameter types, which are `residential`, `mobile`, and `datacenter`.
+  Static proxy `proxyType` values describe already allocated static inventory. They are separate from rotating proxy types, which are `residential`, `mobile`, and `datacenter`.
 </Note>
 
 ## Extract First Connection Values
 
 ```bash
 curl --silent \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" | jq '.ip_list[0] | {host, port, username, password}'
+  --url "$FLOPPY_BASE_URL/v2/proxy/static" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" | jq '.items[0].connection.connectionString'
 ```

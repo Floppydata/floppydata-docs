@@ -12,6 +12,25 @@
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
+  "api": {
+    "openapi": [
+      "api-reference/openapi.json",
+      "api-reference/openapi-v1.json"
+    ],
+    "playground": {
+      "display": "interactive"
+    },
+    "url": "full",
+    "examples": {
+      "languages": [
+        "curl",
+        "python",
+        "javascript"
+      ],
+      "defaults": "required",
+      "prefill": true
+    }
+  },
   "navbar": {
     "links": [
       {
@@ -54,31 +73,52 @@
             "pages": []
           },
           {
+            "group": "Web Data",
+            "root": "api-reference/v2/endpoint/web-data-fetch",
+            "pages": [
+              "api-reference/v2/endpoint/web-data-balance",
+              "api-reference/v2/endpoint/web-data-usage"
+            ]
+          },
+          {
             "group": "Rotating proxy",
-            "root": "api-reference/endpoint/rotating-balance",
+            "root": "api-reference/v2/endpoint/rotating-connection",
             "pages": [
-              "api-reference/endpoint/rotating-locations",
-              "api-reference/endpoint/rotating-smart-params-builder",
-              "api-reference/endpoint/rotating-smart-params-credentials",
-              "api-reference/endpoint/rotating-statistics"
+              "api-reference/v2/endpoint/rotating-locations",
+              "api-reference/v2/endpoint/rotating-balance",
+              "api-reference/v2/endpoint/rotating-usage"
             ]
           },
           {
-            "group": "Static IPs",
-            "root": "api-reference/endpoint/static-list",
+            "group": "Static proxy",
+            "root": "api-reference/v2/endpoint/static-proxies",
             "pages": []
           },
           {
-            "group": "Web Unlocker",
-            "root": "api-reference/endpoint/web-unlocker",
+            "group": "Proxy",
+            "root": "api-reference/v2/endpoint/check-proxy",
+            "pages": []
+          },
+          {
+            "group": "Account",
+            "root": "api-reference/v2/endpoint/account-balances",
             "pages": [
-              "api-reference/endpoint/web-unlocker-balance"
+              "api-reference/v2/endpoint/account-usage"
             ]
           },
           {
-            "group": "Tools",
-            "root": "api-reference/endpoint/check-proxy",
-            "pages": []
+            "group": "Legacy v1",
+            "root": "api-reference/v1/endpoint/rotating-balance",
+            "pages": [
+              "api-reference/v1/endpoint/rotating-locations",
+              "api-reference/v1/endpoint/rotating-smart-params-builder",
+              "api-reference/v1/endpoint/rotating-smart-params-credentials",
+              "api-reference/v1/endpoint/rotating-statistics",
+              "api-reference/v1/endpoint/static-list",
+              "api-reference/v1/endpoint/web-unlocker",
+              "api-reference/v1/endpoint/web-unlocker-balance",
+              "api-reference/v1/endpoint/check-proxy"
+            ]
           }
         ]
       },
@@ -90,7 +130,7 @@
             "root": "guides/rotating-proxy",
             "pages": [
               "guides/static-ips",
-              "guides/web-unlocker",
+              "guides/web-data",
               "guides/check-proxy"
             ]
           }
@@ -106,7 +146,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/keril-f/docs"
+      "github": "https://github.com/Floppydata/floppydata-docs"
     }
   }
 }

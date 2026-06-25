@@ -1,6 +1,6 @@
 ---
 title: "Floppydata Client API"
-description: "Official documentation for Floppydata Client API v1."
+description: "Official documentation for Floppydata Client API v2."
 ---
 
 ## Overview
@@ -8,9 +8,10 @@ description: "Official documentation for Floppydata Client API v1."
 The Floppydata Client API lets you work with:
 
 - Rotating proxy traffic and locations
-- Static IP inventory
-- Web Unlocker requests
+- Static proxy inventory
+- Web Data requests
 - Proxy validation tools
+- Account balance and usage rollups
 
 Base URL: `https://api.floppydata.net`
 
@@ -18,7 +19,7 @@ Base URL: `https://api.floppydata.net`
 
 ```bash
 curl --request GET \
-  --url 'https://api.floppydata.net/v1/rotating/balance' \
+  --url 'https://api.floppydata.net/v2/proxy/rotating/balance' \
   --header 'X-Api-Key: YOUR_API_KEY'
 ```
 
@@ -38,7 +39,7 @@ curl --request GET \
   </Card>
 
   <Card title="Rotating Proxy Guide" icon="arrows-rotate" href="/guides/rotating-proxy">
-    Credentials, locations, smart params, and statistics.
+    Build connection strings, choose locations, and track usage.
   </Card>
 
   <Card title="API Reference" icon="terminal" href="/api-reference/introduction">

@@ -20,7 +20,7 @@ Check traffic balance:
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/balance" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/balance" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
@@ -28,15 +28,31 @@ List available countries and cities:
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/locations" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/locations?type=residential" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-Validate a proxy:
+Build a copy-paste rotating proxy connection:
 
 ```bash
 curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/connections" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "type": "residential",
+    "country": "US",
+    "city": "New York",
+    "protocol": "http",
+    "rotation": 15
+  }'
+```
+
+Validate a proxy connection:
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/check" \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{

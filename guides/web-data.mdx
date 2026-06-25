@@ -1,0 +1,53 @@
+---
+title: "Web Data Guide"
+description: "Fetch pages and track remaining Web Data requests."
+---
+
+## Endpoints
+
+- `POST /v2/web-data/fetch`
+- `GET /v2/web-data/balance`
+- `GET /v2/web-data/usage`
+
+## Scrape a Page
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/web-data/fetch" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "url": "https://ip-api.com",
+    "countryCode": "US",
+    "city": "New York",
+    "difficulty": "low",
+    "cacheMaxAgeDays": 0
+  }'
+```
+
+Request body supports:
+
+- `url` (required)
+- `countryCode`, `city`
+- `difficulty` (`low` or `medium`)
+- `cacheMaxAgeDays` (cache age in days)
+
+## Check Remaining Balance
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/web-data/balance" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Response includes `requests.total`, `requests.used`, and `requests.remaining`.
+
+## Check Usage
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/web-data/usage?from=2026-03-01&to=2026-03-12" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Usage responses include `yesterday`, `last7Days`, `last30Days`, `lastUpdatedAt`, and `requestedRange` when you pass a date range.

@@ -7,7 +7,7 @@ description: "Practical workflow for testing and operating against the API."
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/statistics?proxyType=residential" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/usage?proxyType=residential" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
@@ -21,18 +21,20 @@ Example with `jq`:
 
 ```bash
 curl --silent \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/static" \
   --header "X-Api-Key: $FLOPPY_API_KEY" | jq
 ```
 
 ## Handling Responses
 
 - Most endpoints return `200` on success.
-- `POST /v1/tools/checkProxy` may return `400` (proxy validation failed) or `402` (no traffic available).
+- `POST /v2/proxy/check` may return `400` when the proxy connection cannot be validated.
+- Usage endpoints return UTC rollups for `yesterday`, `last7Days`, and `last30Days`. If you pass `from` or `to`, the response also includes `requestedRange`.
 
 ## OpenAPI Source
 
 The API reference is generated from:
 
-- `https://api.floppydata.net/v1/openapi.json`
-- local copy: `/api-reference/openapi.json`
+- `https://api.floppydata.net/v2/openapi.json`
+- local v2 copy: `/api-reference/openapi.json`
+- legacy v1 copy: `/api-reference/openapi-v1.json`

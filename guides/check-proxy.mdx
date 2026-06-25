@@ -5,13 +5,13 @@ description: "Validate proxy connectivity and location details."
 
 ## Endpoint
 
-- `POST /v1/tools/checkProxy`
+- `POST /v2/proxy/check`
 
-## Option A: Send Connection String
+## Send Connection String
 
 ```bash
 curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/check" \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{
@@ -19,29 +19,18 @@ curl --request POST \
   }'
 ```
 
-## Option B: Send Structured Fields
-
-```bash
-curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
-  --header "Content-Type: application/json" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" \
-  --data '{
-    "host": "geo.g-w.info",
-    "port": 10080,
-    "username": "username",
-    "password": "password",
-    "protocol": "http"
-  }'
-```
-
 ## Success Response
 
-Returns:
+```json
+{
+  "ip": "123.45.67.89",
+  "location": {
+    "countryCode": "US",
+    "country": "United States",
+    "state": "California",
+    "city": "San Francisco"
+  }
+}
+```
 
-- `ip`
-- `country`
-- `stateProv`
-- `city`
-
-Possible non-200 statuses in spec: `400`, `402`.
+Use the `connection.connectionString` value returned by rotating or static proxy endpoints when you want to validate a FloppyData proxy.
