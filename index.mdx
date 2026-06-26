@@ -3,10 +3,10 @@ title: "Floppydata Client API"
 description: "Use Web Data, rotating proxies, static proxies, and account reporting from one API."
 ---
 
-The Floppydata Client API helps you do four jobs:
+The Floppydata Client API is for teams that need proxy and Web Data workflows to be predictable from code, not stitched together by hand. Start with a safe balance check, then move into the exact job you need: fetch a page, build a proxy connection, check usage, or list static proxies.
 
-<Card title="Run the API sandbox" icon="play" href="/sandbox">
-  Try live v2 requests in the docs with your API key, request editor, and response viewer.
+<Card title="Run a request in API Reference" icon="play" href="/api-reference/v2/endpoint/account-balances">
+  Use the built-in playground on each endpoint page to send live v2 requests.
 </Card>
 
 <CardGroup cols={2}>
@@ -44,8 +44,12 @@ curl --request GET \
 ## Start Here
 
 <Steps>
+  <Step title="Understand the moving parts">
+    Read the [Overview](/overview) if you want the product model before running commands.
+  </Step>
+
   <Step title="Get an API key">
-    Create or copy a Client API key in [account settings](https://app.floppydata.com/settings/account).
+    Create or copy a Client API key in [API keys](https://app.floppydata.com/api-keys).
   </Step>
 
   <Step title="Run the quickstart">
@@ -58,8 +62,8 @@ curl --request GET \
 </Steps>
 
 <CardGroup cols={2}>
-  <Card title="API sandbox" icon="play" href="/sandbox">
-    Run common v2 requests directly from the docs.
+  <Card title="API Reference playground" icon="play" href="/api-reference/v2/endpoint/account-balances">
+    Run live requests from endpoint pages.
   </Card>
 
   <Card title="OpenAPI reference" icon="terminal" href="/api-reference/introduction">

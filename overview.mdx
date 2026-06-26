@@ -1,0 +1,77 @@
+---
+title: "Overview"
+description: "What the Floppydata Client API is for and where to start."
+---
+
+Floppydata helps you use Web Data, rotating proxies, static proxies, and account reporting from your own systems. The Client API is the programmatic layer for those jobs: fetch a page, build a proxy URL, check a proxy exit, list assigned static proxies, and keep an eye on balance and usage.
+
+If you are here in the middle of an integration, start small. Confirm your API key first, generate one connection string, check that proxy, then add the exact location, rotation, or reporting details your workflow needs.
+
+<Card title="Run the safe first request" icon="wallet" href="/api-reference/v2/endpoint/account-balances">
+  Check account balances to confirm that your API key works before running traffic-consuming requests.
+</Card>
+
+## What You Can Do
+
+<CardGroup cols={2}>
+  <Card title="Fetch Web Data" icon="file-code" href="/guides/web-data">
+    Send a target URL and get fetched HTML back from the API.
+  </Card>
+
+  <Card title="Build proxy connections" icon="plug" href="/guides/rotating-proxy">
+    Generate copy-paste rotating proxy URLs for HTTP clients, browser profiles, and automation tools.
+  </Card>
+
+  <Card title="Use static proxies" icon="server" href="/guides/static-ips">
+    List assigned static proxies and copy their ready-to-use connection strings.
+  </Card>
+
+  <Card title="Track usage and balance" icon="chart-line" href="/guides/balances-usage">
+    Read account-level and product-level balance and usage rollups.
+  </Card>
+</CardGroup>
+
+## How the Pieces Fit
+
+| Part | What it does |
+| --- | --- |
+| API key | Authenticates Client API requests through the `X-Api-Key` header. |
+| Web Data | Fetches a page for you and returns HTML. |
+| Rotating proxy connections | Builds `connection.connectionString` values for rotating proxy traffic. |
+| Static proxies | Lists assigned static proxy inventory and connection strings. |
+| Proxy check | Tests a proxy URL and returns the observed `ip` and `location`. |
+| Usage and balances | Shows remaining balance and recent UTC usage periods. |
+
+## A Calm First Path
+
+<Steps>
+  <Step title="Create an API key">
+    Open [API keys](https://app.floppydata.com/api-keys), create or copy a Client API key, and keep it out of proxy connection strings.
+  </Step>
+
+  <Step title="Confirm access">
+    Run `GET /v2/account/balances`. It is the easiest way to check that the key is valid.
+  </Step>
+
+  <Step title="Pick one workflow">
+    Choose Web Data if you want the API to fetch a page. Choose proxy connections if your own client will make the request through a proxy.
+  </Step>
+
+  <Step title="Copy the returned value">
+    For proxies, use the returned `connection.connectionString` instead of rebuilding credentials by hand.
+  </Step>
+
+  <Step title="Watch usage">
+    Use usage endpoints for `yesterday`, `last7Days`, `last30Days`, and optional `requestedRange` reporting.
+  </Step>
+</Steps>
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Make the first useful v2 calls.
+  </Card>
+
+  <Card title="API Reference playground" icon="play" href="/api-reference/v2/endpoint/account-balances">
+    Run live requests directly from endpoint pages.
+  </Card>
+</CardGroup>

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Floppydata Client API",
-    "description": "API documentation for Floppydata Client API. You can manage your API keys in [account settings](https://app.floppydata.com/settings/account)",
+    "description": "API documentation for Floppydata Client API. You can manage your API keys in [API keys](https://app.floppydata.com/api-keys)",
     "version": "1.0.0"
   },
   "servers": [

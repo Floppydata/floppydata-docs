@@ -3,15 +3,19 @@ title: "Quickstart"
 description: "Make the first useful v2 Client API calls."
 ---
 
+This path keeps the first steps low-risk: confirm your key, generate one proxy connection, check it, then fetch one page. Once those pieces work, you can add location targeting, rotation rules, date filters, and usage reporting with more confidence.
+
 ## 1. Set Your API Key
+
+Create or copy a Client API key from [API keys](https://app.floppydata.com/api-keys), then keep it in an environment variable while you test.
 
 ```bash
 export FLOPPY_API_KEY="YOUR_API_KEY"
 export FLOPPY_BASE_URL="https://api.floppydata.net"
 ```
 
-<Card title="Run these requests in the sandbox" icon="play" href="/sandbox">
-  Prefer a browser-based flow? Use the docs sandbox to enter your API key and run the same v2 requests with live responses.
+<Card title="Run requests in API Reference" icon="play" href="/api-reference/v2/endpoint/account-balances">
+  Prefer a browser-based flow? Use the endpoint playground to enter your API key and run live requests.
 </Card>
 
 ## 2. Check Account Balances
