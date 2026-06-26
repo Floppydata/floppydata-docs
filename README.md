@@ -1,6 +1,6 @@
-# FloppyData Client API Docs
+# Floppydata Client API Docs
 
-Documentation source for FloppyData Client API (`/v1`).
+Documentation source for Floppydata Client API. The main docs target `/v2`; `/v1` is kept as a legacy API reference.
 
 ## Local development
 
@@ -27,5 +27,6 @@ mint openapi-check api-reference/openapi.json
 
 - `docs.json`: navigation and site config
 - `api-reference/openapi.json`: local OpenAPI source snapshot
-- `api-reference/endpoint/*.mdx`: endpoint pages wired to OpenAPI operations
+- `api-reference/v2/endpoint/*.mdx`: primary v2 endpoint pages wired to OpenAPI operations
+- `api-reference/v1/endpoint/*.mdx`: legacy v1 endpoint pages linked from `/legacy-v1`
 - `guides/*.mdx`: practical usage guides based on API reference

@@ -1,15 +1,19 @@
 ---
-title: "Introduction"
-description: "Overview of the FloppyData Client API reference"
+title: "API Reference"
+description: "OpenAPI-generated reference for Client API v2."
 ---
 
-## Floppydata Client API
+This section documents Client API v2 only. Use it when you need exact request fields, response fields, examples, and error shapes.
 
-This reference is generated from the official OpenAPI schema and documents all currently available `/v1` endpoints.
+<CardGroup cols={2}>
+  <Card title="Run a request" icon="play" href="/api-reference/v2/endpoint/account-balances">
+    Open an endpoint playground and send a live production request.
+  </Card>
 
-<Card title="OpenAPI Specification" icon="file-code" href="https://api.floppydata.net/v1/openapi.json">
-  View the source OpenAPI document
-</Card>
+  <Card title="OpenAPI JSON" icon="file-code" href="https://api.floppydata.net/v2/openapi.json">
+    View the production v2 OpenAPI document.
+  </Card>
+</CardGroup>
 
 ## Base URL
 
@@ -19,17 +23,18 @@ https://api.floppydata.net
 
 ## Authentication
 
-All requests require:
-
 ```http
 X-Api-Key: YOUR_API_KEY
 ```
 
-You can manage API keys in [account settings](https://app.floppydata.com/settings/account).
+## Groups
 
-## Endpoint Coverage
+- **V2 / Web Data**: fetch a page, check Web Data balance, check Web Data usage
+- **V2 / Proxy / Rotating**: build connections, list locations, check balance, check usage
+- **V2 / Proxy / Static**: list assigned static proxies
+- **V2 / Proxy**: check a proxy connection
+- **V2 / Account**: account-level balances and usage rollups
 
-- Rotating proxy endpoints
-- Static IP endpoints
-- Web Unlocker endpoints
-- Proxy tools endpoints
+<Note>
+  Existing v1 integrations can use the [Legacy v1](/legacy-v1) page. New integrations should use v2.
+</Note>

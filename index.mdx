@@ -1,47 +1,72 @@
 ---
 title: "Floppydata Client API"
-description: "Official documentation for Floppydata Client API v1."
+description: "Use Web Data, rotating proxies, static proxies, and account reporting from one API."
 ---
 
-## Overview
+The Floppydata Client API is for teams that need proxy and Web Data workflows to be predictable from code, not stitched together by hand. Start with a safe balance check, then move into the exact job you need: fetch a page, build a proxy connection, check usage, or list static proxies.
 
-The Floppydata Client API lets you work with:
+<Card title="Run a request in API Reference" icon="play" href="/api-reference/v2/endpoint/account-balances">
+  Use the built-in playground on each endpoint page to send live v2 requests.
+</Card>
 
-- Rotating proxy traffic and locations
-- Static IP inventory
-- Web Unlocker requests
-- Proxy validation tools
+<CardGroup cols={2}>
+  <Card title="Fetch Web Data" icon="file-code" href="/guides/web-data">
+    Send a URL and receive fetched HTML with optional country, city, difficulty, and cache controls.
+  </Card>
 
-Base URL: `https://api.floppydata.net`
+  <Card title="Build a proxy connection" icon="plug" href="/guides/rotating-proxy">
+    Generate a copy-paste rotating proxy URL from dashboard-style location and rotation options.
+  </Card>
 
-## Quick Request
+  <Card title="Check usage and balances" icon="chart-line" href="/guides/balances-usage">
+    Read Web Data request balance, rotating traffic balance, and UTC usage rollups.
+  </Card>
+
+  <Card title="List static proxies" icon="server" href="/guides/static-ips">
+    Retrieve your static proxy inventory with host, port, credentials, and connection strings.
+  </Card>
+</CardGroup>
+
+## Base URL
+
+```text
+https://api.floppydata.net
+```
+
+All API requests use the `X-Api-Key` header.
 
 ```bash
 curl --request GET \
-  --url 'https://api.floppydata.net/v1/rotating/balance' \
-  --header 'X-Api-Key: YOUR_API_KEY'
+  --url "https://api.floppydata.net/v2/account/balances" \
+  --header "X-Api-Key: YOUR_API_KEY"
 ```
-
-<Note>
-  Use the `X-Api-Key` header for all requests.
-</Note>
 
 ## Start Here
 
-<Columns cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/quickstart">
-    Get your first successful request in minutes.
+<Steps>
+  <Step title="Understand the moving parts">
+    Read the [Overview](/overview) if you want the product model before running commands.
+  </Step>
+
+  <Step title="Get an API key">
+    Create or copy a Client API key in [API keys](https://app.floppydata.com/api-keys).
+  </Step>
+
+  <Step title="Run the quickstart">
+    Follow the [Quickstart](/quickstart) to make one balance request and one proxy connection request.
+  </Step>
+
+  <Step title="Pick your task">
+    Use the task guides when you want a working flow; use the API Reference when you need every field and response.
+  </Step>
+</Steps>
+
+<CardGroup cols={2}>
+  <Card title="API Reference playground" icon="play" href="/api-reference/v2/endpoint/account-balances">
+    Run live requests from endpoint pages.
   </Card>
 
-  <Card title="Authentication" icon="key" href="/authentication">
-    Configure API key auth and request defaults.
+  <Card title="OpenAPI reference" icon="terminal" href="/api-reference/introduction">
+    View every v2 endpoint, request field, response field, and example.
   </Card>
-
-  <Card title="Rotating Proxy Guide" icon="arrows-rotate" href="/guides/rotating-proxy">
-    Credentials, locations, smart params, and statistics.
-  </Card>
-
-  <Card title="API Reference" icon="terminal" href="/api-reference/introduction">
-    Complete endpoint-by-endpoint reference from OpenAPI.
-  </Card>
-</Columns>
+</CardGroup>

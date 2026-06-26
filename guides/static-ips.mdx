@@ -1,39 +1,64 @@
 ---
-title: "Static IP Guide"
-description: "Retrieve static IP inventory and pending IP count."
+title: "List Static Proxies"
+description: "Retrieve assigned static proxies and their copy-paste connection strings."
 ---
 
-## Endpoint
+Use this endpoint when you need the static proxies currently assigned to the authenticated account.
 
-- `GET /v1/static/list`
-
-## List Static IPs
+## Request
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/static" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
 ## Response Shape
 
-- `ip_list`: array of static proxy records
-- `pending_ip_amount`: number of static IPs still pending allocation
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "ip": "123.45.67.89",
+      "proxyType": "isp",
+      "countryCode": "US",
+      "countryName": "United States",
+      "connection": {
+        "host": "123.45.67.89",
+        "port": 1080,
+        "username": "USERNAME",
+        "password": "PASSWORD",
+        "connectionString": "http://USERNAME:PASSWORD@123.45.67.89:1080"
+      },
+      "ownedFrom": "2026-02-19T09:55:59.936291Z",
+      "ownedUntil": null,
+      "lastSwapAt": "2026-02-19T09:55:59.936291Z"
+    }
+  ],
+  "pendingCount": 1
+}
+```
 
-Each `ip_list` item contains fields like:
-
-- `host`, `port`, `username`, `password`
-- `ip`, `country_code`, `country_name`
-- `proxy_type` from your static IP inventory
-
-<Note>
-  Static IP `proxy_type` values describe already allocated static inventory. They are separate from rotating proxy Smart Parameter types, which are `residential`, `mobile`, and `datacenter`.
-</Note>
-
-## Extract First Connection Values
+Use `items[n].connection.connectionString` as the proxy URL.
 
 ```bash
 curl --silent \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" | jq '.ip_list[0] | {host, port, username, password}'
+  --url "$FLOPPY_BASE_URL/v2/proxy/static" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  | jq -r '.items[0].connection.connectionString'
 ```
+
+## Usage Tips
+
+| Situation | Tip |
+| --- | --- |
+| You want a stable proxy endpoint | Use static proxies instead of rotating proxies. The IP is assigned to the account. |
+| You need the copy-paste value | Use `items[n].connection.connectionString`; avoid manually rebuilding it from separate fields. |
+| You see `pendingCount` above zero | Some static proxies are still being prepared and are not in `items` yet. |
+| You need inventory state | Read `ownedFrom`, `ownedUntil`, and `lastSwapAt` to understand assignment timing. |
+| You need to check a proxy | Send `items[n].connection.connectionString` to `POST /v2/proxy/check`. |
+
+<Card title="Run static proxy list in API Reference" icon="play" href="/api-reference/v2/endpoint/static-proxies">
+  List assigned static proxies from the docs and inspect the response schema.
+</Card>

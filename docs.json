@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "FloppyData Client API",
+  "name": "Floppydata Client API",
   "colors": {
     "primary": "#16A34A",
     "light": "#07C983",
@@ -11,6 +11,25 @@
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
+  },
+  "api": {
+    "openapi": [
+      "api-reference/openapi.json",
+      "api-reference/openapi-v1.json"
+    ],
+    "playground": {
+      "display": "interactive"
+    },
+    "url": "full",
+    "examples": {
+      "languages": [
+        "curl",
+        "python",
+        "javascript"
+      ],
+      "defaults": "required",
+      "prefill": true
+    }
   },
   "navbar": {
     "links": [
@@ -22,31 +41,46 @@
     "primary": {
       "type": "button",
       "label": "Get API key",
-      "href": "https://app.floppydata.com/settings/account"
+      "href": "https://app.floppydata.com/api-keys"
     }
   },
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
+        "tab": "Start",
         "pages": [
-          "product-overview",
-          "authentication",
+          "overview",
           "quickstart",
+          "authentication",
           "development"
         ]
       },
       {
-        "tab": "Proxies",
-        "pages": [
-          "proxies/basics",
-          "proxies/using-proxies",
-          "proxies/troubleshooting",
-          "proxies/browser-and-extension-setup"
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Core API tasks",
+            "root": "guides/web-data",
+            "pages": [
+              "guides/rotating-proxy",
+              "guides/static-ips",
+              "guides/balances-usage",
+              "guides/check-proxy"
+            ]
+          },
+          {
+            "group": "Proxy setup",
+            "root": "proxies/basics",
+            "pages": [
+              "proxies/using-proxies",
+              "proxies/browser-and-extension-setup",
+              "proxies/troubleshooting"
+            ]
+          }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
             "group": "Overview",
@@ -54,46 +88,57 @@
             "pages": []
           },
           {
-            "group": "Rotating proxy",
-            "root": "api-reference/endpoint/rotating-balance",
+            "group": "V2",
             "pages": [
-              "api-reference/endpoint/rotating-locations",
-              "api-reference/endpoint/rotating-smart-params-builder",
-              "api-reference/endpoint/rotating-smart-params-credentials",
-              "api-reference/endpoint/rotating-statistics"
+              {
+                "group": "Web Data",
+                "expanded": true,
+                "pages": [
+                  "api-reference/v2/endpoint/web-data-fetch",
+                  "api-reference/v2/endpoint/web-data-balance",
+                  "api-reference/v2/endpoint/web-data-usage"
+                ]
+              },
+              {
+                "group": "Proxy",
+                "expanded": true,
+                "pages": [
+                  {
+                    "group": "Rotating",
+                    "expanded": true,
+                    "pages": [
+                      "api-reference/v2/endpoint/rotating-connection",
+                      "api-reference/v2/endpoint/rotating-locations",
+                      "api-reference/v2/endpoint/rotating-balance",
+                      "api-reference/v2/endpoint/rotating-usage"
+                    ]
+                  },
+                  {
+                    "group": "Static",
+                    "expanded": true,
+                    "pages": [
+                      "api-reference/v2/endpoint/static-proxies"
+                    ]
+                  },
+                  "api-reference/v2/endpoint/check-proxy"
+                ]
+              },
+              {
+                "group": "Account",
+                "expanded": true,
+                "pages": [
+                  "api-reference/v2/endpoint/account-balances",
+                  "api-reference/v2/endpoint/account-usage"
+                ]
+              }
             ]
-          },
-          {
-            "group": "Static IPs",
-            "root": "api-reference/endpoint/static-list",
-            "pages": []
-          },
-          {
-            "group": "Web Unlocker",
-            "root": "api-reference/endpoint/web-unlocker",
-            "pages": [
-              "api-reference/endpoint/web-unlocker-balance"
-            ]
-          },
-          {
-            "group": "Tools",
-            "root": "api-reference/endpoint/check-proxy",
-            "pages": []
           }
         ]
       },
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "By product",
-            "root": "guides/rotating-proxy",
-            "pages": [
-              "guides/static-ips",
-              "guides/web-unlocker",
-              "guides/check-proxy"
-            ]
-          }
+        "tab": "Legacy v1",
+        "pages": [
+          "legacy-v1"
         ]
       }
     ]
@@ -106,7 +151,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/keril-f/docs"
+      "github": "https://github.com/Floppydata/floppydata-docs"
     }
   }
 }

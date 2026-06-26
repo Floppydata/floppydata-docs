@@ -1,38 +1,69 @@
 ---
-title: "Request Workflow"
-description: "Practical workflow for testing and operating against the API."
+title: "API Conventions"
+description: "Base URL, error format, usage periods, and OpenAPI sources."
 ---
 
-## Standard Request Template
+## Base URL
+
+```text
+https://api.floppydata.net
+```
+
+All v2 endpoints are under `/v2`.
+
+## Authentication
+
+Pass your Client API key in `X-Api-Key`.
+
+```http
+X-Api-Key: YOUR_API_KEY
+```
+
+## Dates and Usage Periods
+
+Usage endpoints return UTC rollups:
+
+| Field | Meaning |
+| --- | --- |
+| `yesterday` | Previous UTC calendar day |
+| `last7Days` | Rolling UTC window ending at request time |
+| `last30Days` | Rolling UTC window ending at request time |
+| `requestedRange` | Included only when `from` or `to` is provided |
+| `lastUpdatedAt` | Latest usage data timestamp, or `null` |
+
+Date filters use RFC 3339 date or datetime strings.
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/statistics?proxyType=residential" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
+  --url "https://api.floppydata.net/v2/account/usage?from=2026-03-01&to=2026-03-12" \
+  --header "X-Api-Key: YOUR_API_KEY"
 ```
 
-## Useful Tooling
+## Errors
 
-- `curl` for API calls
-- `jq` for formatting JSON responses
-- your HTTP client of choice (Postman, Insomnia, Bruno)
+v2 errors use a JSON object with `code`, `message`, and `details`.
 
-Example with `jq`:
-
-```bash
-curl --silent \
-  --url "$FLOPPY_BASE_URL/v1/static/list" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" | jq
+```json
+{
+  "error": {
+    "code": "invalid_request",
+    "message": "Invalid request parameters.",
+    "details": {}
+  }
+}
 ```
 
-## Handling Responses
+Common codes include `unauthorized`, `forbidden`, `invalid_request`, `insufficient_balance`, `account_not_configured`, `not_found`, `upstream_error`, and `internal_error`.
 
-- Most endpoints return `200` on success.
-- `POST /v1/tools/checkProxy` may return `400` (proxy validation failed) or `402` (no traffic available).
+## OpenAPI
 
-## OpenAPI Source
+The current v2 OpenAPI source is available at:
 
-The API reference is generated from:
+```text
+https://api.floppydata.net/v2/openapi.json
+```
 
-- `https://api.floppydata.net/v1/openapi.json`
-- local copy: `/api-reference/openapi.json`
+This docs repository keeps:
+
+- `api-reference/openapi.json` for v2
+- `api-reference/openapi-v1.json` for legacy v1

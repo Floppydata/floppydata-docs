@@ -1,42 +1,56 @@
 ---
 title: "Quickstart"
-description: "Get started with FloppyData Client API in three steps."
+description: "Make the first useful v2 Client API calls."
 ---
 
-## 1. Get API Key
+This path keeps the first steps low-risk: confirm your key, generate one proxy connection, check it, then fetch one page. Once those pieces work, you can add location targeting, rotation rules, date filters, and usage reporting with more confidence.
 
-Generate or copy your API key in [account settings](https://app.floppydata.com/settings/account).
+## 1. Set Your API Key
 
-## 2. Export Environment Variables
-
-```bash
-export FLOPPY_API_KEY='YOUR_API_KEY'
-export FLOPPY_BASE_URL='https://api.floppydata.net'
-```
-
-## 3. Make Your First Calls
-
-Check traffic balance:
+Create or copy a Client API key from [API keys](https://app.floppydata.com/api-keys), then keep it in an environment variable while you test.
 
 ```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/balance" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
+export FLOPPY_API_KEY="YOUR_API_KEY"
+export FLOPPY_BASE_URL="https://api.floppydata.net"
 ```
 
-List available countries and cities:
+<Card title="Run requests in API Reference" icon="play" href="/api-reference/v2/endpoint/account-balances">
+  Prefer a browser-based flow? Use the endpoint playground to enter your API key and run live requests.
+</Card>
+
+## 2. Check Account Balances
+
+This confirms your key works and shows the products available on the account.
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/locations" \
+  --url "$FLOPPY_BASE_URL/v2/account/balances" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-Validate a proxy:
+## 3. Build a Rotating Proxy Connection
 
 ```bash
 curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/connections" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "type": "residential",
+    "country": "US",
+    "city": "New York",
+    "protocol": "http",
+    "rotation": 15
+  }'
+```
+
+Use `connection.connectionString` from the response as the proxy URL in your HTTP client, browser profile, or automation tool.
+
+## 4. Check the Proxy
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/check" \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{
@@ -44,4 +58,19 @@ curl --request POST \
   }'
 ```
 
-Next: [Authentication guide](/authentication)
+## 5. Fetch Web Data
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/web-data/fetch" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "url": "https://example.com",
+    "countryCode": "US",
+    "difficulty": "low",
+    "cacheMaxAgeDays": 0
+  }'
+```
+
+Next: [Authentication](/authentication), [API conventions](/development), or [task guides](/guides/web-data).

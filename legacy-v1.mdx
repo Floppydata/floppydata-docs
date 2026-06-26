@@ -1,0 +1,58 @@
+---
+title: "Legacy v1"
+description: "Reference links for existing Client API v1 integrations."
+---
+
+<Warning>
+  Client API v1 is kept for existing integrations. New integrations should use Client API v2.
+</Warning>
+
+The main docs and API Reference are v2-first. Use this page only if you are maintaining an existing v1 integration.
+
+## v1 OpenAPI
+
+```text
+https://api.floppydata.net/v1/openapi.json
+```
+
+The local legacy snapshot is stored at `api-reference/openapi-v1.json`.
+
+## Endpoint Reference
+
+<CardGroup cols={2}>
+  <Card title="Rotating balance" href="/api-reference/v1/endpoint/rotating-balance">
+    `GET /v1/rotating/balance`
+  </Card>
+
+  <Card title="Rotating locations" href="/api-reference/v1/endpoint/rotating-locations">
+    `GET /v1/rotating/locations`
+  </Card>
+
+  <Card title="Smart params builder" href="/api-reference/v1/endpoint/rotating-smart-params-builder">
+    `GET /v1/rotating/smartParamsBuilder`
+  </Card>
+
+  <Card title="Smart params credentials" href="/api-reference/v1/endpoint/rotating-smart-params-credentials">
+    `GET /v1/rotating/smartParamsCredentials`
+  </Card>
+
+  <Card title="Rotating statistics" href="/api-reference/v1/endpoint/rotating-statistics">
+    `GET /v1/rotating/statistics`
+  </Card>
+
+  <Card title="Static list" href="/api-reference/v1/endpoint/static-list">
+    `GET /v1/static/list`
+  </Card>
+
+  <Card title="Web Unlocker fetch" href="/api-reference/v1/endpoint/web-unlocker">
+    `POST /v1/webUnlocker`
+  </Card>
+
+  <Card title="Web Unlocker balance" href="/api-reference/v1/endpoint/web-unlocker-balance">
+    `GET /v1/webUnlocker/balance`
+  </Card>
+
+  <Card title="Check proxy" href="/api-reference/v1/endpoint/check-proxy">
+    `POST /v1/tools/checkProxy`
+  </Card>
+</CardGroup>

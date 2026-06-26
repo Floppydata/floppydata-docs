@@ -105,7 +105,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://api.floppydata.net/v1/rotating/balance
+      https://api.floppydata.net/v2/proxy/rotating/balance
     ```
 
     **3. Try different proxy parameters**
@@ -124,7 +124,7 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     - Different session ID (new IP)
     - Different proxy type
-    - Web Unlocker instead
+    - Web Data instead
   </Accordion>
 </AccordionGroup>
 
@@ -223,13 +223,13 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
     proxy_username = "user123-type-residential-country-US-session-retry01"
     ```
 
-    **4. Consider Web Unlocker**
+    **4. Consider Web Data**
 
-    For protected sites, use Web Unlocker API instead:
+    For protected sites, use the Web Data API instead:
 
     ```python
     response = requests.post(
-        'https://api.floppydata.net/v1/webUnlocker',
+        'https://api.floppydata.net/v2/web-data/fetch',
         headers={'X-Api-Key': 'YOUR_KEY'},
         json={'url': 'https://protected-site.com'}
     )
@@ -410,17 +410,17 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
     time.sleep(random.uniform(1, 3))  # Random delay
     ```
 
-    **4. Use Web Unlocker**
+    **4. Use Web Data**
 
-    Web Unlocker automatically handles captchas:
+    Web Data can handle protected pages:
 
     ```python
     response = requests.post(
-        'https://api.floppydata.net/v1/webUnlocker',
+        'https://api.floppydata.net/v2/web-data/fetch',
         headers={'X-Api-Key': 'YOUR_KEY'},
         json={
             'url': 'https://protected-site.com',
-            'render_js': True
+            'difficulty': 'medium'
         }
     )
     ```
@@ -502,11 +502,11 @@ Comprehensive guide to diagnosing and fixing issues with Floppydata proxies.
 
     **2. Use a static IP instead**
 
-    For long-running sessions, use a static IP returned by the Static IP List endpoint:
+    For long-running sessions, use a static proxy returned by the Static Proxy endpoint:
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://api.floppydata.net/v1/static/list
+      https://api.floppydata.net/v2/proxy/static
     ```
   </Accordion>
 </AccordionGroup>
@@ -669,7 +669,7 @@ curl -X POST \
   -d '{
     "connectionString": "http://user-type-residential-country-US:pass@geo.g-w.info:10080"
   }' \
-  https://api.floppydata.net/v1/tools/checkProxy
+  https://api.floppydata.net/v2/proxy/check
 ```
 
 ## FAQ
@@ -680,7 +680,7 @@ curl -X POST \
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://api.floppydata.net/v1/rotating/balance
+      https://api.floppydata.net/v2/proxy/rotating/balance
     ```
 
     **Via Dashboard:** [app.floppydata.com](https://app.floppydata.com)
@@ -719,7 +719,7 @@ curl -X POST \
 
     ```bash
     curl -H "X-Api-Key: YOUR_KEY" \
-      https://api.floppydata.net/v1/rotating/statistics
+      https://api.floppydata.net/v2/proxy/rotating/usage
     ```
 
     Or contact support for custom limits.

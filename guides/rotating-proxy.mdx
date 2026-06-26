@@ -1,63 +1,98 @@
 ---
-title: "Rotating Proxy Guide"
-description: "Use rotating proxy credentials, location data, and traffic endpoints."
+title: "Build a Rotating Proxy Connection"
+description: "Generate a copy-paste rotating proxy URL from location and rotation options."
 ---
 
-## Endpoints
+Use this endpoint when a customer needs one usable rotating proxy connection string.
 
-- `GET /v1/rotating/smartParamsCredentials`
-- `GET /v1/rotating/smartParamsBuilder`
-- `GET /v1/rotating/locations`
-- `GET /v1/rotating/balance`
-- `GET /v1/rotating/statistics`
-
-## 1. Fetch Base Credentials
+## 1. Choose a Location
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/smartParamsCredentials" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/locations?type=residential" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-## 2. Build Smart Parameters Username
+The response lists countries with country-level `cities` and `states`. It is not a city-under-state mapping.
+
+## 2. Build the Connection
 
 ```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/smartParamsBuilder?type=residential&country=US&city=New_York&rotation=15&protocol=http" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/connections" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "type": "residential",
+    "country": "US",
+    "city": "New York",
+    "protocol": "http",
+    "rotation": 15
+  }'
 ```
 
-Supported query parameters include `type`, `country`, `city`, `rotation`, `session`, and `protocol`.
+Copy `connection.connectionString` from the response.
 
-- `type` must be `residential`, `mobile`, or `datacenter`.
-- `rotation=-1` requests a new IP every request.
-- `rotation=0` keeps the same IP within a session.
-- `rotation=1..60` rotates after that many minutes.
+```json
+{
+  "connection": {
+    "protocol": "http",
+    "host": "geo.g-w.info",
+    "port": 10080,
+    "username": "user-USERNAME-type-residential-country-US-city-New_York-rotation-15",
+    "password": "PASSWORD",
+    "connectionString": "http://user-USERNAME-type-residential-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+  },
+  "parameters": {
+    "type": "residential",
+    "country": "US",
+    "city": "New York",
+    "rotation": 15,
+    "protocol": "http"
+  }
+}
+```
 
-## 3. List Available Locations
+## Request Rules
+
+| Field | Notes |
+| --- | --- |
+| `type` | `residential`, `mobile`, or `datacenter`. |
+| `country` | Two-letter country code. |
+| `state` | Optional. Takes precedence over `city` when both are supplied. |
+| `city` | Optional. Used when `state` is not supplied. |
+| `rotation` | `-1` for every request, `0` for sticky session, or `1..60` minutes. |
+| `protocol` | `http`, `https`, or `socks5`. |
+
+## 3. Use the Connection
 
 ```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/locations" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
+curl --proxy "http://USERNAME:PASSWORD@geo.g-w.info:10080" \
+  "https://example.com"
 ```
 
-## 4. Check Traffic Balance
+## Usage Tips
 
-```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/balance" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
-```
+| Situation | Tip |
+| --- | --- |
+| You want one ready-to-use proxy URL | Copy `connection.connectionString`; it already includes protocol, username, password, host, and port. |
+| You need country targeting | Send `country` as a two-letter code such as `US`. |
+| You need regional targeting | Use `state` or `city`; if both are supplied, `state` takes precedence. |
+| You want a new IP often | Use `rotation: -1` for rotation on every request. |
+| You want a sticky session | Use `rotation: 0`. |
+| You want timed rotation | Use `rotation` from `1` to `60` minutes. |
+| You are unsure about proxy type | Start with `residential`; use `mobile` or `datacenter` only when that matches the target workflow. |
 
-Response includes `residential`, `mobile`, and `datacenter` balances, each with `subscription` and `nonExpiring` data.
+<Tip>
+  Generate one connection per call. If your app needs several proxy URLs, call the connections endpoint several times and store each returned `connection.connectionString`.
+</Tip>
 
-## 5. Query Usage Statistics
+<CardGroup cols={2}>
+  <Card title="Run connections in API Reference" icon="play" href="/api-reference/v2/endpoint/rotating-connection">
+    Generate a live connection string from the docs.
+  </Card>
 
-```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v1/rotating/statistics?from=2026-03-01&to=2026-03-12&proxyType=residential&countryCode=US" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
-```
-
-You can filter by `from`, `to`, `poolId`, `proxyType`, and `countryCode`.
+  <Card title="Check the proxy" icon="circle-check" href="/guides/check-proxy">
+    Validate the connection string returned by the API.
+  </Card>
+</CardGroup>

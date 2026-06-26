@@ -1,0 +1,74 @@
+---
+title: "Check Balances and Usage"
+description: "Read account balances, Web Data usage, and rotating proxy traffic usage."
+---
+
+Use account rollups when you want one response across products. Use product-specific endpoints when you only need one product.
+
+## Account Balances
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/account/balances" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+The response can include:
+
+- `webData.requests`
+- `proxy.rotating.expiring`
+- `proxy.rotating.nonExpiring`
+- `proxy.rotating.total`
+- `proxy.static.activeIpCount`
+- `proxy.static.pendingIpCount`
+
+## Account Usage
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/account/usage?from=2026-03-01&to=2026-03-12" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Usage responses return UTC rollups:
+
+| Field | Meaning |
+| --- | --- |
+| `yesterday` | Previous UTC calendar day |
+| `last7Days` | Rolling UTC window ending at request time |
+| `last30Days` | Rolling UTC window ending at request time |
+| `requestedRange` | Included only when `from` or `to` is supplied |
+| `lastUpdatedAt` | Latest usage data timestamp, or `null` |
+
+## Product-Specific Endpoints
+
+| Product | Balance | Usage |
+| --- | --- | --- |
+| Web Data | `GET /v2/web-data/balance` | `GET /v2/web-data/usage` |
+| Rotating proxy | `GET /v2/proxy/rotating/balance` | `GET /v2/proxy/rotating/usage` |
+| Static proxy | `GET /v2/proxy/static` | Included in account rollups where available |
+
+## Usage Tips
+
+| Situation | Tip |
+| --- | --- |
+| You want one overview | Use `GET /v2/account/balances` or `GET /v2/account/usage`. |
+| You only care about one product | Use the product-specific balance or usage endpoint to keep the response smaller. |
+| You need a custom date range | Pass `from`, `to`, or both. The response adds `requestedRange` alongside the standard buckets. |
+| You do not pass dates | Usage still includes `yesterday`, `last7Days`, and `last30Days`. |
+| You need freshness context | Read `lastUpdatedAt`; `null` means there is no matching usage timestamp for the request filters. |
+| You compare reports | Treat usage periods as UTC. `yesterday` is the previous UTC calendar day. |
+
+<Note>
+  Static proxies are inventory-based in v2. Use `GET /v2/proxy/static` for static proxy state rather than expecting traffic usage buckets.
+</Note>
+
+<CardGroup cols={2}>
+  <Card title="Run balances in API Reference" icon="play" href="/api-reference/v2/endpoint/account-balances">
+    Check live account balances from the docs.
+  </Card>
+
+  <Card title="Run usage in API Reference" icon="play" href="/api-reference/v2/endpoint/account-usage">
+    Check usage buckets and optional date filters from the docs.
+  </Card>
+</CardGroup>

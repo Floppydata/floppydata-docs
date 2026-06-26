@@ -1,47 +1,51 @@
 ---
-title: "Check Proxy Guide"
-description: "Validate proxy connectivity and location details."
+title: "Check a Proxy"
+description: "Validate a proxy connection string and read its detected IP and location."
 ---
 
-## Endpoint
+Use this endpoint after building a rotating proxy connection or listing static proxies.
 
-- `POST /v1/tools/checkProxy`
-
-## Option A: Send Connection String
+## Request
 
 ```bash
 curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
+  --url "$FLOPPY_BASE_URL/v2/proxy/check" \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{
-    "connectionString": "http://username:password@geo.g-w.info:10080"
+    "connectionString": "http://USERNAME:PASSWORD@geo.g-w.info:10080"
   }'
 ```
 
-## Option B: Send Structured Fields
+## Response
 
-```bash
-curl --request POST \
-  --url "$FLOPPY_BASE_URL/v1/tools/checkProxy" \
-  --header "Content-Type: application/json" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" \
-  --data '{
-    "host": "geo.g-w.info",
-    "port": 10080,
-    "username": "username",
-    "password": "password",
-    "protocol": "http"
-  }'
+```json
+{
+  "ip": "123.45.67.89",
+  "location": {
+    "countryCode": "US",
+    "country": "United States",
+    "state": "California",
+    "city": "San Francisco"
+  }
+}
 ```
 
-## Success Response
+## Where the Connection String Comes From
 
-Returns:
+- Rotating proxies: `POST /v2/proxy/rotating/connections` returns `connection.connectionString`.
+- Static proxies: `GET /v2/proxy/static` returns `items[n].connection.connectionString`.
 
-- `ip`
-- `country`
-- `stateProv`
-- `city`
+## Usage Tips
 
-Possible non-200 statuses in spec: `400`, `402`.
+| Situation | Tip |
+| --- | --- |
+| You just generated a rotating connection | Paste `connection.connectionString` into `connectionString` to confirm the exit IP. |
+| You are checking static proxies | Paste `items[n].connection.connectionString` from the static proxy list response. |
+| You want account details | Use account endpoints instead. Proxy check validates the proxy exit, not customer account metadata. |
+| The detected location differs from the requested one | Treat the response as the observed proxy exit and rerun with a different location if strict targeting matters. |
+| The request fails | Check that the protocol, username, password, host, and port are all present in the connection string. |
+
+<Card title="Run proxy check in API Reference" icon="play" href="/api-reference/v2/endpoint/check-proxy">
+  Paste a connection string and inspect the live detected IP and location.
+</Card>
