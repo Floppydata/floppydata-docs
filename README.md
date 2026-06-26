@@ -1,6 +1,6 @@
-# FloppyData Client API Docs
+# Floppydata Client API Docs
 
-Documentation source for FloppyData Client API. The main docs target `/v2`; `/v1` is kept as a legacy API reference.
+Documentation source for Floppydata Client API. The main docs target `/v2`; `/v1` is kept as a legacy API reference.
 
 ## Local development
 
