@@ -1,0 +1,92 @@
+---
+title: "MCP"
+description: "Use Floppydata from MCP-compatible agents."
+---
+
+The Floppydata MCP server gives an agent a small set of safe, job-focused tools for Client API v2. Instead of asking the agent to remember endpoint paths, headers, and request bodies, you give it one API key and it can fetch Web Data, build proxy connections, check proxies, and read account usage.
+
+## Install
+
+Create or copy a Client API key from [API keys](https://app.floppydata.com/api-keys).
+
+Add this server to your MCP client:
+
+```json
+{
+  "mcpServers": {
+    "floppydata": {
+      "command": "npx",
+      "args": ["-y", "@floppydata/mcp"],
+      "env": {
+        "FLOPPYDATA_API_KEY": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+That is all the configuration. The server runs locally through stdio and talks to the production Client API at `https://api.floppydata.net`.
+
+<Warning>
+  Keep API keys in your MCP client environment config. Do not paste real keys into prompts, docs, or shared logs.
+</Warning>
+
+## What the Agent Can Do
+
+| Tool | Use it when |
+| --- | --- |
+| `fetch_web_data` | The agent needs HTML for a target URL through Web Data. |
+| `create_rotating_proxy_connection` | The agent needs one ready-to-use rotating proxy URL. |
+| `list_rotating_proxy_locations` | The agent needs valid countries, cities, or states before building a connection. |
+| `check_proxy` | The agent should verify the proxy exit IP and location. |
+| `list_static_proxies` | The agent needs your assigned static proxies and copy-paste connection strings. |
+| `get_account_balances` | The agent needs to confirm available balance before running work. |
+| `get_account_usage` | The agent needs recent usage: `yesterday`, `last7Days`, `last30Days`, and optional `requestedRange`. |
+
+The proxy tools return `connection.connectionString` where a connection is involved. Use that value directly in HTTP clients, browser profiles, or automation tools.
+
+## Try It
+
+After adding the server, ask your agent:
+
+```text
+Check my Floppydata account balances.
+```
+
+Then try a rotating proxy flow:
+
+```text
+Create a residential US rotating proxy connection, then check the proxy exit location.
+```
+
+For Web Data:
+
+```text
+Fetch https://example.com with Floppydata Web Data and tell me the fetchedAt timestamp.
+```
+
+## How It Maps to Client API v2
+
+The MCP server is a thin customer-facing wrapper over the public v2 API:
+
+- Web Data fetch: `POST /v2/web-data/fetch`
+- Rotating connection: `POST /v2/proxy/rotating/connections`
+- Rotating locations: `GET /v2/proxy/rotating/locations`
+- Proxy check: `POST /v2/proxy/check`
+- Static proxies: `GET /v2/proxy/static`
+- Account balances: `GET /v2/account/balances`
+- Account usage: `GET /v2/account/usage`
+
+It only exposes customer-facing tools. If an agent needs several proxy connections, ask it to create them one at a time.
+
+## Package
+
+The package is public on npm:
+
+```bash
+npm view @floppydata/mcp version
+```
+
+Source code is available on GitHub:
+
+[github.com/Floppydata/floppydata-mcp](https://github.com/Floppydata/floppydata-mcp)

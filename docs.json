@@ -51,6 +51,7 @@
         "pages": [
           "overview",
           "quickstart",
+          "mcp",
           "authentication",
           "development"
         ]
