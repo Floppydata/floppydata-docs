@@ -94,16 +94,16 @@
           },
           {
             "group": "Web Data",
-            "root": "api-reference/v2/endpoint/web-data-fetch",
             "pages": [
+              "api-reference/v2/endpoint/web-data-fetch",
               "api-reference/v2/endpoint/web-data-balance",
               "api-reference/v2/endpoint/web-data-usage"
             ]
           },
           {
             "group": "Rotating Proxy",
-            "root": "api-reference/v2/endpoint/rotating-connection",
             "pages": [
+              "api-reference/v2/endpoint/rotating-connection",
               "api-reference/v2/endpoint/rotating-locations",
               "api-reference/v2/endpoint/rotating-balance",
               "api-reference/v2/endpoint/rotating-usage"
@@ -111,18 +111,20 @@
           },
           {
             "group": "Static Proxy",
-            "root": "api-reference/v2/endpoint/static-proxies",
-            "pages": []
+            "pages": [
+              "api-reference/v2/endpoint/static-proxies"
+            ]
           },
           {
             "group": "Proxy Tools",
-            "root": "api-reference/v2/endpoint/check-proxy",
-            "pages": []
+            "pages": [
+              "api-reference/v2/endpoint/check-proxy"
+            ]
           },
           {
             "group": "Account",
-            "root": "api-reference/v2/endpoint/account-balances",
             "pages": [
+              "api-reference/v2/endpoint/account-balances",
               "api-reference/v2/endpoint/account-usage"
             ]
           }
