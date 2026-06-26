@@ -49,6 +49,16 @@ curl --silent \
   | jq -r '.items[0].connection.connectionString'
 ```
 
+## Usage Tips
+
+| Situation | Tip |
+| --- | --- |
+| You want a stable proxy endpoint | Use static proxies instead of rotating proxies. The IP is assigned to the account. |
+| You need the copy-paste value | Use `items[n].connection.connectionString`; avoid manually rebuilding it from separate fields. |
+| You see `pendingCount` above zero | Some static proxies are still being prepared and are not in `items` yet. |
+| You need inventory state | Read `ownedFrom`, `ownedUntil`, and `lastSwapAt` to understand assignment timing. |
+| You need to check a proxy | Send `items[n].connection.connectionString` to `POST /v2/proxy/check`. |
+
 <Card title="Run static proxy list in the sandbox" icon="play" href="/api-reference/v2/endpoint/static-proxies">
   List assigned static proxies from the docs and inspect the response schema.
 </Card>

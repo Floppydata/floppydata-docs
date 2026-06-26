@@ -9,6 +9,10 @@ Use the sandbox to send real Client API v2 requests without leaving the docs. Op
   Sandbox requests run against production and can consume account balance or proxy traffic.
 </Warning>
 
+## Before You Run This
+
+Start with account balances if you only want to confirm that the API key works. Web Data fetches and proxy checks make live production requests, so use example targets first and avoid pasting credentials you do not want to test.
+
 <CardGroup cols={2}>
   <Card title="Fetch Web Data" icon="file-code" href="/api-reference/v2/endpoint/web-data-fetch">
     Fetch `https://example.com` through Web Data and inspect the HTML response.

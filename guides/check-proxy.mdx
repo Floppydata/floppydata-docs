@@ -36,6 +36,16 @@ curl --request POST \
 - Rotating proxies: `POST /v2/proxy/rotating/connections` returns `connection.connectionString`.
 - Static proxies: `GET /v2/proxy/static` returns `items[n].connection.connectionString`.
 
+## Usage Tips
+
+| Situation | Tip |
+| --- | --- |
+| You just generated a rotating connection | Paste `connection.connectionString` into `connectionString` to confirm the exit IP. |
+| You are checking static proxies | Paste `items[n].connection.connectionString` from the static proxy list response. |
+| You want account details | Use account endpoints instead. Proxy check validates the proxy exit, not customer account metadata. |
+| The detected location differs from the requested one | Treat the response as the observed proxy exit and rerun with a different location if strict targeting matters. |
+| The request fails | Check that the protocol, username, password, host, and port are all present in the connection string. |
+
 <Card title="Run proxy check in the sandbox" icon="play" href="/api-reference/v2/endpoint/check-proxy">
   Paste a connection string and inspect the live detected IP and location.
 </Card>

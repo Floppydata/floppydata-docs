@@ -93,10 +93,11 @@
             "pages": []
           },
           {
-            "group": "v2",
+            "group": "V2",
             "pages": [
               {
-                "group": "web-data",
+                "group": "Web Data",
+                "expanded": true,
                 "pages": [
                   "api-reference/v2/endpoint/web-data-fetch",
                   "api-reference/v2/endpoint/web-data-balance",
@@ -104,10 +105,12 @@
                 ]
               },
               {
-                "group": "proxy",
+                "group": "Proxy",
+                "expanded": true,
                 "pages": [
                   {
-                    "group": "rotating",
+                    "group": "Rotating",
+                    "expanded": true,
                     "pages": [
                       "api-reference/v2/endpoint/rotating-connection",
                       "api-reference/v2/endpoint/rotating-locations",
@@ -116,7 +119,8 @@
                     ]
                   },
                   {
-                    "group": "static",
+                    "group": "Static",
+                    "expanded": true,
                     "pages": [
                       "api-reference/v2/endpoint/static-proxies"
                     ]
@@ -125,7 +129,8 @@
                 ]
               },
               {
-                "group": "account",
+                "group": "Account",
+                "expanded": true,
                 "pages": [
                   "api-reference/v2/endpoint/account-balances",
                   "api-reference/v2/endpoint/account-usage"

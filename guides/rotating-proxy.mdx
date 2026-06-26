@@ -71,8 +71,24 @@ curl --proxy "http://USERNAME:PASSWORD@geo.g-w.info:10080" \
   "https://example.com"
 ```
 
+## Usage Tips
+
+| Situation | Tip |
+| --- | --- |
+| You want one ready-to-use proxy URL | Copy `connection.connectionString`; it already includes protocol, username, password, host, and port. |
+| You need country targeting | Send `country` as a two-letter code such as `US`. |
+| You need regional targeting | Use `state` or `city`; if both are supplied, `state` takes precedence. |
+| You want a new IP often | Use `rotation: -1` for rotation on every request. |
+| You want a sticky session | Use `rotation: 0`. |
+| You want timed rotation | Use `rotation` from `1` to `60` minutes. |
+| You are unsure about proxy type | Start with `residential`; use `mobile` or `datacenter` only when that matches the target workflow. |
+
+<Tip>
+  Generate one connection per call. If your app needs several proxy URLs, call the connections endpoint several times and store each returned `connection.connectionString`.
+</Tip>
+
 <CardGroup cols={2}>
-  <Card title="Run connection builder in the sandbox" icon="play" href="/api-reference/v2/endpoint/rotating-connection">
+  <Card title="Run connections in the sandbox" icon="play" href="/api-reference/v2/endpoint/rotating-connection">
     Generate a live connection string from the docs.
   </Card>
 
