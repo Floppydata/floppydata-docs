@@ -1,15 +1,11 @@
 ---
-title: "Web Data Guide"
-description: "Fetch pages and track remaining Web Data requests."
+title: "Fetch a Page With Web Data"
+description: "Send a URL and receive fetched HTML through Web Data."
 ---
 
-## Endpoints
+Use Web Data when you want the API to retrieve a page for you and return HTML.
 
-- `POST /v2/web-data/fetch`
-- `GET /v2/web-data/balance`
-- `GET /v2/web-data/usage`
-
-## Scrape a Page
+## Request
 
 ```bash
 curl --request POST \
@@ -17,7 +13,7 @@ curl --request POST \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{
-    "url": "https://ip-api.com",
+    "url": "https://example.com",
     "countryCode": "US",
     "city": "New York",
     "difficulty": "low",
@@ -25,14 +21,29 @@ curl --request POST \
   }'
 ```
 
-Request body supports:
+## Response
 
-- `url` (required)
-- `countryCode`, `city`
-- `difficulty` (`low` or `medium`)
-- `cacheMaxAgeDays` (cache age in days)
+```json
+{
+  "html": "<!doctype html><html>...</html>",
+  "sourceUrl": "https://example.com",
+  "fetchedAt": "2026-06-10T12:00:00.000Z"
+}
+```
 
-## Check Remaining Balance
+## Useful Fields
+
+| Field | Use |
+| --- | --- |
+| `url` | Target page to fetch. Required. |
+| `countryCode` | Optional two-letter exit country code. |
+| `city` | Optional city for the request exit location. |
+| `difficulty` | Optional pool selector: `low` or `medium`. |
+| `cacheMaxAgeDays` | Optional maximum cached content age in days. |
+
+## Balance and Usage
+
+Check Web Data request balance:
 
 ```bash
 curl --request GET \
@@ -40,9 +51,7 @@ curl --request GET \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-Response includes `requests.total`, `requests.used`, and `requests.remaining`.
-
-## Check Usage
+Check Web Data usage:
 
 ```bash
 curl --request GET \
@@ -50,4 +59,8 @@ curl --request GET \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-Usage responses include `yesterday`, `last7Days`, `last30Days`, `lastUpdatedAt`, and `requestedRange` when you pass a date range.
+Usage responses include `yesterday`, `last7Days`, `last30Days`, `lastUpdatedAt`, and `requestedRange` when a date range is supplied.
+
+<Card title="Web Data API reference" icon="terminal" href="/api-reference/v2/endpoint/web-data-fetch">
+  See the full request and response schema.
+</Card>

@@ -1,38 +1,26 @@
 ---
 title: "Quickstart"
-description: "Get started with FloppyData Client API in three steps."
+description: "Make the first useful v2 Client API calls."
 ---
 
-## 1. Get API Key
-
-Generate or copy your API key in [account settings](https://app.floppydata.com/settings/account).
-
-## 2. Export Environment Variables
+## 1. Set Your API Key
 
 ```bash
-export FLOPPY_API_KEY='YOUR_API_KEY'
-export FLOPPY_BASE_URL='https://api.floppydata.net'
+export FLOPPY_API_KEY="YOUR_API_KEY"
+export FLOPPY_BASE_URL="https://api.floppydata.net"
 ```
 
-## 3. Make Your First Calls
+## 2. Check Account Balances
 
-Check traffic balance:
+This confirms your key works and shows the products available on the account.
 
 ```bash
 curl --request GET \
-  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/balance" \
+  --url "$FLOPPY_BASE_URL/v2/account/balances" \
   --header "X-Api-Key: $FLOPPY_API_KEY"
 ```
 
-List available countries and cities:
-
-```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/locations?type=residential" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
-```
-
-Build a copy-paste rotating proxy connection:
+## 3. Build a Rotating Proxy Connection
 
 ```bash
 curl --request POST \
@@ -48,7 +36,9 @@ curl --request POST \
   }'
 ```
 
-Validate a proxy connection:
+Use `connection.connectionString` from the response as the proxy URL in your HTTP client, browser profile, or automation tool.
+
+## 4. Check the Proxy
 
 ```bash
 curl --request POST \
@@ -60,4 +50,19 @@ curl --request POST \
   }'
 ```
 
-Next: [Authentication guide](/authentication)
+## 5. Fetch Web Data
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/web-data/fetch" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "url": "https://example.com",
+    "countryCode": "US",
+    "difficulty": "low",
+    "cacheMaxAgeDays": 0
+  }'
+```
+
+Next: [Authentication](/authentication), [API conventions](/development), or [task guides](/guides/web-data).

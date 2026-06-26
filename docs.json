@@ -47,25 +47,39 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Getting Started",
+        "tab": "Start",
         "pages": [
-          "product-overview",
-          "authentication",
           "quickstart",
+          "authentication",
           "development"
         ]
       },
       {
-        "tab": "Proxies",
-        "pages": [
-          "proxies/basics",
-          "proxies/using-proxies",
-          "proxies/troubleshooting",
-          "proxies/browser-and-extension-setup"
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Core API tasks",
+            "root": "guides/web-data",
+            "pages": [
+              "guides/rotating-proxy",
+              "guides/static-ips",
+              "guides/balances-usage",
+              "guides/check-proxy"
+            ]
+          },
+          {
+            "group": "Proxy setup",
+            "root": "proxies/basics",
+            "pages": [
+              "proxies/using-proxies",
+              "proxies/browser-and-extension-setup",
+              "proxies/troubleshooting"
+            ]
+          }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "API Reference",
         "groups": [
           {
             "group": "Overview",
@@ -81,7 +95,7 @@
             ]
           },
           {
-            "group": "Rotating proxy",
+            "group": "Rotating Proxy",
             "root": "api-reference/v2/endpoint/rotating-connection",
             "pages": [
               "api-reference/v2/endpoint/rotating-locations",
@@ -90,12 +104,12 @@
             ]
           },
           {
-            "group": "Static proxy",
+            "group": "Static Proxy",
             "root": "api-reference/v2/endpoint/static-proxies",
             "pages": []
           },
           {
-            "group": "Proxy",
+            "group": "Proxy Tools",
             "root": "api-reference/v2/endpoint/check-proxy",
             "pages": []
           },
@@ -105,35 +119,13 @@
             "pages": [
               "api-reference/v2/endpoint/account-usage"
             ]
-          },
-          {
-            "group": "Legacy v1",
-            "root": "api-reference/v1/endpoint/rotating-balance",
-            "pages": [
-              "api-reference/v1/endpoint/rotating-locations",
-              "api-reference/v1/endpoint/rotating-smart-params-builder",
-              "api-reference/v1/endpoint/rotating-smart-params-credentials",
-              "api-reference/v1/endpoint/rotating-statistics",
-              "api-reference/v1/endpoint/static-list",
-              "api-reference/v1/endpoint/web-unlocker",
-              "api-reference/v1/endpoint/web-unlocker-balance",
-              "api-reference/v1/endpoint/check-proxy"
-            ]
           }
         ]
       },
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "By product",
-            "root": "guides/rotating-proxy",
-            "pages": [
-              "guides/static-ips",
-              "guides/web-data",
-              "guides/check-proxy"
-            ]
-          }
+        "tab": "Legacy v1",
+        "pages": [
+          "legacy-v1"
         ]
       }
     ]

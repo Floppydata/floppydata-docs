@@ -1,13 +1,11 @@
 ---
-title: "Static IP Guide"
-description: "Retrieve static proxy inventory, pending IP count, and connection strings."
+title: "List Static Proxies"
+description: "Retrieve assigned static proxies and their copy-paste connection strings."
 ---
 
-## Endpoint
+Use this endpoint when you need the static proxies currently assigned to the authenticated account.
 
-- `GET /v2/proxy/static`
-
-## List Static IPs
+## Request
 
 ```bash
 curl --request GET \
@@ -17,24 +15,40 @@ curl --request GET \
 
 ## Response Shape
 
-- `items`: array of static proxy records
-- `pendingCount`: number of static IPs still pending allocation
+```json
+{
+  "items": [
+    {
+      "id": 1,
+      "ip": "123.45.67.89",
+      "proxyType": "isp",
+      "countryCode": "US",
+      "countryName": "United States",
+      "connection": {
+        "host": "123.45.67.89",
+        "port": 1080,
+        "username": "USERNAME",
+        "password": "PASSWORD",
+        "connectionString": "http://USERNAME:PASSWORD@123.45.67.89:1080"
+      },
+      "ownedFrom": "2026-02-19T09:55:59.936291Z",
+      "ownedUntil": null,
+      "lastSwapAt": "2026-02-19T09:55:59.936291Z"
+    }
+  ],
+  "pendingCount": 1
+}
+```
 
-Each `items` entry contains fields like:
-
-- `connection.host`, `connection.port`, `connection.username`, `connection.password`
-- `connection.connectionString`, the copy-paste proxy URL
-- `ip`, `countryCode`, `countryName`
-- `proxyType` from your static IP inventory
-
-<Note>
-  Static proxy `proxyType` values describe already allocated static inventory. They are separate from rotating proxy types, which are `residential`, `mobile`, and `datacenter`.
-</Note>
-
-## Extract First Connection Values
+Use `items[n].connection.connectionString` as the proxy URL.
 
 ```bash
 curl --silent \
   --url "$FLOPPY_BASE_URL/v2/proxy/static" \
-  --header "X-Api-Key: $FLOPPY_API_KEY" | jq '.items[0].connection.connectionString'
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  | jq -r '.items[0].connection.connectionString'
 ```
+
+<Card title="Static proxy API reference" icon="terminal" href="/api-reference/v2/endpoint/static-proxies">
+  See the full static proxy response schema.
+</Card>

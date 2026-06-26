@@ -1,16 +1,21 @@
 ---
-title: "Rotating Proxy Guide"
-description: "Build rotating proxy connections, choose locations, and track traffic."
+title: "Build a Rotating Proxy Connection"
+description: "Generate a copy-paste rotating proxy URL from location and rotation options."
 ---
 
-## Endpoints
+Use this endpoint when a customer needs one usable rotating proxy connection string.
 
-- `POST /v2/proxy/rotating/connections`
-- `GET /v2/proxy/rotating/locations`
-- `GET /v2/proxy/rotating/balance`
-- `GET /v2/proxy/rotating/usage`
+## 1. Choose a Location
 
-## 1. Build a Connection
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/locations?type=residential" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+The response lists countries with country-level `cities` and `states`. It is not a city-under-state mapping.
+
+## 2. Build the Connection
 
 ```bash
 curl --request POST \
@@ -26,7 +31,7 @@ curl --request POST \
   }'
 ```
 
-Use `connection.connectionString` from the response as the copy-paste proxy URL.
+Copy `connection.connectionString` from the response.
 
 ```json
 {
@@ -34,48 +39,44 @@ Use `connection.connectionString` from the response as the copy-paste proxy URL.
     "protocol": "http",
     "host": "geo.g-w.info",
     "port": 10080,
-    "username": "user-USERNAME-type-residential-session-my_session-country-US-city-New_York-rotation-15",
+    "username": "user-USERNAME-type-residential-country-US-city-New_York-rotation-15",
     "password": "PASSWORD",
-    "connectionString": "http://user-USERNAME-type-residential-session-my_session-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+    "connectionString": "http://user-USERNAME-type-residential-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+  },
+  "parameters": {
+    "type": "residential",
+    "country": "US",
+    "city": "New York",
+    "rotation": 15,
+    "protocol": "http"
   }
 }
 ```
 
-Supported request fields include `type`, `country`, `state`, `city`, `asn`, `rotation`, `session`, and `protocol`.
+## Request Rules
 
-- `type` must be `residential`, `mobile`, or `datacenter`.
-- `rotation=-1` requests a new IP every request.
-- `rotation=0` keeps the same IP within a session.
-- `rotation=1..60` rotates after that many minutes.
-- If `state` is supplied, it takes precedence over `city`; otherwise `city` is used.
+| Field | Notes |
+| --- | --- |
+| `type` | `residential`, `mobile`, or `datacenter`. |
+| `country` | Two-letter country code. |
+| `state` | Optional. Takes precedence over `city` when both are supplied. |
+| `city` | Optional. Used when `state` is not supplied. |
+| `rotation` | `-1` for every request, `0` for sticky session, or `1..60` minutes. |
+| `protocol` | `http`, `https`, or `socks5`. |
 
-## 2. List Available Locations
-
-```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/locations?type=residential" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
-```
-
-Location data is a static country-level list of available `cities` and `states`. It is not a city-under-state mapping.
-
-## 3. Check Traffic Balance
+## 3. Use the Connection
 
 ```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/balance" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
+curl --proxy "http://USERNAME:PASSWORD@geo.g-w.info:10080" \
+  "https://example.com"
 ```
 
-Response includes `expiring`, `nonExpiring`, and `total` traffic buckets.
+<CardGroup cols={2}>
+  <Card title="Connection API reference" icon="terminal" href="/api-reference/v2/endpoint/rotating-connection">
+    Full request and response schema.
+  </Card>
 
-## 4. Query Usage
-
-```bash
-curl --request GET \
-  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/usage?from=2026-03-01&to=2026-03-12&proxyType=residential&countryCode=US" \
-  --header "X-Api-Key: $FLOPPY_API_KEY"
-```
-
-You can filter by `from`, `to`, `poolId`, `proxyType`, and `countryCode`.
-Usage responses include `yesterday`, `last7Days`, `last30Days`, `lastUpdatedAt`, and `requestedRange` when you pass a date range.
+  <Card title="Check the proxy" icon="circle-check" href="/guides/check-proxy">
+    Validate the connection string returned by the API.
+  </Card>
+</CardGroup>

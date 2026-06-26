@@ -1,13 +1,11 @@
 ---
-title: "Check Proxy Guide"
-description: "Validate proxy connectivity and location details."
+title: "Check a Proxy"
+description: "Validate a proxy connection string and read its detected IP and location."
 ---
 
-## Endpoint
+Use this endpoint after building a rotating proxy connection or listing static proxies.
 
-- `POST /v2/proxy/check`
-
-## Send Connection String
+## Request
 
 ```bash
 curl --request POST \
@@ -15,11 +13,11 @@ curl --request POST \
   --header "Content-Type: application/json" \
   --header "X-Api-Key: $FLOPPY_API_KEY" \
   --data '{
-    "connectionString": "http://username:password@geo.g-w.info:10080"
+    "connectionString": "http://USERNAME:PASSWORD@geo.g-w.info:10080"
   }'
 ```
 
-## Success Response
+## Response
 
 ```json
 {
@@ -33,4 +31,11 @@ curl --request POST \
 }
 ```
 
-Use the `connection.connectionString` value returned by rotating or static proxy endpoints when you want to validate a FloppyData proxy.
+## Where the Connection String Comes From
+
+- Rotating proxies: `POST /v2/proxy/rotating/connections` returns `connection.connectionString`.
+- Static proxies: `GET /v2/proxy/static` returns `items[n].connection.connectionString`.
+
+<Card title="Proxy check API reference" icon="terminal" href="/api-reference/v2/endpoint/check-proxy">
+  See the full request and response schema.
+</Card>
