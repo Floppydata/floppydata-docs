@@ -55,6 +55,23 @@
         ]
       },
       {
+        "tab": "Sandbox",
+        "groups": [
+          {
+            "group": "Run common requests",
+            "root": "sandbox",
+            "pages": [
+              "api-reference/v2/endpoint/web-data-fetch",
+              "api-reference/v2/endpoint/rotating-connection",
+              "api-reference/v2/endpoint/check-proxy",
+              "api-reference/v2/endpoint/static-proxies",
+              "api-reference/v2/endpoint/account-balances",
+              "api-reference/v2/endpoint/account-usage"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Guides",
         "groups": [
           {
