@@ -51,7 +51,7 @@
         "pages": [
           "overview",
           "quickstart",
-          "mcp",
+          "mcp-server",
           "authentication",
           "development"
         ]
