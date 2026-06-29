@@ -26,8 +26,9 @@ curl --request POST \
     "type": "residential",
     "country": "US",
     "city": "New York",
-    "protocol": "http",
-    "rotation": 15
+    "protocol": "socks5",
+    "rotation": 15,
+    "udp": true
   }'
 ```
 
@@ -36,19 +37,20 @@ Copy `connection.connectionString` from the response.
 ```json
 {
   "connection": {
-    "protocol": "http",
+    "protocol": "socks5",
     "host": "geo.g-w.info",
-    "port": 10080,
-    "username": "user-USERNAME-type-residential-country-US-city-New_York-rotation-15",
+    "port": 10800,
+    "username": "user-USERNAME-type-residential-country-US-city-New_York-rotation-15-udp-1",
     "password": "PASSWORD",
-    "connectionString": "http://user-USERNAME-type-residential-country-US-city-New_York-rotation-15:PASSWORD@geo.g-w.info:10080"
+    "connectionString": "socks5://user-USERNAME-type-residential-country-US-city-New_York-rotation-15-udp-1:PASSWORD@geo.g-w.info:10800"
   },
   "parameters": {
     "type": "residential",
     "country": "US",
     "city": "New York",
     "rotation": 15,
-    "protocol": "http"
+    "protocol": "socks5",
+    "udp": true
   }
 }
 ```
@@ -63,11 +65,12 @@ Copy `connection.connectionString` from the response.
 | `city` | Optional. Used when `state` is not supplied. |
 | `rotation` | `-1` for every request, `0` for sticky session, or `1..60` minutes. |
 | `protocol` | `http`, `https`, or `socks5`. |
+| `udp` | Optional. Use `true` only with `protocol: "socks5"` and `type: "residential"` or `"mobile"`. Adds `udp-1` to the proxy username. |
 
 ## 3. Use the Connection
 
 ```bash
-curl --proxy "http://USERNAME:PASSWORD@geo.g-w.info:10080" \
+curl --proxy "socks5://USERNAME:PASSWORD@geo.g-w.info:10800" \
   "https://example.com"
 ```
 
@@ -81,6 +84,7 @@ curl --proxy "http://USERNAME:PASSWORD@geo.g-w.info:10080" \
 | You want a new IP often | Use `rotation: -1` for rotation on every request. |
 | You want a sticky session | Use `rotation: 0`. |
 | You want timed rotation | Use `rotation` from `1` to `60` minutes. |
+| You need UDP traffic | Use `protocol: "socks5"` with residential or mobile proxies and set `udp: true`. |
 | You are unsure about proxy type | Start with `residential`; use `mobile` or `datacenter` only when that matches the target workflow. |
 
 <Tip>
