@@ -1,0 +1,8 @@
+---
+title: 'Delete a Subuser'
+openapi: '/api-reference/openapi.json DELETE /v2/proxy/rotating/subusers/{subuserId}'
+---
+
+<Warning>
+  Deleting a subuser immediately invalidates proxy strings using its credentials. Create replacement credentials, switch and verify your clients, and only then delete the old subuser. The final remaining subuser cannot be deleted.
+</Warning>

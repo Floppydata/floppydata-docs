@@ -1,0 +1,96 @@
+---
+title: "Manage Rotating Proxy Subusers"
+description: "Optionally group rotating proxy credentials or replace exposed credentials."
+---
+
+<Note>
+  Subusers are optional. The `subuserId` field on `POST /v2/proxy/rotating/connections` is optional. If you omit it, Floppydata uses your account's default proxy credentials. Create additional subusers only when you want to organize proxy traffic into groups so usage statistics can be reviewed separately, or when you need to replace exposed credentials.
+
+  Subusers do not change your balance, proxy types, locations, rotation behavior, or performance.
+</Note>
+
+## 1. Create a Subuser
+
+Choose a name that identifies the workload, team, or environment represented by the credentials.
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/subusers" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "name": "crawler-prod"
+  }'
+```
+
+The response includes the new subuser's `id`, proxy `username`, and proxy `password`.
+
+```json
+{
+  "subuser": {
+    "id": 123,
+    "name": "crawler-prod",
+    "username": "USERNAME",
+    "password": "PASSWORD"
+  }
+}
+```
+
+Keep the returned proxy credentials secret. Use the `id` as `subuserId` when building a connection.
+
+## 2. Build a Connection
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/connections" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "subuserId": 123,
+    "type": "residential",
+    "country": "US",
+    "rotation": 15,
+    "session": "crawler_prod_1",
+    "protocol": "http"
+  }'
+```
+
+Copy `connection.connectionString` from the response. Connections built with this `subuserId` use that subuser's credentials.
+
+## 3. Check the Connection
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/proxy/check" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{
+    "connectionString": "http://user-USERNAME-type-residential-session-crawler_prod_1-country-US-rotation-15:PASSWORD@geo.g-w.info:10080"
+  }'
+```
+
+A successful response contains the detected exit IP and location. See [Check a Proxy Connection](/guides/check-proxy) for the full response and troubleshooting flow.
+
+## 4. Delete a Subuser
+
+<Warning>
+  Create a replacement subuser, switch your clients to connections built with its `subuserId`, verify the new connection, and only then delete the exposed subuser. Deleting a subuser immediately invalidates proxy strings using its credentials.
+</Warning>
+
+```bash
+curl --request DELETE \
+  --url "$FLOPPY_BASE_URL/v2/proxy/rotating/subusers/123" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+The final remaining subuser cannot be deleted. To review existing subusers and find their IDs, use `GET /v2/proxy/rotating/subusers`.
+
+<CardGroup cols={2}>
+  <Card title="Build a rotating connection" icon="link" href="/guides/rotating-proxy">
+    Choose location, rotation, protocol, and other connection options.
+  </Card>
+
+  <Card title="List subusers in API Reference" icon="list" href="/api-reference/v2/endpoint/rotating-subusers-list">
+    Review the account's current rotating proxy subusers.
+  </Card>
+</CardGroup>

@@ -5,6 +5,10 @@ description: "Generate a copy-paste rotating proxy URL from location and rotatio
 
 Use this endpoint when a customer needs one usable rotating proxy connection string.
 
+<Note>
+  Subusers are optional. Omit `subuserId` to use your account's default proxy credentials. Set it only when you want to organize proxy traffic into groups for separate reporting or replace exposed credentials. See [Manage Rotating Proxy Subusers](/guides/subusers).
+</Note>
+
 ## 1. Choose a Location
 
 ```bash
@@ -59,6 +63,7 @@ Copy `connection.connectionString` from the response.
 
 | Field | Notes |
 | --- | --- |
+| `subuserId` | Optional. ID from `GET /v2/proxy/rotating/subusers`. Omit it to use the account's default proxy credentials. |
 | `type` | `residential`, `mobile`, or `datacenter`. |
 | `country` | Two-letter country code. |
 | `state` | Optional. Takes precedence over `city` when both are supplied. |
@@ -91,9 +96,13 @@ curl --proxy "socks5://USERNAME:PASSWORD@geo.g-w.info:10800" \
   Generate one connection per call. If your app needs several proxy URLs, call the connections endpoint several times and store each returned `connection.connectionString`.
 </Tip>
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card title="Run connections in API Reference" icon="play" href="/api-reference/v2/endpoint/rotating-connection">
     Generate a live connection string from the docs.
+  </Card>
+
+  <Card title="Manage subusers" icon="users" href="/guides/subusers">
+    Organize proxy groups or replace exposed credentials.
   </Card>
 
   <Card title="Check the proxy" icon="circle-check" href="/guides/check-proxy">

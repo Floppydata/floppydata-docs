@@ -64,6 +64,7 @@
             "root": "guides/web-data",
             "pages": [
               "guides/rotating-proxy",
+              "guides/subusers",
               "guides/static-ips",
               "guides/balances-usage",
               "guides/check-proxy"
@@ -109,6 +110,9 @@
                     "expanded": true,
                     "pages": [
                       "api-reference/v2/endpoint/rotating-connection",
+                      "api-reference/v2/endpoint/rotating-subusers-list",
+                      "api-reference/v2/endpoint/rotating-subusers-create",
+                      "api-reference/v2/endpoint/rotating-subusers-delete",
                       "api-reference/v2/endpoint/rotating-locations",
                       "api-reference/v2/endpoint/rotating-balance",
                       "api-reference/v2/endpoint/rotating-usage"
