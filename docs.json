@@ -63,6 +63,7 @@
             "group": "Core API tasks",
             "root": "guides/web-data",
             "pages": [
+              "guides/cloud-browser",
               "guides/rotating-proxy",
               "guides/subusers",
               "guides/static-ips",
@@ -99,6 +100,19 @@
                   "api-reference/v2/endpoint/web-data-fetch",
                   "api-reference/v2/endpoint/web-data-balance",
                   "api-reference/v2/endpoint/web-data-usage"
+                ]
+              },
+              {
+                "group": "Cloud Browser",
+                "expanded": true,
+                "pages": [
+                  "api-reference/v2/endpoint/browser-session-create",
+                  "api-reference/v2/endpoint/browser-session-connect",
+                  "api-reference/v2/endpoint/browser-session-get",
+                  "api-reference/v2/endpoint/browser-session-list",
+                  "api-reference/v2/endpoint/browser-session-live-view",
+                  "api-reference/v2/endpoint/browser-session-stop",
+                  "api-reference/v2/endpoint/browser-settings-delete"
                 ]
               },
               {

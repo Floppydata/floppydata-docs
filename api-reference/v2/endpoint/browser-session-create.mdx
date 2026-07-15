@@ -1,0 +1,12 @@
+---
+title: 'Create a Session'
+openapi: '/api-reference/openapi.json POST /v2/browser/sessions'
+---
+
+<Note>
+  The smallest request is `{}`. The response includes a signed `connectUrl` and an opaque `settings.id`; connect first, then navigate with Playwright or Puppeteer. The API does not accept `startUrl`.
+</Note>
+
+<Card title="Follow the Cloud Browser guide" icon="browser" href="/guides/cloud-browser">
+  Create, connect, navigate, reuse settings, and stop a browser safely.
+</Card>

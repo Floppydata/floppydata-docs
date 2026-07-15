@@ -1,0 +1,261 @@
+---
+title: "Automate a Cloud Browser"
+description: "Create a cloud browser session, connect with Playwright or Puppeteer, and reuse saved browser settings."
+---
+
+Cloud Browser starts a browser synchronously and returns a signed WebSocket URL. Connect with Playwright or Puppeteer, navigate to the site you need, and stop the session when the job is complete.
+
+<Warning>
+  Creating a session starts a browser resource. Treat `connectUrl`, `liveViewUrl`, API keys, cookie values, and proxy credentials as secrets. Use placeholders in logs and support messages.
+</Warning>
+
+## Before You Start
+
+Create or copy a Client API key from [API keys](https://app.floppydata.com/api-keys), then set local environment variables.
+
+```bash
+export FLOPPY_API_KEY="YOUR_API_KEY"
+export FLOPPY_BASE_URL="https://api.floppydata.net"
+```
+
+## 1. Create a Session
+
+Every request field is optional. Start with `{}` to use a coherent Linux fingerprint, a residential proxy with sticky rotation, a 600-second timeout, and `keepAlive: false`.
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/browser/sessions" \
+  --header "Content-Type: application/json" \
+  --header "X-Api-Key: $FLOPPY_API_KEY" \
+  --data '{}'
+```
+
+The response contains:
+
+- `id`: the browser session ID
+- `connectUrl`: a signed WebSocket URL for the active session
+- `settings.id`: an opaque ID for restoring saved identity and browser state
+- `runtime`: the effective timeout and reconnect behavior
+- lifecycle timestamps including `expiresAt`
+
+Store the session ID and settings ID. Do not construct or persist the signed connection URL; get the active session again when you need a fresh one.
+
+For a local test, provide the returned `connectUrl` as `FLOPPY_CONNECT_URL` in the process environment. Keep it out of source control and shell history.
+
+## 2. Connect and Navigate
+
+Cloud Browser does not accept `startUrl`. Connect first, then navigate with your automation client.
+
+### Playwright
+
+```js
+import { chromium } from 'playwright';
+
+const connectUrl = process.env.FLOPPY_CONNECT_URL;
+if (!connectUrl) throw new Error('FLOPPY_CONNECT_URL is required');
+
+const browser = await chromium.connectOverCDP(connectUrl);
+const context = browser.contexts()[0];
+const page = context.pages()[0] ?? (await context.newPage());
+
+await page.goto('https://example.com');
+console.log(await page.title());
+await browser.close();
+```
+
+### Puppeteer
+
+```js
+import puppeteer from 'puppeteer-core';
+
+const connectUrl = process.env.FLOPPY_CONNECT_URL;
+if (!connectUrl) throw new Error('FLOPPY_CONNECT_URL is required');
+
+const browser = await puppeteer.connect({ browserWSEndpoint: connectUrl });
+const pages = await browser.pages();
+const page = pages[0] ?? (await browser.newPage());
+
+await page.goto('https://example.com');
+console.log(await page.title());
+await browser.disconnect();
+```
+
+The relay permits one active connection per session. Its heartbeat is handled by Floppydata; your client does not need to send a custom keepalive command.
+
+## 3. Stop the Session
+
+Explicitly stop the session after the job. The operation is idempotent and synchronizes saved browser state.
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/browser/sessions/SESSION_ID/stop" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+With the default `keepAlive: false`, closing the relay also stops the session. With `keepAlive: true`, disconnecting releases the connection so you can reconnect until `expiresAt`; call stop when the job is finished.
+
+## Customize a New Browser
+
+Send only the groups you need. This example sets viewport and fingerprint preferences, targets a US residential proxy, extends the runtime, and attaches caller-owned metadata.
+
+```json
+{
+  "browser": {
+    "viewport": { "width": 1440, "height": 900 },
+    "fingerprint": {
+      "strategy": "custom",
+      "os": "windows",
+      "locale": "en-US",
+      "timezone": "auto",
+      "geolocation": { "mode": "auto" },
+      "hardware": { "cpuCores": 8, "memoryGb": 8 },
+      "masking": {
+        "canvas": "noise",
+        "webgl": { "mode": "auto" },
+        "webrtc": "proxy"
+      }
+    }
+  },
+  "proxy": {
+    "type": "residential",
+    "location": { "countryCode": "US", "city": "New York" },
+    "rotation": { "mode": "sticky" }
+  },
+  "runtime": { "timeoutSeconds": 1800, "keepAlive": true },
+  "metadata": { "taskId": "checkout-42" }
+}
+```
+
+| Group | Use it for | Important rules |
+| --- | --- | --- |
+| `browser.viewport` | Set the real browser viewport. | `fingerprint.screen` controls what websites observe and is separate. |
+| `browser.fingerprint` | Choose OS, locale, timezone, geolocation, hardware, and masking. | Custom user agent, screen, hardware, and masking require `strategy: "custom"`. |
+| `proxy` | Choose residential, mobile, or datacenter traffic and optional location, ASN, and rotation. | City or state requires `countryCode`; do not send city and state together. |
+| `runtime` | Set hard lifetime and reconnection behavior. | `timeoutSeconds` is 60–21,600; default is 600. |
+| `metadata` | Correlate the session with your own job. | Serialized metadata must not exceed 4 KiB. |
+
+For interval rotation, use `mode: "interval"` with `intervalMinutes` set to `5`, `10`, `15`, `20`, or `60`. Use `mode: "perRequest"` for a new proxy IP per request, or `mode: "sticky"` with an optional caller-defined `stickyKey`.
+
+## Import Cookies Before Launch
+
+Cookie values are write-only. Import at most 100 cookies and provide exactly one of `url` or `domain` for each item.
+
+```json
+{
+  "storage": {
+    "cookies": {
+      "mode": "replace",
+      "items": [
+        {
+          "name": "session_id",
+          "value": "COOKIE_VALUE",
+          "domain": ".example.com",
+          "path": "/",
+          "httpOnly": true,
+          "secure": true,
+          "sameSite": "lax"
+        }
+      ]
+    }
+  }
+}
+```
+
+Cookie mode defaults to `merge`. Use `replace` only when you intend to clear the saved cookies first. Never put real cookie values in documentation, logs, or support messages.
+
+## Reuse Saved Settings
+
+Reuse `settings.id` to restore the same saved identity and browser state.
+
+```json
+{
+  "settings": { "id": "SETTINGS_ID" },
+  "runtime": { "timeoutSeconds": 1800, "keepAlive": true }
+}
+```
+
+You cannot combine `settings.id` with `browser` or `proxy`; that prevents accidental identity mutation. You can still send cookies, runtime options, and metadata. One active session can use a settings ID at a time.
+
+Each account can keep up to 20 saved settings. Session history includes `settings.id`, so you can recover an ID without a separate settings-list endpoint.
+
+## Inspect Sessions and Reconnect
+
+Get one session to check its state and receive a freshly signed `connectUrl` while it is active.
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/browser/sessions/SESSION_ID" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+List history with optional status filtering and cursor pagination.
+
+```bash
+curl --request GET \
+  --url "$FLOPPY_BASE_URL/v2/browser/sessions?status=running&limit=20" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Pass `nextCursor` back unchanged to load the next page. Session states are `running`, `stopped`, `timedOut`, and `failed`.
+
+## Open a Live View
+
+Close any active Playwright or Puppeteer connection first, then request a fresh live-view URL.
+
+```bash
+curl --request POST \
+  --url "$FLOPPY_BASE_URL/v2/browser/sessions/SESSION_ID/live-view" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+Open `liveViewUrl` in a browser. Treat it as a temporary secret and do not log or share it.
+
+## Delete Saved Settings
+
+<Warning>
+  Deletion permanently removes saved browser identity and state. It cannot be undone.
+</Warning>
+
+Stop any active session first, then delete the settings.
+
+```bash
+curl --request DELETE \
+  --url "$FLOPPY_BASE_URL/v2/browser/settings/SETTINGS_ID" \
+  --header "X-Api-Key: $FLOPPY_API_KEY"
+```
+
+The API returns `204` when deletion succeeds. It returns `settings_in_use` instead of silently stopping an active session.
+
+## Errors and Recovery
+
+| Error | Meaning | Recovery |
+| --- | --- | --- |
+| `invalid_request` | A field or combination is invalid. | Correct the fields identified in `details.issues` or `details.target`. |
+| `account_not_configured` | Proxy access is not configured for the account. | Configure proxy access, then retry. |
+| `settings_limit_reached` | The account already has 20 saved settings. | Delete unused settings, then create a new session. |
+| `settings_in_use` | An active session owns the settings. | Stop `details.activeSessionId`, then retry `details.nextOperationId`. |
+| `session_not_active` | The session has stopped, timed out, or failed. | Create a new session. |
+| `connection_in_use` | Another relay is connected, or live view conflicts with it. | Close the active connection, then retry. |
+| `unauthorized` on `connectUrl` | The signed connection token is invalid or expired. | Get the active session again and use its fresh `connectUrl`. |
+| `upstream_error` | A temporary browser service operation failed. | Follow `details.recoveryHint`; retry stop safely because it is idempotent. |
+| `internal_error` | The session connection could not be prepared. | Retry later; include `details.requestId` if you contact support. |
+
+## Operational Limits
+
+- Incoming WebSocket messages are limited to approximately 1 MiB. Very large CDP payloads, such as full-page screenshots or screencast frames, can close the relay.
+- A Worker deployment can drop a live relay. With `keepAlive: true`, get the session again and reconnect with the fresh `connectUrl` before `expiresAt`.
+- A signed connection URL admits one active relay and expires with its session.
+
+<CardGroup cols={3}>
+  <Card title="Create a Session" icon="play" href="/api-reference/v2/endpoint/browser-session-create">
+    Inspect every request field and response property.
+  </Card>
+
+  <Card title="List Sessions" icon="list" href="/api-reference/v2/endpoint/browser-session-list">
+    Filter history and paginate with an opaque cursor.
+  </Card>
+
+  <Card title="API Conventions" icon="code" href="/development">
+    Review authentication, errors, and WebSocket behavior.
+  </Card>
+</CardGroup>

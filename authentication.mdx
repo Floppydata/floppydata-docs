@@ -40,15 +40,22 @@ You do not need to manage proxy usernames through Client API v2. For rotating pr
 
 For static proxies, call `GET /v2/proxy/static` and copy `items[n].connection.connectionString`.
 
+## Cloud Browser Connections
+
+Cloud Browser control requests use the Client API key. Creating or getting an active session returns a signed `connectUrl` for Playwright or Puppeteer.
+
+Do not add `X-Api-Key` to the WebSocket connection. The signed URL authorizes only that session and expires with it. Use the URL exactly as returned, keep it out of logs, and get the active session again when you need a fresh URL.
+
 ## Which Credential Goes Where
 
 | Credential | Where to use it | Example |
 | --- | --- | --- |
 | API key | Client API request header | `X-Api-Key: YOUR_API_KEY` |
 | Proxy username/password | Proxy connection URL | `http://USERNAME:PASSWORD@geo.g-w.info:10080` |
+| Signed browser connection URL | Playwright or Puppeteer CDP connection | `connectOverCDP(connectUrl)` |
 
 <Warning>
-  Do not place your API key inside a proxy connection string. Do not send proxy passwords in the `X-Api-Key` header.
+  Do not place your API key inside a proxy connection string. Do not send proxy passwords in the `X-Api-Key` header. Treat signed browser connection and live-view URLs as temporary secrets: do not log, publish, or reuse them for another session.
 </Warning>
 
 ## Test API Access

@@ -1,0 +1,8 @@
+---
+title: 'Stop a Session'
+openapi: '/api-reference/openapi.json POST /v2/browser/sessions/{sessionId}/stop'
+---
+
+<Note>
+  Stopping is idempotent and synchronizes saved browser state. Retry the same operation when a temporary upstream failure returns a recovery hint and request ID.
+</Note>

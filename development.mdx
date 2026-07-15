@@ -55,6 +55,14 @@ v2 errors use a JSON object with `code`, `message`, and `details`.
 
 Common codes include `unauthorized`, `forbidden`, `invalid_request`, `insufficient_balance`, `account_not_configured`, `not_found`, `upstream_error`, and `internal_error`.
 
+Cloud Browser operations can also return `settings_in_use`, `settings_limit_reached`, `session_not_active`, and `connection_in_use`. When present, use `details.target`, `details.recoveryHint`, `details.activeSessionId`, and `details.nextOperationId` to decide what to fix or call next. Include `details.requestId` when contacting support about an upstream or internal failure.
+
+## Cloud Browser WebSocket Connections
+
+Create or get an active browser session, then pass its signed `connectUrl` directly to Playwright or Puppeteer. The WebSocket relay does not use the `X-Api-Key` header and permits one active connection per session.
+
+If the connection token is invalid or expired, get the active session again for a fresh `connectUrl`. If `keepAlive` is `true`, a disconnected session can reconnect until `expiresAt`; otherwise closing the relay stops the session.
+
 ## OpenAPI
 
 The current v2 OpenAPI source is available at:

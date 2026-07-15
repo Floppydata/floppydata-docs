@@ -1,0 +1,8 @@
+---
+title: 'List Sessions'
+openapi: '/api-reference/openapi.json GET /v2/browser/sessions'
+---
+
+<Note>
+  Session history is newest first. Filter by `status`, use the opaque `nextCursor` unchanged, and use each item’s `settings.id` when you want to restore saved browser identity and state.
+</Note>

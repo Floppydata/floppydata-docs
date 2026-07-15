@@ -1,0 +1,8 @@
+---
+title: 'Delete Saved Settings'
+openapi: '/api-reference/openapi.json DELETE /v2/browser/settings/{settingsId}'
+---
+
+<Warning>
+  This permanently deletes saved browser identity and state. It never stops an active session automatically; stop the session first when the API returns `settings_in_use`.
+</Warning>

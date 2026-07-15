@@ -1,0 +1,8 @@
+---
+title: 'Connect to a Session'
+openapi: '/api-reference/openapi.json GET /v2/browser/sessions/{sessionId}/connect'
+---
+
+<Warning>
+  Do not construct this URL or call it with `X-Api-Key`. Pass the signed `connectUrl` returned by create/get session directly to Playwright or Puppeteer. It expires with the session, authorizes one active relay, and should not be logged or shared. The HTTP playground cannot establish this WebSocket upgrade.
+</Warning>

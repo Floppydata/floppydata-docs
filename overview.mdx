@@ -3,7 +3,7 @@ title: "Overview"
 description: "What the Floppydata Client API is for and where to start."
 ---
 
-Floppydata helps you use Web Data, rotating proxies, static proxies, and account reporting from your own systems. The Client API is the programmatic layer for those jobs: fetch a page, build a proxy URL, check a proxy exit, list assigned static proxies, and keep an eye on balance and usage.
+Floppydata helps you use cloud browsers, Web Data, rotating proxies, static proxies, and account reporting from your own systems. The Client API is the programmatic layer for those jobs: automate a browser, fetch a page, build a proxy URL, check a proxy exit, list assigned static proxies, and keep an eye on balance and usage.
 
 If you are here in the middle of an integration, start small. Confirm your API key first, generate one connection string, check that proxy, then add the exact location, rotation, or reporting details your workflow needs.
 
@@ -14,6 +14,10 @@ If you are here in the middle of an integration, start small. Confirm your API k
 ## What You Can Do
 
 <CardGroup cols={2}>
+  <Card title="Automate a Cloud Browser" icon="browser" href="/guides/cloud-browser">
+    Start a browser, connect over CDP, and reuse saved identity and browser state.
+  </Card>
+
   <Card title="Fetch Web Data" icon="file-code" href="/guides/web-data">
     Send a target URL and get fetched HTML back from the API.
   </Card>
@@ -36,6 +40,7 @@ If you are here in the middle of an integration, start small. Confirm your API k
 | Part | What it does |
 | --- | --- |
 | API key | Authenticates Client API requests through the `X-Api-Key` header. |
+| Cloud Browser | Starts session-first browsers that you control with Playwright or Puppeteer. |
 | Web Data | Fetches a page for you and returns HTML. |
 | Rotating proxy connections | Builds `connection.connectionString` values for rotating proxy traffic. |
 | Static proxies | Lists assigned static proxy inventory and connection strings. |
@@ -54,7 +59,7 @@ If you are here in the middle of an integration, start small. Confirm your API k
   </Step>
 
   <Step title="Pick one workflow">
-    Choose Web Data if you want the API to fetch a page. Choose proxy connections if your own client will make the request through a proxy.
+    Choose Cloud Browser for browser automation, Web Data if you want the API to fetch a page, or proxy connections if your own client will make the request through a proxy.
   </Step>
 
   <Step title="Copy the returned value">
