@@ -97,6 +97,7 @@
                 "group": "Web Data",
                 "expanded": true,
                 "pages": [
+                  "api-reference/v2/endpoint/web-data-search",
                   "api-reference/v2/endpoint/web-data-fetch",
                   "api-reference/v2/endpoint/web-data-balance",
                   "api-reference/v2/endpoint/web-data-usage"
