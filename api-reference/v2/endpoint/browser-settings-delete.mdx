@@ -4,5 +4,5 @@ openapi: '/api-reference/openapi.json DELETE /v2/browser/settings/{settingsId}'
 ---
 
 <Warning>
-  This permanently deletes saved browser identity and state. It never stops an active session automatically; stop the session first when the API returns `settings_in_use`.
+  This permanently deletes persistent browser identity and state. It never stops an active session automatically; stop the session first when the API returns `settings_in_use`. Delete session history separately with `DELETE /v2/browser/sessions/{sessionId}`.
 </Warning>

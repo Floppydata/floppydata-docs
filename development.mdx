@@ -55,7 +55,7 @@ v2 errors use a JSON object with `code`, `message`, and `details`.
 
 Common codes include `unauthorized`, `forbidden`, `invalid_request`, `insufficient_balance`, `account_not_configured`, `not_found`, `upstream_error`, and `internal_error`.
 
-Cloud Browser operations can also return `settings_in_use`, `settings_limit_reached`, `session_not_active`, and `connection_in_use`. When present, use `details.target`, `details.recoveryHint`, `details.activeSessionId`, and `details.nextOperationId` to decide what to fix or call next. Include `details.requestId` when contacting support about an upstream or internal failure.
+Cloud Browser operations can also return `settings_in_use`, `session_limit_reached`, `session_active`, `session_not_active`, and `connection_in_use`. When present, use `details.target`, `details.recoveryHint`, `details.activeSessionId`, and `details.nextOperationId` to decide what to fix or call next. Include `details.requestId` when contacting support about an upstream or internal failure.
 
 ## Cloud Browser WebSocket Connections
 

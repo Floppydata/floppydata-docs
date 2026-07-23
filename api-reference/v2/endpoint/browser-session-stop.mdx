@@ -4,5 +4,5 @@ openapi: '/api-reference/openapi.json POST /v2/browser/sessions/{sessionId}/stop
 ---
 
 <Note>
-  Stopping is idempotent and synchronizes saved browser state. Retry the same operation when a temporary upstream failure returns a recovery hint and request ID.
+  Stopping is idempotent. Burner sessions begin browser-state cleanup after stop; persistent sessions receive a `retentionExpiresAt` value based on their `persist.ttlSeconds`.
 </Note>
