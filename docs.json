@@ -113,6 +113,7 @@
                   "api-reference/v2/endpoint/browser-session-list",
                   "api-reference/v2/endpoint/browser-session-live-view",
                   "api-reference/v2/endpoint/browser-session-stop",
+                  "api-reference/v2/endpoint/browser-session-delete",
                   "api-reference/v2/endpoint/browser-settings-delete"
                 ]
               },
