@@ -4,7 +4,7 @@ openapi: '/api-reference/openapi.json POST /v2/browser/sessions'
 ---
 
 <Note>
-  The smallest request is `{}` and creates burner browser state. The response includes a signed `connectUrl`, an opaque `settings.id`, and persistence metadata; add `persist.ttlSeconds` when you need `settings.id` to remain reusable after the session ends. The API does not accept `startUrl`.
+  The smallest request is `{}` and creates burner browser state. Pass a top-level `startUrl` array to forward one or more launch targets unchanged to the browser provider. The response includes a signed `connectUrl`, an opaque `settings.id`, and persistence metadata; add `persist.ttlSeconds` when you need `settings.id` to remain reusable after the session ends.
 </Note>
 
 <Card title="Follow the Cloud Browser guide" icon="browser" href="/guides/cloud-browser">

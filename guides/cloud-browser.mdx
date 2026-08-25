@@ -44,9 +44,26 @@ Store the session ID. Store `settings.id` only for persistent workflows; a burne
 
 For a local test, provide the returned `connectUrl` as `FLOPPY_CONNECT_URL` in the process environment. Keep it out of source control and shell history.
 
-## 2. Connect and Navigate
+## 2. Open Targets on Launch
 
-Cloud Browser does not accept `startUrl`. Connect first, then navigate with your automation client.
+Pass a top-level `startUrl` array when the browser should open one or more
+targets as it starts.
+
+```json
+{
+  "startUrl": ["yahoo.com", "https://example.com"]
+}
+```
+
+FloppyData forwards every value to the browser provider unchanged and in the
+same order. It does not add a scheme or normalize the strings. The array applies
+only to this launch; it is not saved in reusable browser settings or returned in
+session history.
+
+Omit `startUrl` when automation must attach listeners or interception before
+the first navigation. Connect first, then navigate with your automation client.
+
+## 3. Connect and Navigate
 
 ### Playwright
 
@@ -84,7 +101,7 @@ await browser.disconnect();
 
 The relay permits one active connection per session. Its heartbeat is handled by Floppydata; your client does not need to send a custom keepalive command.
 
-## 3. Stop the Session
+## 4. Stop the Session
 
 Explicitly stop the session after the job. The operation is idempotent. For burner sessions it starts browser-state cleanup; for persistent sessions it sets the retention expiration.
 
