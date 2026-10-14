@@ -1,0 +1,86 @@
+---
+title: "SDKs"
+description: "Call Client API v2 from TypeScript or Python with a typed client."
+---
+
+The official SDKs wrap every Client API v2 endpoint with typed parameters and responses, read your key from `FLOPPYDATA_API_KEY`, and raise typed errors. They are generated from the same OpenAPI spec as the [API Reference](/api-reference/introduction), and new SDK versions are released when the API changes.
+
+<CardGroup cols={2}>
+  <Card title="TypeScript" icon="node-js" href="https://github.com/Floppydata/floppydata-node">
+    `@floppydata/sdk` on [npm](https://www.npmjs.com/package/@floppydata/sdk). Node.js 18+, ESM.
+  </Card>
+  <Card title="Python" icon="python" href="https://github.com/Floppydata/floppydata-python">
+    `floppydata` on [PyPI](https://pypi.org/project/floppydata/). Python 3.10+, sync and async.
+  </Card>
+</CardGroup>
+
+## Install
+
+<CodeGroup>
+
+```bash npm
+npm install @floppydata/sdk
+```
+
+```bash pnpm
+pnpm add @floppydata/sdk
+```
+
+```bash pip
+pip install floppydata
+```
+
+```bash uv
+uv add floppydata
+```
+
+</CodeGroup>
+
+## Make a First Call
+
+Create or copy a Client API key from [API keys](https://app.floppydata.com/api-keys) and set it as `FLOPPYDATA_API_KEY`:
+
+```bash
+export FLOPPYDATA_API_KEY="YOUR_API_KEY"
+```
+
+<CodeGroup>
+
+```ts TypeScript
+import { FloppyData } from '@floppydata/sdk';
+
+const fd = new FloppyData(); // reads FLOPPYDATA_API_KEY
+
+const { data: balances } = await fd.getAccountBalances();
+console.log(balances.webData?.requests.remaining);
+
+const { data: page } = await fd.fetchWebData({ url: 'https://example.com', difficulty: 'auto' });
+console.log(page.html.length);
+```
+
+```python Python
+from floppydata import FloppyData
+
+fd = FloppyData()  # reads FLOPPYDATA_API_KEY
+
+balances = fd.account.get_account_balances()
+print(balances.web_data.requests.remaining)
+
+page = fd.web_data.fetch_web_data(url="https://example.com", difficulty="auto")
+print(len(page.html))
+```
+
+</CodeGroup>
+
+<Warning>
+  Keep the API key on your server. Anyone holding it can spend your balance.
+</Warning>
+
+## Learn More
+
+Each SDK repository has the full method list, error handling, Cloud Browser with Playwright, configuration, and runnable examples for every product:
+
+- TypeScript: [README](https://github.com/Floppydata/floppydata-node#readme), [examples](https://github.com/Floppydata/floppydata-node/tree/main/examples), [changelog](https://github.com/Floppydata/floppydata-node/blob/main/CHANGELOG.md)
+- Python: [README](https://github.com/Floppydata/floppydata-python#readme), [method reference](https://github.com/Floppydata/floppydata-python/blob/main/reference.md), [examples](https://github.com/Floppydata/floppydata-python/tree/main/examples), [changelog](https://github.com/Floppydata/floppydata-python/blob/main/CHANGELOG.md)
+
+The SDKs follow semantic versioning independently of the API version. While they are `0.x`, minor versions may contain breaking changes.

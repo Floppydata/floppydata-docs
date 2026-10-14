@@ -51,6 +51,7 @@
         "pages": [
           "overview",
           "quickstart",
+          "sdks",
           "mcp-server",
           "authentication",
           "development"
